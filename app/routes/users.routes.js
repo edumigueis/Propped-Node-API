@@ -2,7 +2,7 @@ module.exports = app => {
     const users = require("../controllers/Users.controller.js");
   
     // Cria um novo aluno
-    /*app.post("/users", users.create);
+    app.post("/users", users.create);
   
     // Pega todos os alunos na tabela
     app.get("/users", users.findAll);
@@ -17,5 +17,5 @@ module.exports = app => {
     app.delete("/users/:id", users.delete);
   
     // Deleta todas as disciplinas
-    app.delete("/users", users.deleteAll);*/
+    app.delete("/users", users.deleteAll);
   };
