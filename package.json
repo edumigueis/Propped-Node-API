@@ -1,0 +1,37 @@
+{
+  "name": "propped-node-api",
+  "version": "1.0.0",
+  "description": "A node.js and express.js rest api for the Propped e-commerce project",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm start",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edumigueis/Propped-Node-API.git"
+  },
+  "keywords": [
+    "node.js",
+    "api",
+    "propped",
+    "express",
+    "node",
+    "rest-api",
+    "rest",
+    "e-commerce"
+  ],
+  "author": "Eduardo de Almeida Migueis",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/edumigueis/Propped-Node-API/issues"
+  },
+  "homepage": "https://github.com/edumigueis/Propped-Node-API#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mssql": "^6.2.2",
+    "nodemon": "^2.0.4",
+    "tedious": "^9.2.1"
+  }
+}
