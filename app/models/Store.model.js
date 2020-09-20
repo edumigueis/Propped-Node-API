@@ -1,0 +1,148 @@
+const sql = require("./db.js");
+
+// Construtor
+const Store = function (store) {
+  this.code_store = store.code_store;
+  this.name_store = store.name_store;
+  this.registry_store = store.registry_store;
+  this.website_store = store.website_store;
+  this.phone_store = store.phone_store;
+  this.postal_code_store = store.postal_code_store;
+  this.address_store = store.address_store;
+  this.city_store = store.city_store;
+  this.state_store = store.state_store;
+  this.country_store = store.country_store;
+  this.image_store = store.image_store;
+};
+
+Store.create = (newStore, result) => {
+  sql.query(
+    `INSERT INTO Store_Propped VALUES('${newStore.code_store}','${newStore.name_store}','${newStore.registry_store}','${newStore.website_store}','${newStore.phone_store}','${newStore.postal_code_store}','${newStore.address_store}','${newStore.city_store}','${newStore.state_store}', '${newStore.country_store}', '${newStore.image_store}')`,
+    newStore,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+      result(null, {
+        ...newStore,
+      });
+    }
+  );
+};
+
+Store.findByCode = (storeCODE, result) => {
+  sql.query(
+    `SELECT * FROM Store_Propped WHERE code_store = ${storeCODE}`,
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        console.log("Store found: ", res);
+        result(null, res);
+        return;
+      }
+
+      // Não achou a store com o cod
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+    }
+  );
+};
+
+Store.getAll = (result) => {
+  sql.query("SELECT * FROM Store_Propped", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    console.log("stores: ", res);
+    result(null, res.recordset);
+  });
+};
+
+Store.updateByCode = (cod, store, result) => {
+  sql.query(
+    "UPDATE Stores_Propped SET name_store = ?, registry_store= ?, website_store = ?, phone_store= ?, postal_code_store= ?, address_store= ?, city_store= ?, state_store= ?, country_store= ?, image_store= ?  WHERE code_store = ?",
+    [
+      store.name_store,
+      store.registry_store,
+      store.website_store,
+      store.phone_store,
+      store.postal_code_store,
+      store.address_store,
+      store.city_store,
+      store.state_store,
+      store.country_store,
+      store.image_store,
+      cod,
+    ],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // não achou a store com esse cod
+        result(
+          {
+            kind: "not_found",
+          },
+          null
+        );
+        return;
+      }
+
+      console.log("updated store: ", {
+        code_store: cod,
+        ...store,
+      });
+      result(null, {
+        code_store: cod,
+        ...store,
+      });
+    }
+  );
+};
+
+Store.remove = (code, result) => {
+  sql.query(
+    "DELETE FROM Store_Propped WHERE code_store = ?",
+    code,
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // não achou a store com esse cod
+        result(
+          {
+            kind: "not_found",
+          },
+          null
+        );
+        return;
+      }
+
+      console.log("Store with code: ", code, " was deleted");
+      result(null, res);
+    }
+  );
+};
+
+module.exports = Store;
