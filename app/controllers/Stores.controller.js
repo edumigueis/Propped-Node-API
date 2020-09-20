@@ -1,116 +1,108 @@
-/*const Aluno = require("../models/Aluno.model.js");
-const Resultado = require("../models/Resultado.model.js");
-const Matricula = require("../models/Matricula.model.js");
+const Store = require("../models/Store.model.js");
 
-// Cria e salva um novo aluno
+// Cria e salva um novo store
 exports.create = (req, res) => {
   // Validate request
   if (!req.body) {
     res.status(400).send({
-      message: "Conteúdo não pode estar vazio"
+      message: "Empty params",
     });
   }
 
-  // Cria um Aluno
-  const aluno = new Aluno({
-    ra: req.body.RA,
-    nome: req.body.Nome,
+  // Cria um Store
+  const store = new Store({
+    code_store = req.body.code_store,
+    name_store = req.body.name_store,
+    registry_store = req.body.registry_store,
+    website_store = req.body.website_store,
+    phone_store = req.body.phone_store,
+    postal_code_store = req.body.postal_code_store,
+    address_store = req.body.address_store,
+    city_store = req.body.city_store,
+    state_store = req.body.state_store,
+    country_store = req.body.country_store,
+    image_store = req.body.image_store
   });
 
-  // Salva Aluno no banco de dados
-  Aluno.create(aluno, (err, data) => {
+  // Salva Store no banco de dados
+  Store.create(store, (err, data) => {
     if (err)
       res.status(500).send({
-        message: err.message || "Erro ao criar aluno."
+        message: err.message || "Error while trying to create store.",
       });
     else res.send(data.recordset);
   });
 };
 
-// Pega todos os alunos do banco de dados
+// Pega todos os stores do banco de dados
 exports.findAll = (req, res) => {
-  Aluno.getAll((err, data) => {
+  Store.getAll((err, data) => {
     if (err)
       res.status(500).send({
-        message: err.message || "Erro ao buscar alunos."
+        message: err.message || "Error while searching for stores.",
       });
     else res.send(data.recordset);
   });
 };
 
-// Achar aluno com ra especifico
+// Achar store com ra especifico
 exports.findOne = (req, res) => {
-  Aluno.findByRA(req.params.ra, (err, data) => {
+  Store.findByCode(req.params.code_store, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Não foi possível encontar o aluno com ra ${req.params.ra}.`
+          message: `Store with the code ${req.params.code_store} wasn't found.`,
         });
       } else {
         res.status(500).send({
-          message: "Erro ao busar o aluno com ra " + req.params.ra
+          message: "Error while searching for store with the code " + req.params.code_store,
         });
       }
     } else res.send(data);
   });
 };
 
-// Altera o aluno com ra específico
+// Altera o store com ra específico
 exports.update = (req, res) => {
   // Validate Request
   if (!req.body) {
     res.status(400).send({
-      message: "Conteúdo não pode estar vazio!"
+      message: "Body of request can not be empty.",
     });
   }
 
-  Aluno.updateByRA(
-    req.params.ra,
-    new Aluno(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Não foi possível encontrar aluno com ra ${req.params.ra}.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Erro ao atualizar aluno com ra " + req.params.ra
-          });
-        }
-      } else res.send(data.recordset);
-    }
-  );
-};
-
-// Deleta aluno com ra especifico
-exports.delete = (req, res) => {
-  Aluno.remove(req.params.ra, (err, data) => {
+  Store.updateByCode(req.params.code_store, new Store(req.body), (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Não foi possível encontrar aluno com ra ${req.params.alunoId}.`
+          message: `Store with the code ${req.params.code_store} wasn't found.`,
         });
       } else {
         res.status(500).send({
-          message: "Erro ao deletar aluno com ra " + req.params.alunoId
+          message: "Error when trying to update store with the following code: " + req.params.code_store,
         });
       }
-    } else res.send({
-      message: `Aluno foi deletado com sucesso!`
-    });
+    } else res.send(data.recordset);
   });
 };
 
-// Delete todos os alunos do banco
-exports.deleteAll = (req, res) => {
-  Aluno.removeAll((err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Algum erro ocorreu ao deletar os alunos"
+// Deleta store com ra especifico
+exports.delete = (req, res) => {
+  Store.remove(req.params.code_store, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Store with the code ${req.params.code_store} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error when trying to update store with the following code: " + req.params.code_store,
+        });
+      }
+    } else {
+      res.send({
+        message: `Store has been deleted succesfully!`,
       });
-    else res.send({
-      message: `Todos os alunos deletados com sucesso!`
-    });
+    }
   });
-};*/
+};
