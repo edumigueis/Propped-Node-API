@@ -29,7 +29,7 @@ exports.create = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while trying to create user.",
       });
-    else res.send(data.recordset);
+    else res.send(data);
   });
 };
 
@@ -40,7 +40,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for users.",
       });
-    else res.send(data.recordset);
+    else res.send(data);
   });
 };
 
@@ -57,7 +57,7 @@ exports.findOne = (req, res) => {
           message: "Error while searching for user with the code " + req.params.code_user,
         });
       }
-    } else res.send(data);
+    } else res.send(data.recordset);
   });
 };
 
@@ -81,7 +81,8 @@ exports.update = (req, res) => {
           message: "Error when trying to update user with the following code: " + req.params.code_user,
         });
       }
-    } else res.send(data.recordset);
+    } 
+    else res.send(data);
   });
 };
 

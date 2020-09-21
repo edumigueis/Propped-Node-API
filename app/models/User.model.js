@@ -17,13 +17,11 @@ const User = function (user) {
 User.create = (newUser, result) => {
   sql.query(
     `INSERT INTO User_Propped VALUES('${newUser.code_user}','${newUser.name_user}','${newUser.email_user}','${newUser.pass_user}','${newUser.gender_user}','${newUser.birth_date_user}','${newUser.registry_user}','${newUser.phone_user}', CAST('${newUser.image_user}' as varbinary(max)), '${newUser.preference_user}')`,
-    newUser,
     (err, res) => {
       if (err) {
         result(err, null);
         return;
       }
-      console.log(newUser)
       result(null, {
         ...newUser,
       });
@@ -33,7 +31,7 @@ User.create = (newUser, result) => {
 
 User.findByCode = (userCODE, result) => {
   sql.query(
-    `SELECT * FROM User_Propped WHERE code_user = ${userCODE}`,
+    `SELECT * FROM User_Propped WHERE code_user = '${userCODE}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -66,26 +64,16 @@ User.getAll = (result) => {
       return;
     }
 
-    console.log("users: ", res);
+    console.log("users: ", res.recordset);
     result(null, res.recordset);
+    
   });
 };
 
 User.updateByCode = (cod, user, result) => {
+  user.code_user = cod;
   sql.query(
-    "UPDATE Users_Propped SET name_user = ?, email_user= ?, pass_user = ?, gender_user= ?, birth_date_user= ?, registry_user= ?, phone_user= ?, image_user= ?, preference_user= ?,  WHERE code_user = ?",
-    [
-      user.name_user,
-      user.email_user,
-      user.pass_user,
-      user.gender_user,
-      user.birth_date_user,
-      user.registry_user,
-      user.phone_user,
-      user.image_user,
-      user.preference_user,
-      cod,
-    ],
+    `UPDATE User_Propped SET name_user = '${user.name_user}', email_user = '${user.email_user}', pass_user = '${user.pass_user}', gender_user= '${user.gender_user}', birth_date_user= '${user.birth_date_user}', registry_user= '${user.registry_user}', phone_user= '${user.phone_user}', image_user= CAST('${user.image_user}' as varbinary(max)), preference_user = '${user.preference_user}'  WHERE code_user = '${cod}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -105,7 +93,6 @@ User.updateByCode = (cod, user, result) => {
       }
 
       console.log("updated user: ", {
-        code_user: cod,
         ...user,
       });
       result(null, {
@@ -117,7 +104,7 @@ User.updateByCode = (cod, user, result) => {
 };
 
 User.remove = (code, result) => {
-  sql.query("DELETE FROM User_Propped WHERE code_user = ?", code, (err, res) => {
+  sql.query("DELETE FROM User_Propped WHERE code_user = '" + code + "'", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
