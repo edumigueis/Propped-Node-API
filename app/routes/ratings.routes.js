@@ -10,6 +10,4 @@ module.exports = app => {
     app.put("/ratings/:id", ratings.update);
   
     app.delete("/ratings/:id", ratings.delete);
-  
-    app.delete("/ratings", ratings.deleteAll);
   };

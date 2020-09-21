@@ -16,13 +16,14 @@ const User = function (user) {
 
 User.create = (newUser, result) => {
   sql.query(
-    `INSERT INTO User_Propped VALUES('${newUser.code_user}','${newUser.name_user}','${newUser.email_user}','${newUser.pass_user}','${newUser.gender_user}','${newUser.birth_date_user}','${newUser.registry_user}','${newUser.phone_user}','${newUser.image_user}', '${newUser.preference_user}')`,
+    `INSERT INTO User_Propped VALUES('${newUser.code_user}','${newUser.name_user}','${newUser.email_user}','${newUser.pass_user}','${newUser.gender_user}','${newUser.birth_date_user}','${newUser.registry_user}','${newUser.phone_user}', CAST('${newUser.image_user}' as varbinary(max)), '${newUser.preference_user}')`,
     newUser,
     (err, res) => {
       if (err) {
         result(err, null);
         return;
       }
+      console.log(newUser)
       result(null, {
         ...newUser,
       });

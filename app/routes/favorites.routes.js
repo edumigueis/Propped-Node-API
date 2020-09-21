@@ -9,5 +9,4 @@ module.exports = app => {
   
     app.delete("/favorites/:id", favorites.delete);
   
-    app.delete("/favorites", favorites.deleteAll);
   };

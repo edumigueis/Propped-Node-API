@@ -10,6 +10,4 @@ module.exports = app => {
     app.put("/products/:id", products.update);
 
     app.delete("/products/:id", products.delete);
-
-    app.delete("/products", products.deleteAll);
   };
