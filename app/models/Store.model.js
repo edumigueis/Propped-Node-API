@@ -18,7 +18,6 @@ const Store = function (store) {
 Store.create = (newStore, result) => {
   sql.query(
     `INSERT INTO Store_Propped VALUES('${newStore.code_store}','${newStore.name_store}','${newStore.registry_store}','${newStore.website_store}','${newStore.phone_store}','${newStore.postal_code_store}','${newStore.address_store}','${newStore.city_store}','${newStore.state_store}', '${newStore.country_store}', '${newStore.image_store}')`,
-    newStore,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -33,7 +32,7 @@ Store.create = (newStore, result) => {
 
 Store.findByCode = (storeCODE, result) => {
   sql.query(
-    `SELECT * FROM Store_Propped WHERE code_store = ${storeCODE}`,
+    `SELECT * FROM Store_Propped WHERE code_store = '${storeCODE}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -66,27 +65,14 @@ Store.getAll = (result) => {
       return;
     }
 
-    console.log("stores: ", res);
-    result(null, res.recordset);
+    result(null, res);
   });
 };
 
 Store.updateByCode = (cod, store, result) => {
+  store.code_store = cod;
   sql.query(
-    "UPDATE Stores_Propped SET name_store = ?, registry_store= ?, website_store = ?, phone_store= ?, postal_code_store= ?, address_store= ?, city_store= ?, state_store= ?, country_store= ?, image_store= ?  WHERE code_store = ?",
-    [
-      store.name_store,
-      store.registry_store,
-      store.website_store,
-      store.phone_store,
-      store.postal_code_store,
-      store.address_store,
-      store.city_store,
-      store.state_store,
-      store.country_store,
-      store.image_store,
-      cod,
-    ],
+    `UPDATE Store_Propped SET name_store = '${store.name_store}', registry_store = '${store.registry_store}', website_store = '${store.website_store}', phone_store= '${store.phone_store}', postal_code_store= '${store.postal_code_store}', address_store= '${store.address_store}', city_store= '${store.city_store}', state_store= '${store.state_store}', country_store= '${store.country_store}', image_store = CAST('${store.image_store}' as varbinary(max))  WHERE code_store = '${cod}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -119,8 +105,7 @@ Store.updateByCode = (cod, store, result) => {
 
 Store.remove = (code, result) => {
   sql.query(
-    "DELETE FROM Store_Propped WHERE code_store = ?",
-    code,
+    "DELETE FROM Store_Propped WHERE code_store = '" + code + "'",
     (err, res) => {
       if (err) {
         console.log("error: ", err);

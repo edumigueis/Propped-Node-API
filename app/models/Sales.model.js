@@ -30,18 +30,14 @@ Sale.findByCode = (saleCODE, result) => {
     `SELECT * FROM Sale_Propped WHERE code_sale = '${saleCODE}'`,
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
         result(err, null);
         return;
       }
 
       if (res.recordset.length > 0) {
-        console.log("Sale found: ", res);
         result(null, res);
         return;
       }
-
-      // Não achou a sale com o cod
       result(
         {
           kind: "not_found",
@@ -55,14 +51,11 @@ Sale.findByCode = (saleCODE, result) => {
 Sale.getAll = (result) => {
   sql.query("SELECT * FROM Sale_Propped", (err, res) => {
     if (err) {
-      console.log("error: ", err);
       result(null, err);
       return;
     }
 
-    console.log("sales: ", res.recordset);
-    result(null, res.recordset);
-    
+    result(null, res);    
   });
 };
 
@@ -72,13 +65,11 @@ Sale.updateByCode = (cod, sale, result) => {
     `UPDATE Sale_Propped SET id_store_sale = ${sale.id_store_sale}, delivery_time_sale = '${sale.delivery_time_sale}', amount_sale = ${sale.amount_sale}, shipping_sale= ${sale.shipping_sale}, date_order= '${sale.date_order}'  WHERE code_sale = '${cod}'`,
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
         result(null, err);
         return;
       }
 
       if (res.affectedRows == 0) {
-        // não achou a sale com esse cod
         result(
           {
             kind: "not_found",
@@ -88,9 +79,6 @@ Sale.updateByCode = (cod, sale, result) => {
         return;
       }
 
-      console.log("updated sale: ", {
-        ...sale,
-      });
       result(null, {
         code_sale: cod,
         ...sale,
@@ -102,13 +90,11 @@ Sale.updateByCode = (cod, sale, result) => {
 Sale.remove = (code, result) => {
   sql.query("DELETE FROM Sale_Propped WHERE code_sale = '" + code + "'", (err, res) => {
     if (err) {
-      console.log("error: ", err);
       result(null, err);
       return;
     }
 
     if (res.affectedRows == 0) {
-      // não achou a sale com esse cod
       result(
         {
           kind: "not_found",
@@ -118,7 +104,6 @@ Sale.remove = (code, result) => {
       return;
     }
 
-    console.log("Sale with code: ", code, " was deleted");
     result(null, res);
   });
 };

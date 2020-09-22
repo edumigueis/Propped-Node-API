@@ -1,15 +1,14 @@
 const Store = require("../models/Store.model.js");
 
-// Cria e salva um novo store
+
 exports.create = (req, res) => {
-  // Validate request
   if (!req.body) {
     res.status(400).send({
       message: "Empty params",
     });
   }
 
-  // Cria um Store
+
   const store = new Store({
     code_store = req.body.code_store,
     name_store = req.body.name_store,
@@ -24,28 +23,27 @@ exports.create = (req, res) => {
     image_store = req.body.image_store
   });
 
-  // Salva Store no banco de dados
   Store.create(store, (err, data) => {
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create store.",
       });
-    else res.send(data.recordset);
+    else 
+      res.send(data.recordset);
   });
 };
 
-// Pega todos os stores do banco de dados
 exports.findAll = (req, res) => {
   Store.getAll((err, data) => {
     if (err)
       res.status(500).send({
         message: err.message || "Error while searching for stores.",
       });
-    else res.send(data.recordset);
+    else 
+      res.send(data.recordset);
   });
 };
 
-// Achar store com ra especifico
 exports.findOne = (req, res) => {
   Store.findByCode(req.params.code_store, (err, data) => {
     if (err) {
@@ -53,18 +51,19 @@ exports.findOne = (req, res) => {
         res.status(404).send({
           message: `Store with the code ${req.params.code_store} wasn't found.`,
         });
-      } else {
+      } 
+      else {
         res.status(500).send({
           message: "Error while searching for store with the code " + req.params.code_store,
         });
       }
-    } else res.send(data);
+    } 
+    else 
+      res.send(data.recordset);
   });
 };
 
-// Altera o store com ra específico
 exports.update = (req, res) => {
-  // Validate Request
   if (!req.body) {
     res.status(400).send({
       message: "Body of request can not be empty.",
@@ -77,16 +76,18 @@ exports.update = (req, res) => {
         res.status(404).send({
           message: `Store with the code ${req.params.code_store} wasn't found.`,
         });
-      } else {
+      } 
+      else {
         res.status(500).send({
           message: "Error when trying to update store with the following code: " + req.params.code_store,
         });
       }
-    } else res.send(data.recordset);
+    } 
+    else 
+      res.send(data.recordset);
   });
 };
 
-// Deleta store com ra especifico
 exports.delete = (req, res) => {
   Store.remove(req.params.code_store, (err, data) => {
     if (err) {
@@ -94,12 +95,14 @@ exports.delete = (req, res) => {
         res.status(404).send({
           message: `Store with the code ${req.params.code_store} wasn't found.`,
         });
-      } else {
+      } 
+      else {
         res.status(500).send({
           message: "Error when trying to update store with the following code: " + req.params.code_store,
         });
       }
-    } else {
+    } 
+    else {
       res.send({
         message: `Store has been deleted succesfully!`,
       });
