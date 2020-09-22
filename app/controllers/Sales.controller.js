@@ -1,116 +1,104 @@
-/*const Aluno = require("../models/Aluno.model.js");
-const Resultado = require("../models/Resultado.model.js");
-const Matricula = require("../models/Matricula.model.js");
+const Sale = require("../models/Sale.model.js");
 
-// Cria e salva um novo aluno
+// Cria e salva um novo sale
 exports.create = (req, res) => {
   // Validate request
   if (!req.body) {
     res.status(400).send({
-      message: "Conteúdo não pode estar vazio"
+      message: "Empty params",
     });
   }
 
-  // Cria um Aluno
-  const aluno = new Aluno({
-    ra: req.body.RA,
-    nome: req.body.Nome,
+  // Cria um Sale
+  const sale = new Sale({
+    code_sale: req.body.code_sale,
+    id_store_sale: req.body.id_store_sale,
+    delivery_time_sale: req.body.delivery_time_sale,
+    amount_sale: req.body.amount_sale,
+    shipping_sale: req.body.shipping_sale,
+    date_order: req.body.date_order
   });
 
-  // Salva Aluno no banco de dados
-  Aluno.create(aluno, (err, data) => {
+  // Salva Sale no banco de dados
+  Sale.create(sale, (err, data) => {
     if (err)
       res.status(500).send({
-        message: err.message || "Erro ao criar aluno."
+        message: err.message || "Error while trying to create sale.",
       });
-    else res.send(data.recordset);
+    else res.send(data);
   });
 };
 
-// Pega todos os alunos do banco de dados
+// Pega todos os sales do banco de dados
 exports.findAll = (req, res) => {
-  Aluno.getAll((err, data) => {
+  Sale.getAll((err, data) => {
     if (err)
       res.status(500).send({
-        message: err.message || "Erro ao buscar alunos."
+        message: err.message || "Error while searching for sales.",
       });
-    else res.send(data.recordset);
+    else res.send(data);
   });
 };
 
-// Achar aluno com ra especifico
+// Achar sale com ra especifico
 exports.findOne = (req, res) => {
-  Aluno.findByRA(req.params.ra, (err, data) => {
+  Sale.findByCode(req.params.code_sale, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Não foi possível encontar o aluno com ra ${req.params.ra}.`
+          message: `Sale with the code ${req.params.code_sale} wasn't found.`,
         });
       } else {
         res.status(500).send({
-          message: "Erro ao busar o aluno com ra " + req.params.ra
+          message: "Error while searching for sale with the code " + req.params.code_sale,
         });
       }
-    } else res.send(data);
+    } else res.send(data.recordset);
   });
 };
 
-// Altera o aluno com ra específico
+// Altera o sale com ra específico
 exports.update = (req, res) => {
   // Validate Request
   if (!req.body) {
     res.status(400).send({
-      message: "Conteúdo não pode estar vazio!"
+      message: "Body of request can not be empty.",
     });
   }
 
-  Aluno.updateByRA(
-    req.params.ra,
-    new Aluno(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Não foi possível encontrar aluno com ra ${req.params.ra}.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Erro ao atualizar aluno com ra " + req.params.ra
-          });
-        }
-      } else res.send(data.recordset);
-    }
-  );
-};
-
-// Deleta aluno com ra especifico
-exports.delete = (req, res) => {
-  Aluno.remove(req.params.ra, (err, data) => {
+  Sale.updateByCode(req.params.code_sale, new Sale(req.body), (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Não foi possível encontrar aluno com ra ${req.params.alunoId}.`
+          message: `Sale with the code ${req.params.code_sale} wasn't found.`,
         });
       } else {
         res.status(500).send({
-          message: "Erro ao deletar aluno com ra " + req.params.alunoId
+          message: "Error when trying to update sale with the following code: " + req.params.code_sale,
         });
       }
-    } else res.send({
-      message: `Aluno foi deletado com sucesso!`
-    });
+    } 
+    else res.send(data);
   });
 };
 
-// Delete todos os alunos do banco
-exports.deleteAll = (req, res) => {
-  Aluno.removeAll((err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Algum erro ocorreu ao deletar os alunos"
+// Deleta sale com ra especifico
+exports.delete = (req, res) => {
+  Sale.remove(req.params.code_sale, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Sale with the code ${req.params.code_sale} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error when trying to update sale with the following code: " + req.params.code_sale,
+        });
+      }
+    } else{
+      res.send({
+        message: `Sale has been deleted succesfully!`,
       });
-    else res.send({
-      message: `Todos os alunos deletados com sucesso!`
-    });
+    }
   });
-};*/
+};
