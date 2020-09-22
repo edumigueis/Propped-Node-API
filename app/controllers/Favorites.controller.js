@@ -1,116 +1,101 @@
-/*const Aluno = require("../models/Aluno.model.js");
-const Resultado = require("../models/Resultado.model.js");
-const Matricula = require("../models/Matricula.model.js");
+const Favorite = require("../models/Favorite.model.js");
 
-// Cria e salva um novo aluno
+// Cria e salva um novo favorite
 exports.create = (req, res) => {
   // Validate request
   if (!req.body) {
     res.status(400).send({
-      message: "Conteúdo não pode estar vazio"
+      message: "Empty params",
     });
   }
 
-  // Cria um Aluno
-  const aluno = new Aluno({
-    ra: req.body.RA,
-    nome: req.body.Nome,
+  // Cria um Favorite
+  const favorite = new Favorite({
+    code_favorite: req.body.code_favorite,
+    id_user_favorite: req.body.id_user_favorite,
+    id_product_favorite: req.body.id_product_favorite
   });
 
-  // Salva Aluno no banco de dados
-  Aluno.create(aluno, (err, data) => {
+  // Salva Favorite no banco de dados
+  Favorite.create(favorite, (err, data) => {
     if (err)
       res.status(500).send({
-        message: err.message || "Erro ao criar aluno."
+        message: err.message || "Error while trying to create favorite.",
       });
-    else res.send(data.recordset);
+    else res.send(data);
   });
 };
 
-// Pega todos os alunos do banco de dados
+// Pega todos os favorites do banco de dados
 exports.findAll = (req, res) => {
-  Aluno.getAll((err, data) => {
+  Favorite.getAll((err, data) => {
     if (err)
       res.status(500).send({
-        message: err.message || "Erro ao buscar alunos."
+        message: err.message || "Error while searching for favorites.",
       });
-    else res.send(data.recordset);
+    else res.send(data);
   });
 };
 
-// Achar aluno com ra especifico
+// Achar favorite com ra especifico
 exports.findOne = (req, res) => {
-  Aluno.findByRA(req.params.ra, (err, data) => {
+  Favorite.findByCode(req.params.code_favorite, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Não foi possível encontar o aluno com ra ${req.params.ra}.`
+          message: `Favorite with the code ${req.params.code_favorite} wasn't found.`,
         });
       } else {
         res.status(500).send({
-          message: "Erro ao busar o aluno com ra " + req.params.ra
+          message: "Error while searching for favorite with the code " + req.params.code_favorite,
         });
       }
-    } else res.send(data);
+    } else res.send(data.recordset);
   });
 };
 
-// Altera o aluno com ra específico
+// Altera o favorite com ra específico
 exports.update = (req, res) => {
   // Validate Request
   if (!req.body) {
     res.status(400).send({
-      message: "Conteúdo não pode estar vazio!"
+      message: "Body of request can not be empty.",
     });
   }
 
-  Aluno.updateByRA(
-    req.params.ra,
-    new Aluno(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Não foi possível encontrar aluno com ra ${req.params.ra}.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Erro ao atualizar aluno com ra " + req.params.ra
-          });
-        }
-      } else res.send(data.recordset);
-    }
-  );
-};
-
-// Deleta aluno com ra especifico
-exports.delete = (req, res) => {
-  Aluno.remove(req.params.ra, (err, data) => {
+  Favorite.updateByCode(req.params.code_favorite, new Favorite(req.body), (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Não foi possível encontrar aluno com ra ${req.params.alunoId}.`
+          message: `Favorite with the code ${req.params.code_favorite} wasn't found.`,
         });
       } else {
         res.status(500).send({
-          message: "Erro ao deletar aluno com ra " + req.params.alunoId
+          message: "Error when trying to update favorite with the following code: " + req.params.code_favorite,
         });
       }
-    } else res.send({
-      message: `Aluno foi deletado com sucesso!`
-    });
+    } 
+    else res.send(data);
   });
 };
 
-// Delete todos os alunos do banco
-exports.deleteAll = (req, res) => {
-  Aluno.removeAll((err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Algum erro ocorreu ao deletar os alunos"
+// Deleta favorite com ra especifico
+exports.delete = (req, res) => {
+  Favorite.remove(req.params.code_favorite, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Favorite with the code ${req.params.code_favorite} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error when trying to update favorite with the following code: " + req.params.code_favorite,
+        });
+      }
+    } else{
+      res.send({
+        message: `Favorite has been deleted succesfully!`,
       });
-    else res.send({
-      message: `Todos os alunos deletados com sucesso!`
-    });
+    }
   });
-};*/
+};
