@@ -44,6 +44,8 @@ Sale.findByCode = (saleCODE, result) => {
         },
         null
       );
+
+      return -1;
     }
   );
 };

@@ -40,6 +40,8 @@ Favorite.findByCode = (favoriteCODE, result) => {
         },
         null
       );
+
+      return -1;
     }
   );
 };

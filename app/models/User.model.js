@@ -1,6 +1,5 @@
 const sql = require("./db.js");
 
-// Construtor
 const User = function (user) {
   this.code_user = user.code_user;
   this.name_user = user.name_user;
@@ -40,18 +39,18 @@ User.findByCode = (userCODE, result) => {
       }
 
       if (res.recordset.length > 0) {
-        console.log("User found: ", res);
         result(null, res);
         return;
       }
 
-      // Não achou a user com o cod
       result(
         {
           kind: "not_found",
         },
         null
       );
+
+      return -1;
     }
   );
 };
@@ -59,12 +58,10 @@ User.findByCode = (userCODE, result) => {
 User.getAll = (result) => {
   sql.query("SELECT * FROM User_Propped", (err, res) => {
     if (err) {
-      console.log("error: ", err);
       result(null, err);
       return;
     }
 
-    console.log("users: ", res.recordset);
     result(null, res.recordset);
     
   });
@@ -82,7 +79,6 @@ User.updateByCode = (cod, user, result) => {
       }
 
       if (res.affectedRows == 0) {
-        // não achou a user com esse cod
         result(
           {
             kind: "not_found",
@@ -92,9 +88,6 @@ User.updateByCode = (cod, user, result) => {
         return;
       }
 
-      console.log("updated user: ", {
-        ...user,
-      });
       result(null, {
         code_user: cod,
         ...user,
@@ -112,7 +105,6 @@ User.remove = (code, result) => {
     }
 
     if (res.affectedRows == 0) {
-      // não achou a user com esse cod
       result(
         {
           kind: "not_found",
@@ -122,7 +114,6 @@ User.remove = (code, result) => {
       return;
     }
 
-    console.log("User with code: ", code, " was deleted");
     result(null, res);
   });
 };

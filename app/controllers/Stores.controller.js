@@ -1,5 +1,6 @@
-const Store = require("../models/Store.model.js");
+import Hasher from "../data/Hasher.js";
 
+const Store = require("../models/Store.model.js");
 
 exports.create = (req, res) => {
   if (!req.body) {
@@ -7,7 +8,6 @@ exports.create = (req, res) => {
       message: "Empty params",
     });
   }
-
 
   const store = new Store({
     code_store = req.body.code_store,

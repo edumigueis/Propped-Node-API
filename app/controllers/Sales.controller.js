@@ -1,3 +1,5 @@
+import Hasher from "../data/Hasher.js";
+
 const Sale = require("../models/Sale.model.js");
 
 exports.create = (req, res) => {

@@ -40,6 +40,8 @@ Cart.findByCode = (cartCODE, result) => {
         },
         null
       );
+
+      return -1;
     }
   );
 };

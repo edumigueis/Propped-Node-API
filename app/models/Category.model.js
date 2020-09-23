@@ -40,6 +40,8 @@ Category.findByCode = (categoryCODE, result) => {
         },
         null
       );
+
+      return -1;
     }
   );
 };
