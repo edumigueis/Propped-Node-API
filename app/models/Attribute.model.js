@@ -62,7 +62,7 @@ Attribute.getAll = (result) => {
 Attribute.updateByCode = (cod, attribute, result) => {
   attribute.code_attribute = cod;
   sql.query(
-    `UPDATE Attribute_Propped SET name_attribute = ${attribute.name_attribute} WHERE code_attribute = '${cod}'`,
+    `UPDATE Attribute_Propped SET name_attribute = '${attribute.name_attribute}' WHERE code_attribute = '${cod}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);

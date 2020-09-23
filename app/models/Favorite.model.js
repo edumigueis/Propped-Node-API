@@ -21,9 +21,9 @@ Favorite.create = (newFavorite, result) => {
   );
 };
 
-Favorite.findByCode = (favoriteCODE, result) => {
+Favorite.findByCode = (code, result) => {
   sql.query(
-    `SELECT * FROM Favorite_Propped WHERE code_favorite = '${favoriteCODE}'`,
+    `SELECT * FROM Favorite_Propped WHERE code_favorite = '${code}'`,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -57,10 +57,10 @@ Favorite.getAll = (result) => {
   });
 };
 
-Favorite.updateByCode = (cod, favorite, result) => {
-  favorite.code_favorite = cod;
+Favorite.updateByCode = (code, favorite, result) => {
+  favorite.code_favorite = code;
   sql.query(
-    `UPDATE Favorite_Propped SET id_user_favorite = ${favorite.id_user_favorite}, id_product_favorite = ${favorite.id_product_favorite} WHERE code_favorite = '${cod}'`,
+    `UPDATE Favorite_Propped SET id_user_favorite = ${favorite.id_user_favorite}, id_product_favorite = ${favorite.id_product_favorite} WHERE code_favorite = '${code}'`,
     (err, res) => {
       if (err) {
         result(null, err);
@@ -78,7 +78,7 @@ Favorite.updateByCode = (cod, favorite, result) => {
       }
 
       result(null, {
-        code_favorite: cod,
+        code_favorite: code,
         ...favorite,
       });
     }
