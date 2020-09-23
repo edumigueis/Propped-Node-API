@@ -1,0 +1,103 @@
+const FormofPayment = require("../models/FormofPayment.model.js");
+
+exports.create = (req, res) => {
+  // Validate request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Empty params",
+    });
+  }
+
+  const formofpayment = new FormofPayment({
+    code_formofpayment: req.body.code_formofpayment,
+    name_formofpayment: req.body.name_formofpayment,
+    time_formofpayment: req.body.time_formofpayment
+  });
+
+  FormofPayment.create(formofpayment, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message: err.message || "Error while trying to create form of payment.",
+      });
+    else res.send(data.recordset);
+  });
+};
+
+exports.findAll = (req, res) => {
+  FormofPayment.getAll((err, data) => {
+    if (err)
+      res.status(500).send({
+        message: err.message || "Error while searching for forms of payments.",
+      });
+    else res.send(data.recordset);
+  });
+};
+
+exports.findOne = (req, res) => {
+  FormofPayment.findByCode(req.params.code_formofpayment, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `FormofPayment with the code ${req.params.code_formofpayment} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message:
+            "Error while searching for form of payment with the code " +
+            req.params.code_formofpayment,
+        });
+      }
+    } else res.send(data);
+  });
+};
+
+exports.update = (req, res) => {
+  // Validate Request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Body of request can not be empty.",
+    });
+  }
+
+  FormofPayment.updateByCode(
+    req.params.code_formofpayment,
+    new FormofPayment(req.body),
+    (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `FormofPayment with the code ${req.params.code_formofpayment} wasn't found.`,
+          });
+        } else {
+          res.status(500).send({
+            message:
+              "Error when trying to update form of payment with the following code: " +
+              req.params.code_formofpayment,
+          });
+        }
+      } else res.send(data.recordset);
+    }
+  );
+};
+
+exports.delete = (req, res) => {
+  FormofPayment.remove(req.params.code_formofpayment, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `FormofPayment with the code ${req.params.code_formofpayment} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message:
+            "Error when trying to update form of payment with the following code: " +
+            req.params.code_formofpayment,
+        });
+      }
+    } else {
+      res.send({
+        message: `Form of payment has been deleted succesfully!`,
+      });
+    }
+  });
+};
