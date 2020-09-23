@@ -8,7 +8,7 @@ const FormofPayment = function (formofpayment) {
 
 FormofPayment.create = (newFormofPayment, result) => {
   sql.query(
-    `INSERT INTO FormofPayment_Propped VALUES('${newFormofPayment.code_formofpayment}','${newFormofPayment.name_formofpayment}', ${newFormofPayment.time_formofpayment} )`,
+    `INSERT INTO FormofPayment_Propped VALUES('${newFormofPayment.code_formofpayment}','${newFormofPayment.name_formofpayment}', ${newFormofPayment.time_formofpayment})`,
     (err, res) => {
       if (err) {
         result(err, null);

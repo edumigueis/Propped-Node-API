@@ -20,9 +20,9 @@ Attribute.create = (newAttribute, result) => {
   );
 };
 
-Attribute.findByCode = (attributeCODE, result) => {
+Attribute.findByCode = (code, result) => {
   sql.query(
-    `SELECT * FROM Attribute_Propped WHERE code_attribute = '${attributeCODE}'`,
+    `SELECT * FROM Attribute_Propped WHERE code_attribute = '${code}'`,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -59,10 +59,10 @@ Attribute.getAll = (result) => {
   });
 };
 
-Attribute.updateByCode = (cod, attribute, result) => {
-  attribute.code_attribute = cod;
+Attribute.updateByCode = (code, attribute, result) => {
+  attribute.code_attribute = code;
   sql.query(
-    `UPDATE Attribute_Propped SET name_attribute = '${attribute.name_attribute}' WHERE code_attribute = '${cod}'`,
+    `UPDATE Attribute_Propped SET name_attribute = '${attribute.name_attribute}' WHERE code_attribute = '${code}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -81,7 +81,7 @@ Attribute.updateByCode = (cod, attribute, result) => {
       }
 
       result(null, {
-        code_attribute: cod,
+        code_attribute: code,
         ...attribute,
       });
     }

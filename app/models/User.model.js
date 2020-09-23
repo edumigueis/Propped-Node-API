@@ -28,12 +28,11 @@ User.create = (newUser, result) => {
   );
 };
 
-User.findByCode = (userCODE, result) => {
+User.findByCode = (code, result) => {
   sql.query(
-    `SELECT * FROM User_Propped WHERE code_user = '${userCODE}'`,
+    `SELECT * FROM User_Propped WHERE code_user = '${code}'`,
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
         result(err, null);
         return;
       }
@@ -63,14 +62,13 @@ User.getAll = (result) => {
     }
 
     result(null, res);
-    
   });
 };
 
-User.updateByCode = (cod, user, result) => {
-  user.code_user = cod;
+User.updateByCode = (code, user, result) => {
+  user.code_user = code;
   sql.query(
-    `UPDATE User_Propped SET name_user = '${user.name_user}', email_user = '${user.email_user}', pass_user = '${user.pass_user}', gender_user= '${user.gender_user}', birth_date_user= '${user.birth_date_user}', registry_user= '${user.registry_user}', phone_user= '${user.phone_user}', image_user= CAST('${user.image_user}' as varbinary(max)), preference_user = '${user.preference_user}'  WHERE code_user = '${cod}'`,
+    `UPDATE User_Propped SET name_user = '${user.name_user}', email_user = '${user.email_user}', pass_user = '${user.pass_user}', gender_user= '${user.gender_user}', birth_date_user= '${user.birth_date_user}', registry_user= '${user.registry_user}', phone_user= '${user.phone_user}', image_user= CAST('${user.image_user}' as varbinary(max)), preference_user = '${user.preference_user}'  WHERE code_user = '${code}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -89,7 +87,7 @@ User.updateByCode = (cod, user, result) => {
       }
 
       result(null, {
-        code_user: cod,
+        code_user: code,
         ...user,
       });
     }
@@ -97,25 +95,27 @@ User.updateByCode = (cod, user, result) => {
 };
 
 User.remove = (code, result) => {
-  sql.query("DELETE FROM User_Propped WHERE code_user = '" + code + "'", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
+  sql.query(
+    "DELETE FROM User_Propped WHERE code_user = '" + code + "'",
+    (err, res) => {
+      if (err) {
+        result(null, err);
+        return;
+      }
 
-    if (res.affectedRows == 0) {
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
-      return;
-    }
+      if (res.affectedRows == 0) {
+        result(
+          {
+            kind: "not_found",
+          },
+          null
+        );
+        return;
+      }
 
-    result(null, res);
-  });
+      result(null, res);
+    }
+  );
 };
 
 module.exports = User;
