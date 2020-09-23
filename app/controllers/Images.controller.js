@@ -1,24 +1,26 @@
-/*const Aluno = require("../models/Aluno.model.js");
-const Resultado = require("../models/Resultado.model.js");
-const Matricula = require("../models/Matricula.model.js");
+import Hasher from "../data/Hasher.js";
 
-// Cria e salva um novo aluno
+const Image = require("../models/Favorite.model.js");
+
 exports.create = (req, res) => {
-  // Validate request
+
   if (!req.body) {
     res.status(400).send({
-      message: "Conteúdo não pode estar vazio"
+      message: "Empty params"
     });
   }
 
-  // Cria um Aluno
-  const aluno = new Aluno({
-    ra: req.body.RA,
-    nome: req.body.Nome,
+  const image = new Image({
+    code_image: req.body.code_image,
+    photo_image: req.body.photo_image,
   });
 
-  // Salva Aluno no banco de dados
-  Aluno.create(aluno, (err, data) => {
+  Image.create(image, (err, data) => {
+    do image.code_image = Hasher.generateCode();
+    while (
+      Favorite.findByCode(favorite.code_image, (err, data) => {}) == -1
+    );
+
     if (err)
       res.status(500).send({
         message: err.message || "Erro ao criar aluno."

@@ -16,9 +16,9 @@ exports.create = (req, res) => {
   });
 
   Favorite.create(favorite, (err, data) => {
-    do favorite.code_attribute = Hasher.generateCode();
+    do favorite.code_favorite = Hasher.generateCode();
     while (
-      Favorite.findByCode(favorite.code_attribute, (err, data) => {}) == -1
+      Favorite.findByCode(favorite.code_favorite, (err, data) => {}) == -1
     );
 
     if (err)
