@@ -21,9 +21,9 @@ FormofPayment.create = (newFormofPayment, result) => {
   );
 };
 
-FormofPayment.findByCode = (formofpaymentCODE, result) => {
+FormofPayment.findByCode = (code, result) => {
   sql.query(
-    `SELECT * FROM FormofPayment_Propped WHERE code_formofpayment = '${formofpaymentCODE}'`,
+    `SELECT * FROM FormofPayment_Propped WHERE code_formofpayment = '${code}'`,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -58,10 +58,10 @@ FormofPayment.getAll = (result) => {
   });
 };
 
-FormofPayment.updateByCode = (cod, formofpayment, result) => {
-  formofpayment.code_formofpayment = cod;
+FormofPayment.updateByCode = (code, formofpayment, result) => {
+  formofpayment.code_formofpayment = code;
   sql.query(
-    `UPDATE FormofPayment_Propped SET name_formofpayment = ${formofpayment.name_formofpayment} WHERE code_formofpayment = '${cod}'`,
+    `UPDATE FormofPayment_Propped SET name_formofpayment = ${formofpayment.name_formofpayment} WHERE code_formofpayment = '${code}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -80,7 +80,7 @@ FormofPayment.updateByCode = (cod, formofpayment, result) => {
       }
 
       result(null, {
-        code_formofpayment: cod,
+        code_formofpayment: code,
         ...formofpayment,
       });
     }
