@@ -19,9 +19,9 @@ exports.create = (req, res) => {
   });
 
   Sale.create(sale, (err, data) => {
-    do sale.code_attribute = Hasher.generateCode();
+    do sale.code_sale = Hasher.generateCode();
     while (
-      Sale.findByCode(sale.code_attribute, (err, data) => {}) == -1
+      Sale.findByCode(sale.code_sale, (err, data) => {}) == -1
     );
 
     if (err)

@@ -15,9 +15,9 @@ exports.create = (req, res) => {
   });
 
   Cart.create(cart, (err, data) => {
-    do cart.code_attribute = Hasher.generateCode();
+    do cart.code_shoppingcart = Hasher.generateCode();
     while (
-      Cart.findByCode(cart.code_attribute, (err, data) => {}) == -1
+      Cart.findByCode(cart.code_shoppingcart, (err, data) => {}) == -1
     );
 
     if (err)

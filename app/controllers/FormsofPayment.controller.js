@@ -15,6 +15,11 @@ exports.create = (req, res) => {
   });
 
   FormofPayment.create(formofpayment, (err, data) => {
+    do formofpayment.code_formofpayment = Hasher.generateCode();
+    while (
+      FormofPayment.findByCode(formofpayment.code_formofpayment, (err, data) => {}) == -1
+    );
+    
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create form of payment.",

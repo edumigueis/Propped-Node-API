@@ -18,66 +18,65 @@ exports.create = (req, res) => {
   Image.create(image, (err, data) => {
     do image.code_image = Hasher.generateCode();
     while (
-      Favorite.findByCode(favorite.code_image, (err, data) => {}) == -1
+      Image.findByCode(favorite.code_image, (err, data) => {}) == -1
     );
 
     if (err)
       res.status(500).send({
-        message: err.message || "Erro ao criar aluno."
+        message: err.message || "Error while trying to create image."
       });
     else res.send(data.recordset);
   });
 };
 
-// Pega todos os alunos do banco de dados
 exports.findAll = (req, res) => {
-  Aluno.getAll((err, data) => {
+  Image.getAll((err, data) => {
     if (err)
       res.status(500).send({
-        message: err.message || "Erro ao buscar alunos."
+        message: err.message || "Error while searching for images."
       });
     else res.send(data.recordset);
   });
 };
 
-// Achar aluno com ra especifico
 exports.findOne = (req, res) => {
-  Aluno.findByRA(req.params.ra, (err, data) => {
+  Image.findByCode(req.params.code_image, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Não foi possível encontar o aluno com ra ${req.params.ra}.`
+          message: `Image with the code ${req.params.code_image} wasn't found.`
         });
       } else {
         res.status(500).send({
-          message: "Erro ao busar o aluno com ra " + req.params.ra
+          message:
+            "Error while searching for image with the code " +
+            req.params.code_image
         });
       }
-    } else res.send(data);
+    } else res.send(data.recordset);
   });
 };
 
-// Altera o aluno com ra específico
 exports.update = (req, res) => {
-  // Validate Request
   if (!req.body) {
     res.status(400).send({
-      message: "Conteúdo não pode estar vazio!"
+      message: "Body of request can not be empty."
     });
   }
 
-  Aluno.updateByRA(
-    req.params.ra,
-    new Aluno(req.body),
+  Image.updateByCode(
+    req.params.code_image,
+    new Image(req.body),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Não foi possível encontrar aluno com ra ${req.params.ra}.`
+            message: `Image with the code ${req.params.code_image} wasn't found.`
           });
         } else {
           res.status(500).send({
-            message: "Erro ao atualizar aluno com ra " + req.params.ra
+            message: "Error when trying to update image with the following code: " +
+            req.params.code_image,
           });
         }
       } else res.send(data.recordset);
@@ -85,34 +84,21 @@ exports.update = (req, res) => {
   );
 };
 
-// Deleta aluno com ra especifico
 exports.delete = (req, res) => {
-  Aluno.remove(req.params.ra, (err, data) => {
+  Image.remove(req.params.code_image, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Não foi possível encontrar aluno com ra ${req.params.alunoId}.`
+          message: `Image with the code ${req.params.code_image} wasn't found.`
         });
       } else {
         res.status(500).send({
-          message: "Erro ao deletar aluno com ra " + req.params.alunoId
+          message: "Error when trying to update image with the following code: " +
+          req.params.code_image,
         });
       }
     } else res.send({
-      message: `Aluno foi deletado com sucesso!`
+      message: `Image has been deleted succesfully!`,
     });
   });
 };
-
-// Delete todos os alunos do banco
-exports.deleteAll = (req, res) => {
-  Aluno.removeAll((err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Algum erro ocorreu ao deletar os alunos"
-      });
-    else res.send({
-      message: `Todos os alunos deletados com sucesso!`
-    });
-  });
-};*/

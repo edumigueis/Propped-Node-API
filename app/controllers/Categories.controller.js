@@ -15,9 +15,9 @@ exports.create = (req, res) => {
   });
 
   Category.create(category, (err, data) => {
-    do category.code_attribute = Hasher.generateCode();
+    do category.code_category = Hasher.generateCode();
     while (
-      Category.findByCode(category.code_attribute, (err, data) => {}) == -1
+      Category.findByCode(category.code_category, (err, data) => {}) == -1
     );
 
     if (err)
