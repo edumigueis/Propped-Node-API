@@ -1,29 +1,28 @@
 const sql = require("./db.js");
 
-const Favorite = function (favorite) {
-  this.code_favorite = favorite.code_favorite;
-  this.id_user_favorite = favorite.id_user_favorite;
-  this.id_product_favorite = favorite.id_product_favorite;
+const Attribute = function (attribute) {
+  this.code_attribute = attribute.code_attribute;
+  this.name_attribute = attribute.name_attribute;
 };
 
-Favorite.create = (newFavorite, result) => {
+Attribute.create = (newAttribute, result) => {
   sql.query(
-    `INSERT INTO Favorite_Propped VALUES('${newFavorite.code_favorite}',${newFavorite.id_user_favorite},${newFavorite.id_product_favorite})`,
+    `INSERT INTO Attribute_Propped VALUES('${newAttribute.code_attribute}','${newAttribute.name_attribute}')`,
     (err, res) => {
       if (err) {
         result(err, null);
         return;
       }
       result(null, {
-        ...newFavorite,
+        ...newAttribute,
       });
     }
   );
 };
 
-Favorite.findByCode = (favoriteCODE, result) => {
+Attribute.findByCode = (attributeCODE, result) => {
   sql.query(
-    `SELECT * FROM Favorite_Propped WHERE code_favorite = '${favoriteCODE}'`,
+    `SELECT * FROM Attribute_Propped WHERE code_attribute = '${attributeCODE}'`,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -34,6 +33,7 @@ Favorite.findByCode = (favoriteCODE, result) => {
         result(null, res);
         return;
       }
+
       result(
         {
           kind: "not_found",
@@ -44,29 +44,31 @@ Favorite.findByCode = (favoriteCODE, result) => {
   );
 };
 
-Favorite.getAll = (result) => {
-  sql.query("SELECT * FROM Favorite_Propped", (err, res) => {
+Attribute.getAll = (result) => {
+  sql.query("SELECT * FROM Attribute_Propped", (err, res) => {
     if (err) {
+      console.log("error: ", err);
       result(null, err);
       return;
     }
 
+    console.log("attributes: ", res);
     result(null, res.recordset);
   });
 };
 
-Favorite.updateByCode = (cod, favorite, result) => {
-  favorite.code_favorite = cod;
+Attribute.updateByCode = (cod, attribute, result) => {
+  attribute.code_attribute = cod;
   sql.query(
-    `UPDATE Favorite_Propped SET id_user_favorite = ${favorite.id_user_favorite}, id_product_favorite = ${favorite.id_product_favorite} WHERE code_favorite = '${cod}'`,
+    `UPDATE Attribute_Propped SET name_attribute = ${attribute.name_attribute} WHERE code_attribute = '${cod}'`,
     (err, res) => {
       if (err) {
+        console.log("error: ", err);
         result(null, err);
         return;
       }
 
       if (res.affectedRows == 0) {
-        // não achou a favorite com esse cod
         result(
           {
             kind: "not_found",
@@ -77,16 +79,16 @@ Favorite.updateByCode = (cod, favorite, result) => {
       }
 
       result(null, {
-        code_favorite: cod,
-        ...favorite,
+        code_attribute: cod,
+        ...attribute,
       });
     }
   );
 };
 
-Favorite.remove = (code, result) => {
+Attribute.remove = (code, result) => {
   sql.query(
-    "DELETE FROM Favorite_Propped WHERE code_favorite = '" + code + "'",
+    "DELETE FROM Attribute_Propped WHERE code_attribute = '" + code + "'",
     (err, res) => {
       if (err) {
         result(null, err);
@@ -94,7 +96,6 @@ Favorite.remove = (code, result) => {
       }
 
       if (res.affectedRows == 0) {
-        // não achou a favorite com esse cod
         result(
           {
             kind: "not_found",
@@ -109,4 +110,4 @@ Favorite.remove = (code, result) => {
   );
 };
 
-module.exports = Favorite;
+module.exports = Attribute;
