@@ -11,7 +11,7 @@ exports.create = (req, res) => {
 
   const cart = new Cart({
     code_shoppingcart: req.body.code_shoppingcart,
-    id_cart_shoppingcart: req.body.id_cart_shoppingcart,
+    id_user_shoppingcart: req.body.id_user_shoppingcart,
   });
 
   Cart.create(cart, (err, data) => {
@@ -52,7 +52,7 @@ exports.findOne = (req, res) => {
             req.params.code_shoppingcart,
         });
       }
-    } else res.send(data);
+    } else res.send(data.recordset);
   });
 };
 

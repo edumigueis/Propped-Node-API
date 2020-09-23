@@ -23,11 +23,14 @@ exports.create = (req, res) => {
   });
 
   User.create(user, (err, data) => {
+    do user.code_attribute = Hasher.generateCode();
+    while (User.findByCode(user.code_attribute, (err, data) => {}) == -1);
+
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create user.",
       });
-    else res.send(data);
+    else res.send(data.recordset);
   });
 };
 
@@ -37,7 +40,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for users.",
       });
-    else res.send(data);
+    else res.send(data.recordset);
   });
 };
 
@@ -79,7 +82,7 @@ exports.update = (req, res) => {
             req.params.code_user,
         });
       }
-    } else res.send(data);
+    } else res.send(data.recordset);
   });
 };
 

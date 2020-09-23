@@ -25,7 +25,7 @@ exports.create = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while trying to create favorite.",
       });
-    else res.send(data);
+    else res.send(data.recordset);
   });
 };
 
@@ -35,7 +35,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for favorites.",
       });
-    else res.send(data);
+    else res.send(data.recordset);
   });
 };
 
@@ -80,7 +80,7 @@ exports.update = (req, res) => {
               req.params.code_favorite,
           });
         }
-      } else res.send(data);
+      } else res.send(data.recordset);
     }
   );
 };

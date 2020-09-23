@@ -29,7 +29,7 @@ Attribute.findByCode = (attributeCODE, result) => {
         return;
       }
 
-      if (res.recordset.length > 0) {
+      if (res.length > 0) {
         result(null, res);
         return;
       }
@@ -55,14 +55,14 @@ Attribute.getAll = (result) => {
     }
 
     console.log("attributes: ", res);
-    result(null, res.recordset);
+    result(null, res);
   });
 };
 
 Attribute.updateByCode = (cod, attribute, result) => {
   attribute.code_attribute = cod;
   sql.query(
-    `UPDATE Attribute_Propped SET name_attribute = ${attribute.name_attribute} WHERE code_attribute = '${cod}'`,
+    `UPDATE Attribute_Propped SET name_attribute = '${attribute.name_attribute}' WHERE code_attribute = '${cod}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);

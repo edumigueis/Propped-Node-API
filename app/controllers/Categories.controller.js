@@ -24,7 +24,7 @@ exports.create = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while trying to create category.",
       });
-    else res.send(data);
+    else res.send(data.recordset);
   });
 };
 
@@ -34,7 +34,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for categories.",
       });
-    else res.send(data);
+    else res.send(data.recordset);
   });
 };
 
@@ -79,7 +79,7 @@ exports.update = (req, res) => {
               req.params.code_category,
           });
         }
-      } else res.send(data);
+      } else res.send(data.recordset);
     }
   );
 };

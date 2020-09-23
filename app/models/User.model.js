@@ -38,7 +38,7 @@ User.findByCode = (userCODE, result) => {
         return;
       }
 
-      if (res.recordset.length > 0) {
+      if (res.length > 0) {
         result(null, res);
         return;
       }
@@ -62,7 +62,7 @@ User.getAll = (result) => {
       return;
     }
 
-    result(null, res.recordset);
+    result(null, res);
     
   });
 };

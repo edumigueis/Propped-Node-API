@@ -20,16 +20,16 @@ Category.create = (newCategory, result) => {
   );
 };
 
-Category.findByCode = (categoryCODE, result) => {
+Category.findByCode = (code, result) => {
   sql.query(
-    `SELECT * FROM Category_Propped WHERE code_category = '${categoryCODE}'`,
+    `SELECT * FROM Category_Propped WHERE code_category = '${code}'`,
     (err, res) => {
       if (err) {
         result(err, null);
         return;
       }
 
-      if (res.recordset.length > 0) {
+      if (res.length > 0) {
         result(null, res);
         return;
       }
@@ -53,14 +53,14 @@ Category.getAll = (result) => {
       return;
     }
 
-    result(null, res.recordset);
+    result(null, res);
   });
 };
 
-Category.updateByCode = (cod, category, result) => {
-  category.code_category = cod;
+Category.updateByCode = (code, category, result) => {
+  category.code_category = code;
   sql.query(
-    `UPDATE Category_Propped SET name_category = '${category.name_category}' WHERE code_category = '${cod}'`,
+    `UPDATE Category_Propped SET name_category = '${category.name_category}' WHERE code_category = '${code}'`,
     (err, res) => {
       if (err) {
         result(null, err);
@@ -78,7 +78,7 @@ Category.updateByCode = (cod, category, result) => {
       }
 
       result(null, {
-        code_category: cod,
+        code_category: code,
         ...category,
       });
     }
@@ -95,7 +95,6 @@ Category.remove = (code, result) => {
       }
 
       if (res.affectedRows == 0) {
-        // não achou a category com esse cod
         result(
           {
             kind: "not_found",
