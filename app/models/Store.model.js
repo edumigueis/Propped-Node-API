@@ -40,7 +40,7 @@ Store.findByCode = (storeCODE, result) => {
         return;
       }
 
-      if (res.recordset.length > 0) {
+      if (res.length > 0) {
         console.log("Store found: ", res);
         result(null, res);
         return;

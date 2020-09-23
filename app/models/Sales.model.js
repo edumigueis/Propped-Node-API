@@ -33,7 +33,7 @@ Sale.findByCode = (saleCODE, result) => {
         return;
       }
 
-      if (res.recordset.length > 0) {
+      if (res.length > 0) {
         result(null, res);
         return;
       }

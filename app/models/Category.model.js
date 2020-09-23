@@ -29,7 +29,7 @@ Category.findByCode = (categoryCODE, result) => {
         return;
       }
 
-      if (res.recordset.length > 0) {
+      if (res.length > 0) {
         result(null, res);
         return;
       }
@@ -53,7 +53,7 @@ Category.getAll = (result) => {
       return;
     }
 
-    result(null, res.recordset);
+    result(null, res);
   });
 };
 

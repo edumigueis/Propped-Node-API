@@ -30,7 +30,7 @@ Favorite.findByCode = (favoriteCODE, result) => {
         return;
       }
 
-      if (res.recordset.length > 0) {
+      if (res.length > 0) {
         result(null, res);
         return;
       }
@@ -53,7 +53,7 @@ Favorite.getAll = (result) => {
       return;
     }
 
-    result(null, res.recordset);
+    result(null, res);
   });
 };
 

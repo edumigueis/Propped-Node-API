@@ -30,7 +30,7 @@ FormofPayment.findByCode = (formofpaymentCODE, result) => {
         return;
       }
 
-      if (res.recordset.length > 0) {
+      if (res.length > 0) {
         result(null, res);
         return;
       }
@@ -54,7 +54,7 @@ FormofPayment.getAll = (result) => {
     }
 
     console.log("formsofpayment: ", res);
-    result(null, res.recordset);
+    result(null, res);
   });
 };
 

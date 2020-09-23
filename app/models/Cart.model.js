@@ -29,7 +29,7 @@ Cart.findByCode = (cartCODE, result) => {
         return;
       }
 
-      if (res.recordset.length > 0) {
+      if (res.length > 0) {
         result(null, res);
         return;
       }
@@ -55,7 +55,7 @@ Cart.getAll = (result) => {
     }
 
     console.log("carts: ", res);
-    result(null, res.recordset);
+    result(null, res);
   });
 };
 

@@ -52,7 +52,7 @@ exports.findOne = (req, res) => {
             req.params.code_shoppingcart,
         });
       }
-    } else res.send(data);
+    } else res.send(data.recordset);
   });
 };
 
