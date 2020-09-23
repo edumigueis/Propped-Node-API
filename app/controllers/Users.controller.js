@@ -1,15 +1,14 @@
+import Hasher from "../data/Hasher.js";
+
 const User = require("../models/User.model.js");
 
-// Cria e salva um novo user
 exports.create = (req, res) => {
-  // Validate request
   if (!req.body) {
     res.status(400).send({
       message: "Empty params",
     });
   }
 
-  // Cria um User
   const user = new User({
     code_user: req.body.code_user,
     name_user: req.body.name_user,
@@ -20,10 +19,9 @@ exports.create = (req, res) => {
     registry_user: req.body.registry_user,
     phone_user: req.body.phone_user,
     image_user: req.body.image_user,
-    preference_user: req.body.preference_user
+    preference_user: req.body.preference_user,
   });
 
-  // Salva User no banco de dados
   User.create(user, (err, data) => {
     if (err)
       res.status(500).send({
@@ -33,7 +31,6 @@ exports.create = (req, res) => {
   });
 };
 
-// Pega todos os users do banco de dados
 exports.findAll = (req, res) => {
   User.getAll((err, data) => {
     if (err)
@@ -44,7 +41,6 @@ exports.findAll = (req, res) => {
   });
 };
 
-// Achar user com ra especifico
 exports.findOne = (req, res) => {
   User.findByCode(req.params.code_user, (err, data) => {
     if (err) {
@@ -54,16 +50,16 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message: "Error while searching for user with the code " + req.params.code_user,
+          message:
+            "Error while searching for user with the code " +
+            req.params.code_user,
         });
       }
     } else res.send(data.recordset);
   });
 };
 
-// Altera o user com ra específico
 exports.update = (req, res) => {
-  // Validate Request
   if (!req.body) {
     res.status(400).send({
       message: "Body of request can not be empty.",
@@ -78,15 +74,15 @@ exports.update = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message: "Error when trying to update user with the following code: " + req.params.code_user,
+          message:
+            "Error when trying to update user with the following code: " +
+            req.params.code_user,
         });
       }
-    } 
-    else res.send(data);
+    } else res.send(data);
   });
 };
 
-// Deleta user com ra especifico
 exports.delete = (req, res) => {
   User.remove(req.params.code_user, (err, data) => {
     if (err) {
@@ -96,10 +92,12 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message: "Error when trying to update user with the following code: " + req.params.code_user,
+          message:
+            "Error when trying to update user with the following code: " +
+            req.params.code_user,
         });
       }
-    } else{
+    } else {
       res.send({
         message: `User has been deleted succesfully!`,
       });

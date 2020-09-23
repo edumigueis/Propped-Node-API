@@ -1,6 +1,5 @@
 const sql = require("./db.js");
 
-// Construtor
 const Sale = function (sale) {
   this.code_sale = sale.code_sale;
   this.id_store_sale = sale.id_store_sale;
@@ -44,6 +43,8 @@ Sale.findByCode = (saleCODE, result) => {
         },
         null
       );
+
+      return -1;
     }
   );
 };

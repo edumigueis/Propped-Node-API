@@ -46,13 +46,14 @@ Store.findByCode = (storeCODE, result) => {
         return;
       }
 
-      // Não achou a store com o cod
       result(
         {
           kind: "not_found",
         },
         null
       );
+
+      return -1;
     }
   );
 };
@@ -81,7 +82,6 @@ Store.updateByCode = (cod, store, result) => {
       }
 
       if (res.affectedRows == 0) {
-        // não achou a store com esse cod
         result(
           {
             kind: "not_found",
@@ -114,7 +114,6 @@ Store.remove = (code, result) => {
       }
 
       if (res.affectedRows == 0) {
-        // não achou a store com esse cod
         result(
           {
             kind: "not_found",

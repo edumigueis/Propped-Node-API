@@ -1,3 +1,5 @@
+import Hasher from "../data/Hasher.js";
+
 const Sale = require("../models/Sale.model.js");
 
 exports.create = (req, res) => {
@@ -13,16 +15,20 @@ exports.create = (req, res) => {
     delivery_time_sale: req.body.delivery_time_sale,
     amount_sale: req.body.amount_sale,
     shipping_sale: req.body.shipping_sale,
-    date_order: req.body.date_order
+    date_order: req.body.date_order,
   });
 
   Sale.create(sale, (err, data) => {
+    do sale.code_attribute = Hasher.generateCode();
+    while (
+      Sale.findByCode(sale.code_attribute, (err, data) => {}) == -1
+    );
+
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create sale.",
       });
-    else 
-      res.send(data.recordset);
+    else res.send(data.recordset);
   });
 };
 
@@ -32,8 +38,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for sales.",
       });
-    else 
-      res.send(data.recordset);
+    else res.send(data.recordset);
   });
 };
 
@@ -44,15 +49,14 @@ exports.findOne = (req, res) => {
         res.status(404).send({
           message: `Sale with the code ${req.params.code_sale} wasn't found.`,
         });
-      } 
-      else {
+      } else {
         res.status(500).send({
-          message: "Error while searching for sale with the code " + req.params.code_sale,
+          message:
+            "Error while searching for sale with the code " +
+            req.params.code_sale,
         });
       }
-    } 
-    else 
-      res.send(data.recordset);
+    } else res.send(data.recordset);
   });
 };
 
@@ -69,15 +73,14 @@ exports.update = (req, res) => {
         res.status(404).send({
           message: `Sale with the code ${req.params.code_sale} wasn't found.`,
         });
-      } 
-      else {
+      } else {
         res.status(500).send({
-          message: "Error when trying to update sale with the following code: " + req.params.code_sale,
+          message:
+            "Error when trying to update sale with the following code: " +
+            req.params.code_sale,
         });
       }
-    } 
-    else 
-      res.send(data.recordset);
+    } else res.send(data.recordset);
   });
 };
 
@@ -88,14 +91,14 @@ exports.delete = (req, res) => {
         res.status(404).send({
           message: `Sale with the code ${req.params.code_sale} wasn't found.`,
         });
-      } 
-      else {
+      } else {
         res.status(500).send({
-          message: "Error when trying to update sale with the following code: " + req.params.code_sale,
+          message:
+            "Error when trying to update sale with the following code: " +
+            req.params.code_sale,
         });
       }
-    } 
-    else{
+    } else {
       res.send({
         message: `Sale has been deleted succesfully!`,
       });

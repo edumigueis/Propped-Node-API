@@ -1,7 +1,8 @@
+import Hasher from "../data/Hasher.js";
+
 const Attribute = require("../models/Attribute.model.js");
 
 exports.create = (req, res) => {
-  // Validate request
   if (!req.body) {
     res.status(400).send({
       message: "Empty params",
@@ -14,6 +15,11 @@ exports.create = (req, res) => {
   });
 
   Attribute.create(attribute, (err, data) => {
+    do attribute.code_attribute = Hasher.generateCode();
+    while (
+      Attribute.findByCode(attribute.code_attribute, (err, data) => {}) == -1
+    );
+
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create attribute.",
@@ -46,12 +52,11 @@ exports.findOne = (req, res) => {
             req.params.code_attribute,
         });
       }
-    } else res.send(data);
+    } else res.send(data.recordset);
   });
 };
 
 exports.update = (req, res) => {
-  // Validate Request
   if (!req.body) {
     res.status(400).send({
       message: "Body of request can not be empty.",

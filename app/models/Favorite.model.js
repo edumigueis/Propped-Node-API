@@ -40,6 +40,8 @@ Favorite.findByCode = (favoriteCODE, result) => {
         },
         null
       );
+
+      return -1;
     }
   );
 };
@@ -66,7 +68,6 @@ Favorite.updateByCode = (cod, favorite, result) => {
       }
 
       if (res.affectedRows == 0) {
-        // não achou a favorite com esse cod
         result(
           {
             kind: "not_found",
@@ -94,7 +95,6 @@ Favorite.remove = (code, result) => {
       }
 
       if (res.affectedRows == 0) {
-        // não achou a favorite com esse cod
         result(
           {
             kind: "not_found",
