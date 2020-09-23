@@ -16,6 +16,11 @@ exports.create = (req, res) => {
   });
 
   Favorite.create(favorite, (err, data) => {
+    do favorite.code_attribute = Hasher.generateCode();
+    while (
+      Favorite.findByCode(favorite.code_attribute, (err, data) => {}) == -1
+    );
+
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create favorite.",

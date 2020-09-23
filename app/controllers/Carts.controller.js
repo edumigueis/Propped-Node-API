@@ -15,6 +15,11 @@ exports.create = (req, res) => {
   });
 
   Cart.create(cart, (err, data) => {
+    do cart.code_attribute = Hasher.generateCode();
+    while (
+      Cart.findByCode(cart.code_attribute, (err, data) => {}) == -1
+    );
+
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create cart.",

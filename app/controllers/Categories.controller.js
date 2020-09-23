@@ -15,6 +15,11 @@ exports.create = (req, res) => {
   });
 
   Category.create(category, (err, data) => {
+    do category.code_attribute = Hasher.generateCode();
+    while (
+      Category.findByCode(category.code_attribute, (err, data) => {}) == -1
+    );
+
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create category.",
