@@ -1,8 +1,8 @@
 const sql = require("./db.js");
 
 const Attribute = function (attribute) {
-    this.code_attribute = attribute.code_attribute;
-    this.name_attribute = attribute.name_attribute;
+  this.code_attribute = attribute.code_attribute;
+  this.name_attribute = attribute.name_attribute;
 };
 
 Attribute.create = (newAttribute, result) => {
@@ -87,25 +87,27 @@ Attribute.updateByCode = (cod, attribute, result) => {
 };
 
 Attribute.remove = (code, result) => {
-  sql.query("DELETE FROM Attribute_Propped WHERE code_attribute = '" + code + "'", 
-  (err, res) => {
-    if (err) {
-      result(null, err);
-      return;
-    }
+  sql.query(
+    "DELETE FROM Attribute_Propped WHERE code_attribute = '" + code + "'",
+    (err, res) => {
+      if (err) {
+        result(null, err);
+        return;
+      }
 
-    if (res.affectedRows == 0) {
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
-      return;
-    }
+      if (res.affectedRows == 0) {
+        result(
+          {
+            kind: "not_found",
+          },
+          null
+        );
+        return;
+      }
 
-    result(null, res);
-  });
+      result(null, res);
+    }
+  );
 };
 
 module.exports = Attribute;

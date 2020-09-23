@@ -103,7 +103,7 @@ Favorite.remove = (code, result) => {
         );
         return;
       }
-      
+
       result(null, res);
     }
   );

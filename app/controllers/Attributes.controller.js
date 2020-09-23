@@ -10,7 +10,7 @@ exports.create = (req, res) => {
 
   const attribute = new Attribute({
     code_attribute: req.body.code_attribute,
-    name_attribute: req.body.name_attribute
+    name_attribute: req.body.name_attribute,
   });
 
   Attribute.create(attribute, (err, data) => {
@@ -41,7 +41,9 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message: "Error while searching for attribute with the code " + req.params.code_attribute,
+          message:
+            "Error while searching for attribute with the code " +
+            req.params.code_attribute,
         });
       }
     } else res.send(data);
@@ -56,21 +58,26 @@ exports.update = (req, res) => {
     });
   }
 
-  Attribute.updateByCode(req.params.code_attribute, new Attribute(req.body), (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Attribute with the code ${req.params.code_attribute} wasn't found.`,
-        });
-      } else {
-        res.status(500).send({
-          message: "Error when trying to update attribute with the following code: " + req.params.code_attribute,
-        });
-      }
-    } else res.send(data.recordset);
-  });
+  Attribute.updateByCode(
+    req.params.code_attribute,
+    new Attribute(req.body),
+    (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Attribute with the code ${req.params.code_attribute} wasn't found.`,
+          });
+        } else {
+          res.status(500).send({
+            message:
+              "Error when trying to update attribute with the following code: " +
+              req.params.code_attribute,
+          });
+        }
+      } else res.send(data.recordset);
+    }
+  );
 };
-
 
 exports.delete = (req, res) => {
   Attribute.remove(req.params.code_attribute, (err, data) => {
@@ -81,10 +88,12 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message: "Error when trying to update attribute with the following code: " + req.params.code_attribute,
+          message:
+            "Error when trying to update attribute with the following code: " +
+            req.params.code_attribute,
         });
       }
-    } else{
+    } else {
       res.send({
         message: `Attribute has been deleted succesfully!`,
       });

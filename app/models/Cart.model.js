@@ -1,8 +1,8 @@
 const sql = require("./db.js");
 
 const Cart = function (cart) {
-    this.code_shoppingcart = cart.code_shoppingcart;
-    this.id_user_shoppingcart = cart.id_user_shoppingcart;
+  this.code_shoppingcart = cart.code_shoppingcart;
+  this.id_user_shoppingcart = cart.id_user_shoppingcart;
 };
 
 Cart.create = (newCart, result) => {
@@ -87,25 +87,27 @@ Cart.updateByCode = (cod, cart, result) => {
 };
 
 Cart.remove = (code, result) => {
-  sql.query("DELETE FROM ShoppingCart_Propped WHERE code_shoppingcart = '" + code + "'", 
-  (err, res) => {
-    if (err) {
-      result(null, err);
-      return;
-    }
+  sql.query(
+    "DELETE FROM ShoppingCart_Propped WHERE code_shoppingcart = '" + code + "'",
+    (err, res) => {
+      if (err) {
+        result(null, err);
+        return;
+      }
 
-    if (res.affectedRows == 0) {
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
-      return;
-    }
+      if (res.affectedRows == 0) {
+        result(
+          {
+            kind: "not_found",
+          },
+          null
+        );
+        return;
+      }
 
-    result(null, res);
-  });
+      result(null, res);
+    }
+  );
 };
 
 module.exports = Cart;
