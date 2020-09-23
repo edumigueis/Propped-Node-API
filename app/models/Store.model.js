@@ -1,6 +1,5 @@
 const sql = require("./db.js");
 
-// Construtor
 const Store = function (store) {
   this.code_store = store.code_store;
   this.name_store = store.name_store;
@@ -30,18 +29,16 @@ Store.create = (newStore, result) => {
   );
 };
 
-Store.findByCode = (storeCODE, result) => {
+Store.findByCode = (code, result) => {
   sql.query(
-    `SELECT * FROM Store_Propped WHERE code_store = '${storeCODE}'`,
+    `SELECT * FROM Store_Propped WHERE code_store = '${code}'`,
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
         result(err, null);
         return;
       }
 
       if (res.length > 0) {
-        console.log("Store found: ", res);
         result(null, res);
         return;
       }
@@ -61,7 +58,6 @@ Store.findByCode = (storeCODE, result) => {
 Store.getAll = (result) => {
   sql.query("SELECT * FROM Store_Propped", (err, res) => {
     if (err) {
-      console.log("error: ", err);
       result(null, err);
       return;
     }
@@ -70,10 +66,10 @@ Store.getAll = (result) => {
   });
 };
 
-Store.updateByCode = (cod, store, result) => {
-  store.code_store = cod;
+Store.updateByCode = (code, store, result) => {
+  store.code_store = code;
   sql.query(
-    `UPDATE Store_Propped SET name_store = '${store.name_store}', registry_store = '${store.registry_store}', website_store = '${store.website_store}', phone_store= '${store.phone_store}', postal_code_store= '${store.postal_code_store}', address_store= '${store.address_store}', city_store= '${store.city_store}', state_store= '${store.state_store}', country_store= '${store.country_store}', image_store = CAST('${store.image_store}' as varbinary(max))  WHERE code_store = '${cod}'`,
+    `UPDATE Store_Propped SET name_store = '${store.name_store}', registry_store = '${store.registry_store}', website_store = '${store.website_store}', phone_store= '${store.phone_store}', postal_code_store= '${store.postal_code_store}', address_store= '${store.address_store}', city_store= '${store.city_store}', state_store= '${store.state_store}', country_store= '${store.country_store}', image_store = CAST('${store.image_store}' as varbinary(max))  WHERE code_store = '${code}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -91,12 +87,8 @@ Store.updateByCode = (cod, store, result) => {
         return;
       }
 
-      console.log("updated store: ", {
-        code_store: cod,
-        ...store,
-      });
       result(null, {
-        code_store: cod,
+        code_store: code,
         ...store,
       });
     }

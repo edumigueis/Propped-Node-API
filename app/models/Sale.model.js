@@ -24,9 +24,9 @@ Sale.create = (newSale, result) => {
   );
 };
 
-Sale.findByCode = (saleCODE, result) => {
+Sale.findByCode = (code, result) => {
   sql.query(
-    `SELECT * FROM Sale_Propped WHERE code_sale = '${saleCODE}'`,
+    `SELECT * FROM Sale_Propped WHERE code_sale = '${code}'`,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -60,10 +60,10 @@ Sale.getAll = (result) => {
   });
 };
 
-Sale.updateByCode = (cod, sale, result) => {
-  sale.code_sale = cod;
+Sale.updateByCode = (code, sale, result) => {
+  sale.code_sale = code;
   sql.query(
-    `UPDATE Sale_Propped SET id_store_sale = ${sale.id_store_sale}, delivery_time_sale = '${sale.delivery_time_sale}', amount_sale = ${sale.amount_sale}, shipping_sale= ${sale.shipping_sale}, date_order= '${sale.date_order}'  WHERE code_sale = '${cod}'`,
+    `UPDATE Sale_Propped SET id_store_sale = ${sale.id_store_sale}, delivery_time_sale = '${sale.delivery_time_sale}', amount_sale = ${sale.amount_sale}, shipping_sale= ${sale.shipping_sale}, date_order= '${sale.date_order}'  WHERE code_sale = '${code}'`,
     (err, res) => {
       if (err) {
         result(null, err);
@@ -81,7 +81,7 @@ Sale.updateByCode = (cod, sale, result) => {
       }
 
       result(null, {
-        code_sale: cod,
+        code_sale: code,
         ...sale,
       });
     }

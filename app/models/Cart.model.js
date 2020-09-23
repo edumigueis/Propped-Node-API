@@ -20,9 +20,9 @@ Cart.create = (newCart, result) => {
   );
 };
 
-Cart.findByCode = (cartCODE, result) => {
+Cart.findByCode = (code, result) => {
   sql.query(
-    `SELECT * FROM ShoppingCart_Propped WHERE code_shoppingcart = '${cartCODE}'`,
+    `SELECT * FROM ShoppingCart_Propped WHERE code_shoppingcart = '${code}'`,
     (err, res) => {
       if (err) {
         result(err, null);
