@@ -49,7 +49,6 @@ exports.findOne = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  // Validate Request
   if (!req.body) {
     res.status(400).send({
       message: "Body of request can not be empty.",
@@ -62,13 +61,15 @@ exports.update = (req, res) => {
         res.status(404).send({
           message: `Category with the code ${req.params.code_category} wasn't found.`,
         });
-      } else {
+      } 
+      else {
         res.status(500).send({
           message: "Error when trying to update category with the following code: " + req.params.code_category,
         });
       }
     } 
-    else res.send(data);
+    else 
+      res.send(data);
   });
 };
 
@@ -79,12 +80,14 @@ exports.delete = (req, res) => {
         res.status(404).send({
           message: `Category with the code ${req.params.code_category} wasn't found.`,
         });
-      } else {
+      } 
+      else {
         res.status(500).send({
-          message: "Error when trying to update category with the following code: " + req.params.code_category,
+          message: "Error when trying to delete category with the following code: " + req.params.code_category,
         });
       }
-    } else{
+    } 
+    else{
       res.send({
         message: `Category has been deleted succesfully!`,
       });
