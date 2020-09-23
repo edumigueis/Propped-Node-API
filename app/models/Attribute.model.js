@@ -40,6 +40,8 @@ Attribute.findByCode = (attributeCODE, result) => {
         },
         null
       );
+
+      return -1;
     }
   );
 };

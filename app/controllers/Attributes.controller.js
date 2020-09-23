@@ -1,7 +1,8 @@
+import Hasher from "../data/Hasher.js";
+
 const Attribute = require("../models/Attribute.model.js");
 
 exports.create = (req, res) => {
-  // Validate request
   if (!req.body) {
     res.status(400).send({
       message: "Empty params",
@@ -14,11 +15,16 @@ exports.create = (req, res) => {
   });
 
   Attribute.create(attribute, (err, data) => {
+    do
+      attribute.code_attribute = Hasher.generateCode();
+    while(Attribute.findByCode(attribute.code_attribute, (err, data) => {}) == -1)
+
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create attribute.",
       });
-    else res.send(data.recordset);
+    else 
+      res.send(data.recordset);
   });
 };
 
@@ -28,7 +34,8 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for attributes.",
       });
-    else res.send(data.recordset);
+    else 
+      res.send(data.recordset);
   });
 };
 
@@ -39,42 +46,42 @@ exports.findOne = (req, res) => {
         res.status(404).send({
           message: `Attribute with the code ${req.params.code_attribute} wasn't found.`,
         });
-      } else {
+      } 
+      else {
         res.status(500).send({
           message:
-            "Error while searching for attribute with the code " +
-            req.params.code_attribute,
+            "Error while searching for attribute with the code " + req.params.code_attribute,
         });
       }
-    } else res.send(data);
+    } else 
+      res.send(data.recordset);
   });
 };
 
 exports.update = (req, res) => {
-  // Validate Request
   if (!req.body) {
     res.status(400).send({
       message: "Body of request can not be empty.",
     });
   }
 
-  Attribute.updateByCode(
-    req.params.code_attribute,
-    new Attribute(req.body),
+  Attribute.updateByCode( req.params.code_attribute, new Attribute(req.body),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
             message: `Attribute with the code ${req.params.code_attribute} wasn't found.`,
           });
-        } else {
+        } 
+        else {
           res.status(500).send({
             message:
-              "Error when trying to update attribute with the following code: " +
-              req.params.code_attribute,
+              "Error when trying to update attribute with the following code: " + req.params.code_attribute,
           });
         }
-      } else res.send(data.recordset);
+      } 
+      else 
+        res.send(data.recordset);
     }
   );
 };
@@ -86,14 +93,15 @@ exports.delete = (req, res) => {
         res.status(404).send({
           message: `Attribute with the code ${req.params.code_attribute} wasn't found.`,
         });
-      } else {
+      } 
+      else {
         res.status(500).send({
           message:
-            "Error when trying to update attribute with the following code: " +
-            req.params.code_attribute,
+            "Error when trying to update attribute with the following code: " + req.params.code_attribute,
         });
       }
-    } else {
+    } 
+    else {
       res.send({
         message: `Attribute has been deleted succesfully!`,
       });
