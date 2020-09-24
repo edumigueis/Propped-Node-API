@@ -1,6 +1,6 @@
 import Hasher from "../data/Hasher.js";
 
-const Image = require("../models/Favorite.model.js");
+const Image = require("../models/Image.model.js");
 
 exports.create = (req, res) => {
 
