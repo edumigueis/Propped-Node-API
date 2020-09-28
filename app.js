@@ -1,5 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const Hasher = require("./app/data/Hasher.js");
+const { hash } = require("bcrypt");
 
 const app = express();
 
@@ -29,4 +31,11 @@ require("./app/routes/users.routes.js")(app);*/
 // set port, listen for requests
 app.listen(4000, () => {
   console.log("Server is running on port 4000.");
+  /*Hasher.hashPassword("a", function(hash){
+    console.log(hash);
+    Hasher.comparePassword("b", hash, function(res){
+      console.log(res);
+    })
+  });*/
 });
+
