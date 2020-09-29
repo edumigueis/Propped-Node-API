@@ -109,4 +109,29 @@ Favorite.remove = (code, result) => {
   );
 };
 
+Favorite.findByUser = (id, result) => {
+  sql.query(
+    `SELECT * FROM Favorite_Propped WHERE id_user_favorite = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.length > 0) {
+        result(null, res);
+        return;
+      }
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 module.exports = Favorite;

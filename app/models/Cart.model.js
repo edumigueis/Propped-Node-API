@@ -112,4 +112,30 @@ Cart.remove = (code, result) => {
   );
 };
 
+Cart.findByUser = (id, result) => {
+  sql.query(
+    `SELECT * FROM ShoppingCart_Propped WHERE id_user_shoppingcart = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 module.exports = Cart;

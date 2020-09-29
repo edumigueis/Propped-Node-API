@@ -118,4 +118,31 @@ User.remove = (code, result) => {
   );
 };
 
+User.findByLoginData = (email, result) => {
+  sql.query(
+    `SELECT * FROM User_Propped WHERE email_user = '${email}'`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.length > 0) {
+        /*aqui*********************************************************/
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 module.exports = User;

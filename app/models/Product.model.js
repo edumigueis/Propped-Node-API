@@ -117,4 +117,30 @@ Product.remove = (code, result) => {
   );
 };
 
+Product.findByName = (name, result) => {
+  sql.query(
+    `SELECT * FROM Product_Propped WHERE code_product like '%${name}%'`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 module.exports = Product;
