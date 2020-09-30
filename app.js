@@ -9,14 +9,16 @@ const app = express();
 app.use(bodyParser.json());
 
 // parse requests of content-type: application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 // simple route
 app.get("/", (req, res) => {
   res.json({
-    message: "Propped API"
+    message: "Propped API",
   });
 });
 require("./app/routes/users.routes.js")(app);
@@ -31,11 +33,10 @@ require("./app/routes/users.routes.js")(app);*/
 // set port, listen for requests
 app.listen(4000, () => {
   console.log("Server is running on port 4000.");
-  /*Hasher.hashPassword("a", function(hash){
+  /*Hasher.hashPassword("a", function (hash) {
     console.log(hash);
-    Hasher.comparePassword("b", hash, function(res){
+    Hasher.comparePassword("a", hash, function (res) {
       console.log(res);
-    })
+    });
   });*/
 });
-
