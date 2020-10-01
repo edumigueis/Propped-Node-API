@@ -21,9 +21,11 @@
             top: 0;
             width: 100%;
             height: 20%;
+            min-height: 150px;
             display: flex;
             align-items: center;
             background-color: #d1d1d1;
+            border-bottom: 5px solid black;
         }
 
         .header .title {
@@ -45,7 +47,7 @@
             padding-left: 80px;
         }
 
-        @media only screen and (max-width: 750px) {
+        @media only screen and (max-width: 920px) {
             .header .title h1 {
                 font-size: 2.2em !important;
                 padding-left: 50px !important;
@@ -73,13 +75,44 @@
 
         .center {
             position: fixed;
-            bottom: 0;
+            bottom: 10%;
             width: 100%;
             height: 80%;
             display: flex;
             align-items: baseline;
             justify-content: center;
         }
+
+        @media only screen and (min-width: 850px) and (max-width: 1400px) {
+            .center {
+                height: 72% !important;
+            }
+        }
+
+        @media only screen and (min-width: 0px) and (max-width: 851px) {
+            .center {
+                height: 68% !important;
+            }
+        }
+
+        .center img {
+            width: 30%;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            background-color: rgb(119, 119, 119);
+            border-top: 1px solid rgb(44, 44, 44);
+        }
+
+        .footer p {
+            padding-left: 20px;
+            color: rgb(226, 226, 226);
+        }
+
     </style>
 </head>
 
@@ -90,11 +123,14 @@
             <p>to Propped API</p>
         </div>
         <div class="image">
-            <img src="/app/public/assets/images/node.png" alt="logo">
+            <img src="/app/public/assets/images/node.png" alt="logo-nodejs">
         </div>
     </div>
     <div class="center">
-
+        <img src="/app/public/assets/images/logo-propped.svg" alt="logo-propped">
+    </div>
+    <div class="footer">
+        <p>&copy; 2020 - All rights reserved - Eduardo de Almeida Migueis and Rodrigo Smith Rodrigues</p>
     </div>
 </body>
 
