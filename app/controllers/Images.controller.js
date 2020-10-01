@@ -1,4 +1,4 @@
-import Hasher from "../data/Hasher.js";
+const Hasher = require("../data/Hasher.js");
 
 const Image = require("../models/Image.model.js");
 

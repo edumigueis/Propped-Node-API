@@ -1,4 +1,4 @@
-import Hasher from "../data/Hasher.js";
+const Hasher = require("../data/Hasher.js");
 
 const Subcategory = require("../models/Subcategory.model.js");
 

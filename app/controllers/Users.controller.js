@@ -24,7 +24,7 @@ exports.create = (req, res) => {
 
   User.create(user, (err, data) => {
     do user.code_user = Hasher.generateCode();
-    while (User.findByCode(user.code_user, (err, data) => {}) == -1);
+    while (User.findByCode(user.code_user, (err, data) => { }) == -1);
 
     if (err)
       res.status(500).send({
@@ -106,4 +106,33 @@ exports.delete = (req, res) => {
       });
     }
   });
+};
+
+exports.login = (req, res) => {
+  User.findByLoginData(req.params.email_user, req.params.pass_user, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `User with the email ${req.params.email_user} wasn't found.`,
+        });
+      }
+      else if (err.kind === "wrong_password") {
+        res.status(403).send({
+          message: `User with the email ${req.params.email_user} doesn´t have the following password: ` +
+            req.params.pass_user,
+        });
+      }
+      else {
+        res.status(500).send({
+          message:
+            "Error when trying to verify user with the following email and password, respectly: " +
+            req.params.email_user + ", " + req.params.pass_user,
+        });
+      }
+    } else {
+      res.send({
+        message: `All data is correct! User will be logged in.`,
+      });
+    }
+  })
 };

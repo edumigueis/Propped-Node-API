@@ -1,3 +1,5 @@
+const Hasher = require("../data/Hasher.js");
+
 const sql = require("./db.js");
 
 const User = function (user) {
@@ -118,7 +120,7 @@ User.remove = (code, result) => {
   );
 };
 
-User.findByLoginData = (email, result) => {
+User.findByLoginData = (email, senha, result) => {
   sql.query(
     `SELECT * FROM User_Propped WHERE email_user = '${email}'`,
     (err, res) => {
@@ -128,7 +130,21 @@ User.findByLoginData = (email, result) => {
       }
 
       if (res.length > 0) {
-        /*aqui*********************************************************/
+        Hasher.comparePassword(senha, res.pass_user, function (res) {
+          if (res) {
+            result(null, res);
+            return;
+          }
+          else {
+            result(
+              {
+                kind: "wrong_password",
+              },
+              null
+            );
+            return;
+          }
+        });
         result(null, res);
         return;
       }
@@ -139,8 +155,6 @@ User.findByLoginData = (email, result) => {
         },
         null
       );
-
-      return -1;
     }
   );
 };

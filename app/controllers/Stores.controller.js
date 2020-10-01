@@ -1,4 +1,4 @@
-import Hasher from "../data/Hasher.js";
+const Hasher = require("../data/Hasher.js");
 
 const Store = require("../models/Store.model.js");
 
@@ -10,17 +10,17 @@ exports.create = (req, res) => {
   }
 
   const store = new Store({
-    code_store = req.body.code_store,
-    name_store = req.body.name_store,
-    registry_store = req.body.registry_store,
-    website_store = req.body.website_store,
-    phone_store = req.body.phone_store,
-    postal_code_store = req.body.postal_code_store,
-    address_store = req.body.address_store,
-    city_store = req.body.city_store,
-    state_store = req.body.state_store,
-    country_store = req.body.country_store,
-    image_store = req.body.image_store
+    code_store: req.body.code_store,
+    name_store: req.body.name_store,
+    registry_store: req.body.registry_store,
+    website_store: req.body.website_store,
+    phone_store: req.body.phone_store,
+    postal_code_store: req.body.postal_code_store,
+    address_store: req.body.address_store,
+    city_store: req.body.city_store,
+    state_store: req.body.state_store,
+    country_store: req.body.country_store,
+    image_store: req.body.image_store
   });
 
   Store.create(store, (err, data) => {

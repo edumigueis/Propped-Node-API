@@ -1,7 +1,8 @@
+const Hasher = require("../data/Hasher.js");
+
 const FormofPayment = require("../models/FormofPayment.model.js");
 
 exports.create = (req, res) => {
-  // Validate request
   if (!req.body) {
     res.status(400).send({
       message: "Empty params",
