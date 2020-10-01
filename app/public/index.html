@@ -1,23 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Propped API</title>
-    <style type="stylesheet">
-        .center{
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .header {
             position: fixed;
+            top: 0;
             width: 100%;
-            height: 100%;
+            height: 20%;
             display: flex;
             align-items: center;
+            background-color: #d1d1d1;
+        }
+
+        .header .title {
+            width: 30%;
+        }
+
+        .header .title h1 {
+            font-weight: 100;
+            font-size: 3em;
+            margin-bottom: 5px;
+            margin-top: 10px;
+            padding-left: 80px;
+        }
+
+        .header .title p {
+            margin-top: 2px;
+            font-weight: 100;
+            font-size: 1.1em;
+            padding-left: 80px;
+        }
+
+        @media only screen and (max-width: 750px) {
+            .header .title h1 {
+                font-size: 2.2em !important;
+                padding-left: 50px !important;
+            }
+
+            .header .title p {
+                font-size: 0.7em !important;
+                padding-left: 50px !important;
+            }
+
+            .header .image img {
+                padding-right: 50px !important;
+            }
+        }
+
+        .header .image {
+            width: 70%;
+        }
+
+        .header .image img {
+            width: 150px;
+            float: right;
+            padding-right: 80px;
+        }
+
+        .center {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 80%;
+            display: flex;
+            align-items: baseline;
             justify-content: center;
         }
     </style>
 </head>
+
 <body>
+    <div class="header">
+        <div class="title">
+            <h1>Welcome</h1>
+            <p>to Propped API</p>
+        </div>
+        <div class="image">
+            <img src="/app/public/assets/images/node.png" alt="logo">
+        </div>
+    </div>
     <div class="center">
-        <img src="assets/images/node.png" alt="logo">
+
     </div>
 </body>
+
 </html>

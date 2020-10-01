@@ -145,8 +145,6 @@ User.findByLoginData = (email, senha, result) => {
             return;
           }
         });
-        result(null, res);
-        return;
       }
 
       result(

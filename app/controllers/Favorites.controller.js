@@ -106,3 +106,21 @@ exports.delete = (req, res) => {
     }
   });
 };
+
+exports.findByUser = (req, res) => {
+  Favorite.findByUser(req.params.id_user_favorite, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Favorite with the user ${req.params.id_user_favorite} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message:
+            "Error while searching for favorite with the user " +
+            req.params.id_user_favorite,
+        });
+      }
+    } else res.send(data.recordset);
+  });
+};

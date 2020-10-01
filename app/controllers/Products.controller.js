@@ -110,3 +110,39 @@ exports.delete = (req, res) => {
     }
   });
 };
+
+exports.findByName = (req, res) => {
+  Product.findByName(req.params.name_product, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Product with the name ${req.params.name_product} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message:
+            "Error while searching for product with the name " +
+            req.params.name_product,
+        });
+      }
+    } else res.send(data.recordset);
+  });
+};
+
+exports.findByStore = (req, res) => {
+  Product.findByStore(req.params.id_store_product, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Product with the store ${req.params.id_store_product} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message:
+            "Error while searching for product with the store " +
+            req.params.id_store_product,
+        });
+      }
+    } else res.send(data.recordset);
+  });
+};

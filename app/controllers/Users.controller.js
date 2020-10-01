@@ -118,15 +118,13 @@ exports.login = (req, res) => {
       }
       else if (err.kind === "wrong_password") {
         res.status(403).send({
-          message: `User with the email ${req.params.email_user} doesn´t have the following password: ` +
-            req.params.pass_user,
+          message: `User with the email ${req.params.email_user} doesn´t have this password.`
         });
       }
       else {
         res.status(500).send({
           message:
-            "Error when trying to verify user with the following email and password, respectly: " +
-            req.params.email_user + ", " + req.params.pass_user,
+            "Error when trying to verify user with this email and password."
         });
       }
     } else {

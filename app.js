@@ -21,6 +21,8 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, '/app/public', 'index.html'));
 });
 
+app.use(express.static(__dirname));
+
 require("./app/routes/users.routes.js")(app);
 require("./app/routes/favorites.routes.js")(app);
 require("./app/routes/orders.routes.js")(app);
