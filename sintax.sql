@@ -180,4 +180,45 @@ create table UsersRating_Propped(
 	constraint fkRating_UsersRating_Propped foreign key (id_rating_usersrating) references Rating_Propped(id_rating),
 	constraint fkUser_UsersRating_Propped foreign key (id_user_usersrating) references User_Propped(id_user),
 	constraint fkStore_UsersRating_Propped foreign key (id_store_usersrating) references Store_Propped(id_store)
+<<<<<<< Updated upstream
 )
+=======
+)
+
+create type Attribute_Values_List as table(
+  id int,
+  value varchar(100)
+)
+
+ALTER PROC sp_Search_by_Filters
+@list AS Attribute_Values_List READONLY
+AS
+BEGIN 
+	DECLARE @current INT
+	DECLARE myCursor CURSOR LOCAL FAST_FORWARD FOR SELECT id FROM @list
+	OPEN myCursor
+		FETCH NEXT FROM myCursor INTO @current
+		WHILE @@FETCH_STATUS = 0 
+		BEGIN
+    		SELECT p.* FROM Product_Propped p, Attribute_Propped a, ProductAttribute_Propped pa WHERE 
+			pa.id_product_productattribute = p.id_product and 
+			pa.id_attribute_productattribute = a.id_attribute and
+			a.id_attribute = @current and
+			pa.value_productattribute in (SELECT value from @list where id = @current)
+
+    		FETCH NEXT FROM myCursor INTO @current
+		END
+	CLOSE myCursor
+	DEALLOCATE myCursor
+END
+
+DECLARE @cu AS Attribute_Values_List
+ 
+INSERT INTO @cu
+VALUES ( 4, 'Math_MemOptimized '
+       )
+
+
+EXEC sp_Search_by_Filters   @cu
+
+>>>>>>> Stashed changes
