@@ -18,7 +18,7 @@ app.use(
 
 // home of API
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, '/app/public', 'index.html'));
+  res.sendFile(path.join(__dirname, './app/public', 'index.html'));
 });
 
 app.use(express.static(__dirname));
