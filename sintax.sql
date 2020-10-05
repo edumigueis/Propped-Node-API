@@ -180,9 +180,6 @@ create table UsersRating_Propped(
 	constraint fkRating_UsersRating_Propped foreign key (id_rating_usersrating) references Rating_Propped(id_rating),
 	constraint fkUser_UsersRating_Propped foreign key (id_user_usersrating) references User_Propped(id_user),
 	constraint fkStore_UsersRating_Propped foreign key (id_store_usersrating) references Store_Propped(id_store)
-<<<<<<< Updated upstream
-)
-=======
 )
 
 create type Attribute_Values_List as table(
@@ -221,4 +218,3 @@ VALUES ( 4, 'Math_MemOptimized '
 
 EXEC sp_Search_by_Filters   @cu
 
->>>>>>> Stashed changes
