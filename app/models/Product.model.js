@@ -119,7 +119,111 @@ Product.remove = (code, result) => {
 
 Product.findByName = (name, result) => {
   sql.query(
-    `SELECT * FROM Product_Propped WHERE code_product like '%${name}%'`,
+    `SELECT * FROM Product_Propped WHERE name_product like '%${name}%'`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
+Product.findByCategory = (id, result) => {
+  sql.query(
+    `SELECT * FROM Product_Propped WHERE id_category_product = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
+Product.findByCategoryAndSubcategory = (idCategory, idSubcategory, result) => {
+  sql.query(
+    `SELECT * FROM Product_Propped WHERE id_category_product = ${idCategory} and id_subcategory_product = ${idSubcategory}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
+Product.findByNameAndCategory = (name, id, result) => {
+  sql.query(
+    `SELECT * FROM Product_Propped WHERE name_product like '%${name}%' and id_category_product = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
+Product.findByNameAndCategoryAndSubcategory = (name, idCategory, idSubcategory, result) => {
+  sql.query(
+    `SELECT * FROM Product_Propped WHERE name_product like '%${name}%' and id_category_product = ${idCategory} and id_subcategory_product = ${idSubcategory}`,
     (err, res) => {
       if (err) {
         result(err, null);
