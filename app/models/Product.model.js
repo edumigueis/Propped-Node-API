@@ -247,6 +247,33 @@ Product.findByNameAndCategoryAndSubcategory = (name, idCategory, idSubcategory, 
   );
 };
 
+Product.findCu = (result) => {
+  sql.query(
+    `DECLARE @cu AS Attribute_Values_List EXEC sp_Search_by_Filters   @cu`,
+    (err, res) => {
+      console.log(res);
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 Product.findByStore = (id, result) => {
   sql.query(
     `SELECT * FROM Product_Propped WHERE id_store_product = ${id}`,

@@ -3,7 +3,7 @@ module.exports = app => {
   
     app.post("/products", products.create);
   
-    app.get("/products", products.findAll);
+    app.get("/products", products.findByStoreCu);
 
     app.get("/products/:id", products.findOne);
 

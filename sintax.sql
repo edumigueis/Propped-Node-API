@@ -209,12 +209,11 @@ BEGIN
 	DEALLOCATE myCursor
 END
 
+
 DECLARE @cu AS Attribute_Values_List
  
 INSERT INTO @cu
 VALUES ( 4, 'Math_MemOptimized '
        )
-
-
 EXEC sp_Search_by_Filters   @cu
 
