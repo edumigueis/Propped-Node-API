@@ -52,8 +52,7 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for product with the code " +
+          message: "Error while searching for product with the code " +
             req.params.code_product,
         });
       }
@@ -79,8 +78,7 @@ exports.update = (req, res) => {
           });
         } else {
           res.status(500).send({
-            message:
-              "Error when trying to update product with the following code: " +
+            message: "Error when trying to update product with the following code: " +
               req.params.code_product,
           });
         }
@@ -98,8 +96,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error when trying to update product with the following code: " +
+          message: "Error when trying to update product with the following code: " +
             req.params.code_product,
         });
       }
@@ -120,8 +117,7 @@ exports.findByName = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for product with the name " +
+          message: "Error while searching for product with the name " +
             req.params.name_product,
         });
       }
@@ -138,8 +134,7 @@ exports.findByStore = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for product with the store " +
+          message: "Error while searching for product with the store " +
             req.params.id_store_product,
         });
       }
@@ -147,21 +142,23 @@ exports.findByStore = (req, res) => {
   });
 };
 
-exports.findByStoreCu = (req, res) => {
-  Product.findCu((err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Product with the store ${req.params.id_store_product} wasn't found.`,
-        });
-      } else {
-        res.status(500).send({
-          message:
-            "Error while searching for product with the store " +
-            req.params.id_store_product,
-        });
-      }
-    } else res.send(data.recordset);
-  });
+exports.findByParams = (req, res) => {
+  Product.findByParams(req.params.name_product, req.params.id_category_product, req.params.id_subcategory_product,
+    req.params.filters_product, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Product with these attributes wasn't found.`,
+          });
+        } else if (err.kind === "bad_request") {
+          res.status(400).send({
+            message: `Invalid parameters were entered to search a product.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error while searching for product with these attributes",
+          });
+        }
+      } else res.send(data.recordset);
+    });
 };
-

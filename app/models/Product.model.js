@@ -41,8 +41,7 @@ Product.findByCode = (code, result) => {
         return;
       }
 
-      result(
-        {
+      result({
           kind: "not_found",
         },
         null
@@ -76,8 +75,7 @@ Product.updateByCode = (code, product, result) => {
       }
 
       if (res.affectedRows == 0) {
-        result(
-          {
+        result({
             kind: "not_found",
           },
           null
@@ -103,8 +101,7 @@ Product.remove = (code, result) => {
       }
 
       if (res.affectedRows == 0) {
-        result(
-          {
+        result({
             kind: "not_found",
           },
           null
@@ -117,162 +114,417 @@ Product.remove = (code, result) => {
   );
 };
 
-Product.findByName = (name, result) => {
-  sql.query(
-    `SELECT * FROM Product_Propped WHERE name_product like '%${name}%'`,
-    (err, res) => {
-      if (err) {
-        result(err, null);
-        return;
+Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
+  if (
+    name != "" &&
+    idCategory == -1 &&
+    idSubcategory == -1 &&
+    filters.length == 0
+  ) {
+    sql.query(
+      `SELECT * FROM Product_Propped WHERE name_product like '%${name}%'`,
+      (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        }
+
+        if (res.length > 0) {
+          result(null, res);
+          return;
+        }
+
+        result({
+            kind: "not_found",
+          },
+          null
+        );
+
+        return -1;
       }
+    );
+  } else if (
+    name != "" &&
+    idCategory > -1 &&
+    idSubcategory == -1 &&
+    filters.length == 0
+  ) {
+    sql.query(
+      `SELECT * FROM Product_Propped WHERE name_product like '%${name}%' and id_category_product = ${id}`,
+      (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        }
 
-      if (res.length > 0) {
-        result(null, res);
-        return;
+        if (res.length > 0) {
+          result(null, res);
+          return;
+        }
+
+        result({
+            kind: "not_found",
+          },
+          null
+        );
+
+        return -1;
       }
+    );
+  } else if (
+    name != "" &&
+    idCategory > -1 &&
+    idSubcategory > -1 &&
+    filters.length == 0
+  ) {
+    sql.query(
+      `SELECT * FROM Product_Propped WHERE name_product like '%${name}%' and id_category_product = ${idCategory} and id_subcategory_product = ${idSubcategory}`,
+      (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        }
 
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
+        if (res.length > 0) {
+          result(null, res);
+          return;
+        }
 
-      return -1;
-    }
-  );
-};
+        result({
+            kind: "not_found",
+          },
+          null
+        );
 
-Product.findByCategory = (id, result) => {
-  sql.query(
-    `SELECT * FROM Product_Propped WHERE id_category_product = ${id}`,
-    (err, res) => {
-      if (err) {
-        result(err, null);
-        return;
+        return -1;
       }
+    );
+  } else if (
+    name == "" &&
+    idCategory > -1 &&
+    idSubcategory == -1 &&
+    filters.length == 0
+  ) {
+    sql.query(
+      `SELECT * FROM Product_Propped WHERE id_category_product = ${id}`,
+      (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        }
 
-      if (res.length > 0) {
-        result(null, res);
-        return;
+        if (res.length > 0) {
+          result(null, res);
+          return;
+        }
+
+        result({
+            kind: "not_found",
+          },
+          null
+        );
+
+        return -1;
       }
+    );
+  } else if (
+    name == "" &&
+    idCategory > -1 &&
+    idSubcategory > -1 &&
+    filters.length == 0
+  ) {
+    sql.query(
+      `SELECT * FROM Product_Propped WHERE id_category_product = ${idCategory} and id_subcategory_product = ${idSubcategory}`,
+      (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        }
 
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
+        if (res.length > 0) {
+          result(null, res);
+          return;
+        }
 
-      return -1;
-    }
-  );
-};
+        result({
+            kind: "not_found",
+          },
+          null
+        );
 
-Product.findByCategoryAndSubcategory = (idCategory, idSubcategory, result) => {
-  sql.query(
-    `SELECT * FROM Product_Propped WHERE id_category_product = ${idCategory} and id_subcategory_product = ${idSubcategory}`,
-    (err, res) => {
-      if (err) {
-        result(err, null);
-        return;
+        return -1;
       }
+    )
+  } else if (
+    name != "" &&
+    idCategory == -1 &&
+    idSubcategory == -1 &&
+    filters.length > 0
+  ) {
+    sql.query(
+      `DECLARE @list_of_attributes AS Attribute_Values_List`,
+      (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        } else {
+          for (var i in filters) {
+            sql.query(
+              `INSERT INTO @list_of_attributes VALUES (${filters[i][0]}, '${filters[i][1]}')`,
+              (err, res) => {
+                if (err) {
+                  result(err, null);
+                  return;
+                }
+              }
+            )
 
-      if (res.length > 0) {
-        result(null, res);
-        return;
+            if (i == filters.length) {
+              sql.query(
+                `EXEC sp_Propped_Search_by_Name_and_Filters @name='${name}', @list=@list_of_attributes`,
+                (err, res) => {
+                  if (err) {
+                    result(err, null);
+                    return;
+                  }
+
+                  if (res.length > 0) {
+                    result(null, res);
+                    return;
+                  }
+
+                  result({
+                      kind: "not_found",
+                    },
+                    null
+                  );
+
+                  return -1;
+                }
+              )
+            }
+          }
+        }
       }
+    )
+  } else if (
+    name != "" &&
+    idCategory > -1 &&
+    idSubcategory == -1 &&
+    filters.length > 0
+  ) {
+    sql.query(
+      `DECLARE @list_of_attributes AS Attribute_Values_List`,
+      (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        } else {
+          for (var i in filters) {
+            sql.query(
+              `INSERT INTO @list_of_attributes VALUES (${filters[i][0]}, '${filters[i][1]}')`,
+              (err, res) => {
+                if (err) {
+                  result(err, null);
+                  return;
+                }
+              }
+            )
 
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
+            if (i == filters.length) {
+              sql.query(
+                `EXEC sp_Search_by_Name_and_Category_and_Filters @name='${name}', @category=${idCategory}, @list=@list_of_attributes`,
+                (err, res) => {
+                  if (err) {
+                    result(err, null);
+                    return;
+                  }
 
-      return -1;
-    }
-  );
-};
+                  if (res.length > 0) {
+                    result(null, res);
+                    return;
+                  }
 
-Product.findByNameAndCategory = (name, id, result) => {
-  sql.query(
-    `SELECT * FROM Product_Propped WHERE name_product like '%${name}%' and id_category_product = ${id}`,
-    (err, res) => {
-      if (err) {
-        result(err, null);
-        return;
+                  result({
+                      kind: "not_found",
+                    },
+                    null
+                  );
+
+                  return -1;
+                }
+              )
+            }
+          }
+        }
       }
+    )
+  } else if (
+    name != "" &&
+    idCategory > -1 &&
+    idSubcategory > -1 &&
+    filters.length > 0
+  ) {
+    sql.query(
+      `DECLARE @list_of_attributes AS Attribute_Values_List`,
+      (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        } else {
+          for (var i in filters) {
+            sql.query(
+              `INSERT INTO @list_of_attributes VALUES (${filters[i][0]}, '${filters[i][1]}')`,
+              (err, res) => {
+                if (err) {
+                  result(err, null);
+                  return;
+                }
+              }
+            )
 
-      if (res.length > 0) {
-        result(null, res);
-        return;
+            if (i == filters.length) {
+              sql.query(
+                `EXEC sp_Propped_Search_by_Name_and_Category_and_Subcategory_and_Filters @name='${name}', @category=${idCategory}, @subcategory=${idSubcategory}, @list=@list_of_attributes`,
+                (err, res) => {
+                  if (err) {
+                    result(err, null);
+                    return;
+                  }
+
+                  if (res.length > 0) {
+                    result(null, res);
+                    return;
+                  }
+
+                  result({
+                      kind: "not_found",
+                    },
+                    null
+                  );
+
+                  return -1;
+                }
+              )
+            }
+          }
+        }
       }
+    )
+  } else if (
+    name == "" &&
+    idCategory > -1 &&
+    idSubcategory == -1 &&
+    filters.length > 0
+  ) {
+    sql.query(
+      `DECLARE @list_of_attributes AS Attribute_Values_List`,
+      (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        } else {
+          for (var i in filters) {
+            sql.query(
+              `INSERT INTO @list_of_attributes VALUES (${filters[i][0]}, '${filters[i][1]}')`,
+              (err, res) => {
+                if (err) {
+                  result(err, null);
+                  return;
+                }
+              }
+            )
 
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
+            if (i == filters.length) {
+              sql.query(
+                `EXEC sp_Propped_Search_by_Category_and_Filters @category=${idCategory}, @list=@list_of_attributes`,
+                (err, res) => {
+                  if (err) {
+                    result(err, null);
+                    return;
+                  }
 
-      return -1;
-    }
-  );
-};
+                  if (res.length > 0) {
+                    result(null, res);
+                    return;
+                  }
 
-Product.findByNameAndCategoryAndSubcategory = (name, idCategory, idSubcategory, result) => {
-  sql.query(
-    `SELECT * FROM Product_Propped WHERE name_product like '%${name}%' and id_category_product = ${idCategory} and id_subcategory_product = ${idSubcategory}`,
-    (err, res) => {
-      if (err) {
-        result(err, null);
-        return;
+                  result({
+                      kind: "not_found",
+                    },
+                    null
+                  );
+
+                  return -1;
+                }
+              )
+            }
+          }
+        }
       }
+    )
+  } else if (
+    name == "" &&
+    idCategory > -1 &&
+    idSubcategory > -1 &&
+    filters.length > 0
+  ) {
+    sql.query(
+      `DECLARE @list_of_attributes AS Attribute_Values_List`,
+      (err, res) => {
+        if (err) {
+          result(err, null);
+          return;
+        } else {
+          for (var i in filters) {
+            sql.query(
+              `INSERT INTO @list_of_attributes VALUES (${filters[i][0]}, '${filters[i][1]}')`,
+              (err, res) => {
+                if (err) {
+                  result(err, null);
+                  return;
+                }
+              }
+            );
 
-      if (res.length > 0) {
-        result(null, res);
-        return;
+            if (i == filters.length) {
+              sql.query(
+                `EXEC sp_Propped_Search_by_Category_and_Subcategory_and_Filters @category=${idCategory}, @subcategory=${idSubcategory}, @list=@list_of_attributes`,
+                (err, res) => {
+                  if (err) {
+                    result(err, null);
+                    return;
+                  }
+
+                  if (res.length > 0) {
+                    result(null, res);
+                    return;
+                  }
+
+                  result({
+                      kind: "not_found",
+                    },
+                    null
+                  );
+
+                  return -1;
+                }
+              )
+            }
+          }
+        }
       }
+    )
+  } else {
+    result({
+        kind: "bad_request",
+      },
+      null
+    );
 
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
-
-      return -1;
-    }
-  );
-};
-
-Product.findCu = (result) => {
-  sql.query(
-    `DECLARE @cu AS Attribute_Values_List EXEC sp_Search_by_Filters   @cu`,
-    (err, res) => {
-      console.log(res);
-      if (err) {
-        result(err, null);
-        return;
-      }
-
-      if (res.length > 0) {
-        result(null, res);
-        return;
-      }
-
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
-
-      return -1;
-    }
-  );
-};
+    return;
+  }
+}
 
 Product.findByStore = (id, result) => {
   sql.query(
@@ -288,8 +540,7 @@ Product.findByStore = (id, result) => {
         return;
       }
 
-      result(
-        {
+      result({
           kind: "not_found",
         },
         null
@@ -297,7 +548,7 @@ Product.findByStore = (id, result) => {
 
       return -1;
     }
-  );
-};
+  )
+}
 
 module.exports = Product;
