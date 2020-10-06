@@ -23,15 +23,18 @@ app.get("/", (req, res) => {
 
 app.use(express.static(__dirname));
 
-require("./app/routes/users.routes.js")(app);
+require("./app/routes/attributes.routes.js")(app);
+require("./app/routes/carts.routes.js")(app);
+require("./app/routes/categories.routes.js")(app);
 require("./app/routes/favorites.routes.js")(app);
+require("./app/routes/formsofpayment.routes.js")(app);
+require("./app/routes/images.routes.js")(app);
 require("./app/routes/orders.routes.js")(app);
 require("./app/routes/products.routes.js")(app);
 require("./app/routes/ratings.routes.js")(app);
-require("./app/routes/categories.routes.js")(app);
-require("./app/routes/subcategories.routes.js")(app);
 require("./app/routes/sales.routes.js")(app);
 require("./app/routes/stores.routes.js")(app);
+require("./app/routes/subcategories.routes.js")(app);
 require("./app/routes/users.routes.js")(app);
 
 // set port, listen for requests

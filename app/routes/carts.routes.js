@@ -1,13 +1,13 @@
 module.exports = app => {
-    const carts = require("../controllers/Carts.controller.js");
+  const carts = require("../controllers/Carts.controller.js");
 
-    app.post("/carts", carts.create);
-  
-    app.get("/carts/:id", carts.findOne);
+  app.post("/carts", carts.create);
 
-    app.put("/carts/:id", carts.update);
+  app.get("/carts", carts.findAll);
 
-    app.delete("/carts/:id", carts.delete);
+  app.get("/carts/:id", carts.findOne);
 
-    app.delete("/carts", carts.deleteAll);
-  };
+  app.put("/carts/:id", carts.update);
+
+  app.delete("/carts/:id", carts.delete);
+};
