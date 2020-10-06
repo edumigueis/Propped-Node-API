@@ -143,8 +143,8 @@ exports.findByStore = (req, res) => {
 };
 
 exports.findByParams = (req, res) => {
-  Product.findByParams(req.params.name_product, req.params.id_category_product, req.params.id_subcategory_product,
-    req.params.filters_product, (err, data) => {
+  Product.findByParams(req.body.name_product, req.body.id_category_product, req.body.id_subcategory_product,
+    req.body.filters_product, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
