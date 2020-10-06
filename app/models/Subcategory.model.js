@@ -2,12 +2,13 @@ const sql = require("./db.js");
 
 const Subcategory = function (subcategory) {
   this.code_category = subcategory.code_category;
-  this.name_category = subcategory.name_category;
+  this.id_category_subcategory = subcategory.id_category_subcategory;
+  this.name_subcategory = subcategory.name_subcategory;
 };
 
 Subcategory.create = (newSubcategory, result) => {
   sql.query(
-    `INSERT INTO Subcategory_Propped VALUES('${newSubcategory.code_subcategory}','${newSubcategory.name_subcategory}')`,
+    `INSERT INTO Subcategory_Propped VALUES('${newSubcategory.code_subcategory}',${newSubcategory.id_category_subcategory},'${newSubcategory.name_subcategory}')`,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -60,7 +61,7 @@ Subcategory.getAll = (result) => {
 Subcategory.updateByCode = (code, subcategory, result) => {
   subcategory.code_subcategory = code;
   sql.query(
-    `UPDATE Subcategory_Propped SET name_category = '${subcategory.name_category}' WHERE code_category = '${code}'`,
+    `UPDATE Subcategory_Propped SET id_category_subcategory = ${newSubcategory.id_category_subcategory}, name_category = '${subcategory.name_category}' WHERE code_category = '${code}'`,
     (err, res) => {
       if (err) {
         result(null, err);
