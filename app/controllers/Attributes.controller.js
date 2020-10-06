@@ -10,22 +10,27 @@ exports.create = (req, res) => {
   }
 
   const attribute = new Attribute({
-    code_attribute: req.body.code_attribute,
     name_attribute: req.body.name_attribute,
   });
 
-  Attribute.create(attribute, (err, data) => {
-    do attribute.code_attribute = Hasher.generateCode();
-    while (
-      Attribute.findByCode(attribute.code_attribute, (err, data) => {}) == -1
-    );
+  if (typeof attribute.name_attribute === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Attribute.create(attribute, (err, data) => {
+      do attribute.code_attribute = Hasher.generateCode();
+      while (
+        Attribute.findByCode(attribute.code_attribute, (err, data) => {}) == -1
+      );
 
-    if (err)
-      res.status(500).send({
-        message: err.message || "Error while trying to create attribute.",
-      });
-    else res.send(data.recordset);
-  });
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to create attribute.",
+        });
+      else res.send(data.recordset);
+    });
+  }
 };
 
 exports.findAll = (req, res) => {
@@ -47,8 +52,7 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for attribute with the code " +
+          message: "Error while searching for attribute with the code " +
             req.params.code_attribute,
         });
       }
@@ -63,25 +67,30 @@ exports.update = (req, res) => {
     });
   }
 
-  Attribute.updateByCode(
-    req.params.code_attribute,
-    new Attribute(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Attribute with the code ${req.params.code_attribute} wasn't found.`,
-          });
-        } else {
-          res.status(500).send({
-            message:
-              "Error when trying to update attribute with the following code: " +
-              req.params.code_attribute,
-          });
-        }
-      } else res.send(data.recordset);
-    }
-  );
+  var attribute = new Attribute(req.body);
+
+  if (typeof attribute.name_attribute === "undefined") {
+    res.status(400).send({
+      message: err.message || "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Attribute.updateByCode(req.params.code_attribute, attribute,
+      (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Attribute with the code ${req.params.code_attribute} wasn't found.`,
+            });
+          } else {
+            res.status(500).send({
+              message: "Error when trying to update attribute with the following code: " +
+                req.params.code_attribute,
+            });
+          }
+        } else res.send(data.recordset);
+      }
+    );
+  }
 };
 
 exports.delete = (req, res) => {
@@ -93,8 +102,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error when trying to update attribute with the following code: " +
+          message: "Error when trying to update attribute with the following code: " +
             req.params.code_attribute,
         });
       }

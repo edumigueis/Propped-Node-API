@@ -10,22 +10,27 @@ exports.create = (req, res) => {
   }
 
   const cart = new Cart({
-    code_shoppingcart: req.body.code_shoppingcart,
     id_user_shoppingcart: req.body.id_user_shoppingcart,
   });
 
-  Cart.create(cart, (err, data) => {
-    do cart.code_shoppingcart = Hasher.generateCode();
-    while (
-      Cart.findByCode(cart.code_shoppingcart, (err, data) => {}) == -1
-    );
+  if (typeof cart.id_user_shoppingcart === "undefined") {
+    res.status(400).send({
+      message: err.message || "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Cart.create(cart, (err, data) => {
+      do cart.code_shoppingcart = Hasher.generateCode();
+      while (
+        Cart.findByCode(cart.code_shoppingcart, (err, data) => {}) == -1
+      );
 
-    if (err)
-      res.status(500).send({
-        message: err.message || "Error while trying to create cart.",
-      });
-    else res.send(data.recordset);
-  });
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to create cart.",
+        });
+      else res.send(data.recordset);
+    });
+  }
 };
 
 exports.findAll = (req, res) => {
@@ -47,8 +52,7 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for cart with the code " +
+          message: "Error while searching for cart with the code " +
             req.params.code_shoppingcart,
         });
       }
@@ -63,25 +67,32 @@ exports.update = (req, res) => {
     });
   }
 
-  Cart.updateByCode(
-    req.params.code_shoppingcart,
-    new Cart(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Cart with the code ${req.params.code_shoppingcart} wasn't found.`,
-          });
-        } else {
-          res.status(500).send({
-            message:
-              "Error when trying to update cart with the following code: " +
-              req.params.code_shoppingcart,
-          });
-        }
-      } else res.send(data.recordset);
-    }
-  );
+  var cart = new Cart(req.body);
+
+  if (typeof cart.id_user_shoppingcart === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Cart.updateByCode(
+      req.params.code_shoppingcart,
+      cart,
+      (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Cart with the code ${req.params.code_shoppingcart} wasn't found.`,
+            });
+          } else {
+            res.status(500).send({
+              message: "Error when trying to update cart with the following code: " +
+                req.params.code_shoppingcart,
+            });
+          }
+        } else res.send(data.recordset);
+      }
+    );
+  }
 };
 
 exports.delete = (req, res) => {
@@ -93,8 +104,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error when trying to update cart with the following code: " +
+          message: "Error when trying to update cart with the following code: " +
             req.params.code_shoppingcart,
         });
       }

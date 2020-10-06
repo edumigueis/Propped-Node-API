@@ -10,23 +10,28 @@ exports.create = (req, res) => {
   }
 
   const favorite = new Favorite({
-    code_favorite: req.body.code_favorite,
     id_user_favorite: req.body.id_user_favorite,
     id_product_favorite: req.body.id_product_favorite,
   });
 
-  Favorite.create(favorite, (err, data) => {
-    do favorite.code_favorite = Hasher.generateCode();
-    while (
-      Favorite.findByCode(favorite.code_favorite, (err, data) => {}) == -1
-    );
+  if (typeof favorite.id_user_favorite === "undefined" || typeof favorite.id_product_favorite === "undefined") {
+    res.status(400).send({
+      message: err.message || "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Favorite.create(favorite, (err, data) => {
+      do favorite.code_favorite = Hasher.generateCode();
+      while (
+        Favorite.findByCode(favorite.code_favorite, (err, data) => {}) == -1
+      );
 
-    if (err)
-      res.status(500).send({
-        message: err.message || "Error while trying to create favorite.",
-      });
-    else res.send(data.recordset);
-  });
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to create favorite.",
+        });
+      else res.send(data.recordset);
+    });
+  }
 };
 
 exports.findAll = (req, res) => {
@@ -48,8 +53,7 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for favorite with the code " +
+          message: "Error while searching for favorite with the code " +
             req.params.code_favorite,
         });
       }
@@ -64,25 +68,32 @@ exports.update = (req, res) => {
     });
   }
 
-  Favorite.updateByCode(
-    req.params.code_favorite,
-    new Favorite(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Favorite with the code ${req.params.code_favorite} wasn't found.`,
-          });
-        } else {
-          res.status(500).send({
-            message:
-              "Error when trying to update favorite with the following code: " +
-              req.params.code_favorite,
-          });
-        }
-      } else res.send(data.recordset);
-    }
-  );
+  var favorite = new Favorite(req.body);
+
+  if (typeof favorite.id_user_favorite === "undefined" || typeof favorite.id_product_favorite === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Favorite.updateByCode(
+      req.params.code_favorite,
+      favorite,
+      (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Favorite with the code ${req.params.code_favorite} wasn't found.`,
+            });
+          } else {
+            res.status(500).send({
+              message: "Error when trying to update favorite with the following code: " +
+                req.params.code_favorite,
+            });
+          }
+        } else res.send(data.recordset);
+      }
+    );
+  }
 };
 
 exports.delete = (req, res) => {
@@ -94,8 +105,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error when trying to update favorite with the following code: " +
+          message: "Error when trying to update favorite with the following code: " +
             req.params.code_favorite,
         });
       }
@@ -116,8 +126,7 @@ exports.findByUser = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for favorite with the user " +
+          message: "Error while searching for favorite with the user " +
             req.params.id_user_favorite,
         });
       }

@@ -10,22 +10,27 @@ exports.create = (req, res) => {
   }
 
   const category = new Category({
-    code_category: req.body.code_category,
     name_category: req.body.name_category,
   });
 
-  Category.create(category, (err, data) => {
-    do category.code_category = Hasher.generateCode();
-    while (
-      Category.findByCode(category.code_category, (err, data) => {}) == -1
-    );
+  if (typeof category.name_category === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Category.create(category, (err, data) => {
+      do category.code_category = Hasher.generateCode();
+      while (
+        Category.findByCode(category.code_category, (err, data) => {}) == -1
+      );
 
-    if (err)
-      res.status(500).send({
-        message: err.message || "Error while trying to create category.",
-      });
-    else res.send(data.recordset);
-  });
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to create category.",
+        });
+      else res.send(data.recordset);
+    });
+  }
 };
 
 exports.findAll = (req, res) => {
@@ -47,8 +52,7 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for category with the code " +
+          message: "Error while searching for category with the code " +
             req.params.code_category,
         });
       }
@@ -63,25 +67,32 @@ exports.update = (req, res) => {
     });
   }
 
-  Category.updateByCode(
-    req.params.code_category,
-    new Category(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Category with the code ${req.params.code_category} wasn't found.`,
-          });
-        } else {
-          res.status(500).send({
-            message:
-              "Error when trying to update category with the following code: " +
-              req.params.code_category,
-          });
-        }
-      } else res.send(data.recordset);
-    }
-  );
+  var category = new Category(req.body);
+
+  if (typeof category.name_category === "undefined") {
+    res.status(400).send({
+      message: err.message || "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Category.updateByCode(
+      req.params.code_category,
+      category,
+      (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Category with the code ${req.params.code_category} wasn't found.`,
+            });
+          } else {
+            res.status(500).send({
+              message: "Error when trying to update category with the following code: " +
+                req.params.code_category,
+            });
+          }
+        } else res.send(data.recordset);
+      }
+    );
+  }
 };
 
 exports.delete = (req, res) => {
@@ -93,8 +104,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error when trying to delete category with the following code: " +
+          message: "Error when trying to delete category with the following code: " +
             req.params.code_category,
         });
       }
