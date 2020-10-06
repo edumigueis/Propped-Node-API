@@ -10,7 +10,6 @@ exports.create = (req, res) => {
   }
 
   const sale = new Sale({
-    code_sale: req.body.code_sale,
     id_store_sale: req.body.id_store_sale,
     delivery_time_sale: req.body.delivery_time_sale,
     amount_sale: req.body.amount_sale,

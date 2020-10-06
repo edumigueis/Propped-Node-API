@@ -11,7 +11,6 @@ exports.create = (req, res) => {
   }
 
   const rating = new Rating({
-    code_rating: req.body.code_rating,
     stars_rating: req.body.stars_rating,
   });
 

@@ -10,7 +10,6 @@ exports.create = (req, res) => {
   }
 
   const subcategory = new Subcategory({
-    code_subcategory: req.body.code_subcategory,
     name_subcategory: req.body.name_subcategory,
   });
 

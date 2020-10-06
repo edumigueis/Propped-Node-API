@@ -10,7 +10,6 @@ exports.create = (req, res) => {
   }
 
   const product = new Product({
-    code_product: req.body.code_product,
     id_store_product: req.body.id_store_product,
     id_category_product: req.body.id_category_product,
     id_subcategory_product: req.body.id_subcategory_product,

@@ -10,7 +10,6 @@ exports.create = (req, res) => {
   }
 
   const order = new Order({
-    code_order: req.body.code_order,
     id_user_order: req.body.id_user_order,
     id_form_of_payment_order: req.body.id_form_of_payment_order,
     date_order: req.body.date_order,

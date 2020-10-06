@@ -10,7 +10,6 @@ exports.create = (req, res) => {
   }
 
   const store = new Store({
-    code_store: req.body.code_store,
     name_store: req.body.name_store,
     registry_store: req.body.registry_store,
     website_store: req.body.website_store,

@@ -11,22 +11,27 @@ exports.create = (req, res) => {
   }
 
   const image = new Image({
-    code_image: req.body.code_image,
     photo_image: req.body.photo_image,
   });
 
-  Image.create(image, (err, data) => {
-    do image.code_image = Hasher.generateCode();
-    while (
-      Image.findByCode(favorite.code_image, (err, data) => {}) == -1
-    );
+  if (typeof image.photo_image === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Image.create(image, (err, data) => {
+      do image.code_image = Hasher.generateCode();
+      while (
+        Image.findByCode(favorite.code_image, (err, data) => {}) == -1
+      );
 
-    if (err)
-      res.status(500).send({
-        message: err.message || "Error while trying to create image."
-      });
-    else res.send(data.recordset);
-  });
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to create image."
+        });
+      else res.send(data.recordset);
+    });
+  }
 };
 
 exports.findAll = (req, res) => {
@@ -48,8 +53,7 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for image with the code " +
+          message: "Error while searching for image with the code " +
             req.params.code_image
         });
       }
@@ -64,24 +68,32 @@ exports.update = (req, res) => {
     });
   }
 
-  Image.updateByCode(
-    req.params.code_image,
-    new Image(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Image with the code ${req.params.code_image} wasn't found.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error when trying to update image with the following code: " +
-            req.params.code_image,
-          });
-        }
-      } else res.send(data.recordset);
-    }
-  );
+  var image = new Image(req.body);
+
+  if (typeof image.photo_image === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Image.updateByCode(
+      req.params.code_image,
+      image,
+      (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Image with the code ${req.params.code_image} wasn't found.`
+            });
+          } else {
+            res.status(500).send({
+              message: "Error when trying to update image with the following code: " +
+                req.params.code_image,
+            });
+          }
+        } else res.send(data.recordset);
+      }
+    );
+  }
 };
 
 exports.delete = (req, res) => {
@@ -94,7 +106,7 @@ exports.delete = (req, res) => {
       } else {
         res.status(500).send({
           message: "Error when trying to update image with the following code: " +
-          req.params.code_image,
+            req.params.code_image,
         });
       }
     } else res.send({
