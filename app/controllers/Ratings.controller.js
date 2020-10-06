@@ -14,12 +14,11 @@ exports.create = (req, res) => {
     stars_rating: req.body.stars_rating,
   });
 
+  do rating.code_rating = Hasher.generateCode();
+  while (
+    Rating.findByCode(favorite.code_rating, (err, data) => {}) == -1
+  );
   Rating.create(rating, (err, data) => {
-    do rating.code_rating = Hasher.generateCode();
-    while (
-      Rating.findByCode(favorite.code_rating, (err, data) => {}) == -1
-    );
-
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create rating."

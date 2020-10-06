@@ -18,12 +18,11 @@ exports.create = (req, res) => {
       message: err.message || "Parts of the data weren't given correctly.",
     });
   } else {
+    do cart.code_shoppingcart = Hasher.generateCode();
+    while (
+      Cart.findByCode(cart.code_shoppingcart, (err, data) => {}) == -1
+    );
     Cart.create(cart, (err, data) => {
-      do cart.code_shoppingcart = Hasher.generateCode();
-      while (
-        Cart.findByCode(cart.code_shoppingcart, (err, data) => {}) == -1
-      );
-
       if (err)
         res.status(500).send({
           message: err.message || "Error while trying to create cart.",

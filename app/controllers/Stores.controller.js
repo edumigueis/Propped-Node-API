@@ -22,12 +22,11 @@ exports.create = (req, res) => {
     image_store: req.body.image_store
   });
 
+  do store.code_store = Hasher.generateCode();
+  while (
+    Store.findByCode(store.code_store, (err, data) => {}) == -1
+  );
   Store.create(store, (err, data) => {
-    do store.code_store = Hasher.generateCode();
-    while (
-      Store.findByCode(store.code_store, (err, data) => {}) == -1
-    );
-
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create store.",

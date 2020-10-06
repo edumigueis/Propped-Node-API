@@ -19,12 +19,11 @@ exports.create = (req, res) => {
       message: "Parts of the data weren't given correctly.",
     });
   } else {
+    do image.code_image = Hasher.generateCode();
+    while (
+      Image.findByCode(favorite.code_image, (err, data) => {}) == -1
+    );
     Image.create(image, (err, data) => {
-      do image.code_image = Hasher.generateCode();
-      while (
-        Image.findByCode(favorite.code_image, (err, data) => {}) == -1
-      );
-
       if (err)
         res.status(500).send({
           message: err.message || "Error while trying to create image."

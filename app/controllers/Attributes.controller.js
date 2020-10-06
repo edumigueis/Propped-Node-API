@@ -18,12 +18,11 @@ exports.create = (req, res) => {
       message: "Parts of the data weren't given correctly.",
     });
   } else {
+    do attribute.code_attribute = Hasher.generateCode();
+    while (
+      Attribute.findByCode(attribute.code_attribute, (err, data) => {}) == -1
+    );
     Attribute.create(attribute, (err, data) => {
-      do attribute.code_attribute = Hasher.generateCode();
-      while (
-        Attribute.findByCode(attribute.code_attribute, (err, data) => {}) == -1
-      );
-
       if (err)
         res.status(500).send({
           message: err.message || "Error while trying to create attribute.",

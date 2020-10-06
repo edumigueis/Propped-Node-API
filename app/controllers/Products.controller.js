@@ -20,10 +20,9 @@ exports.create = (req, res) => {
     stock_product: req.body.stock_product
   });
 
+  do product.code_product = Hasher.generateCode();
+  while (Product.findByCode(product.code_product, (err, data) => {}) == -1);
   Product.create(product, (err, data) => {
-    do product.code_product = Hasher.generateCode();
-    while (Product.findByCode(product.code_product, (err, data) => {}) == -1);
-
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create product.",

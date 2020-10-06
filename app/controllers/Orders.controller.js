@@ -17,12 +17,11 @@ exports.create = (req, res) => {
     total_of_shipping_order: req.body.total_of_shipping_order,
   });
 
+  do order.code_order = Hasher.generateCode();
+  while (
+    Order.findByCode(order.code_order, (err, data) => {}) == -1
+  );
   Order.create(order, (err, data) => {
-    do order.code_order = Hasher.generateCode();
-    while (
-      Order.findByCode(order.code_order, (err, data) => {}) == -1
-    );
-
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create order.",

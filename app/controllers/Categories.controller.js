@@ -18,12 +18,11 @@ exports.create = (req, res) => {
       message: "Parts of the data weren't given correctly.",
     });
   } else {
+    do category.code_category = Hasher.generateCode();
+    while (
+      Category.findByCode(category.code_category, (err, data) => {}) == -1
+    );
     Category.create(category, (err, data) => {
-      do category.code_category = Hasher.generateCode();
-      while (
-        Category.findByCode(category.code_category, (err, data) => {}) == -1
-      );
-
       if (err)
         res.status(500).send({
           message: err.message || "Error while trying to create category.",

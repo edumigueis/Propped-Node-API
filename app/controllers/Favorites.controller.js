@@ -19,12 +19,11 @@ exports.create = (req, res) => {
       message: err.message || "Parts of the data weren't given correctly.",
     });
   } else {
+    do favorite.code_favorite = Hasher.generateCode();
+    while (
+      Favorite.findByCode(favorite.code_favorite, (err, data) => {}) == -1
+    );
     Favorite.create(favorite, (err, data) => {
-      do favorite.code_favorite = Hasher.generateCode();
-      while (
-        Favorite.findByCode(favorite.code_favorite, (err, data) => {}) == -1
-      );
-
       if (err)
         res.status(500).send({
           message: err.message || "Error while trying to create favorite.",

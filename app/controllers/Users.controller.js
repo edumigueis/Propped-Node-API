@@ -21,10 +21,9 @@ exports.create = (req, res) => {
     preference_user: req.body.preference_user,
   });
 
+  do user.code_user = Hasher.generateCode();
+  while (User.findByCode(user.code_user, (err, data) => { }) == -1);
   User.create(user, (err, data) => {
-    do user.code_user = Hasher.generateCode();
-    while (User.findByCode(user.code_user, (err, data) => { }) == -1);
-
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create user.",

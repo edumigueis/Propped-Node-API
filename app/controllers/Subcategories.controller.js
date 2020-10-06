@@ -13,12 +13,11 @@ exports.create = (req, res) => {
     name_subcategory: req.body.name_subcategory,
   });
 
+  do subcategory.code_subcategory = Hasher.generateCode();
+  while (
+    Subcategory.findByCode(subcategory.code_subcategory, (err, data) => {}) == -1
+  );
   Subcategory.create(subcategory, (err, data) => {
-    do subcategory.code_subcategory = Hasher.generateCode();
-    while (
-      Subcategory.findByCode(subcategory.code_subcategory, (err, data) => {}) == -1
-    );
-    
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create subcategory.",

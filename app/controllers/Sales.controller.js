@@ -17,10 +17,9 @@ exports.create = (req, res) => {
     date_order: req.body.date_order,
   });
 
+  do sale.code_sale = Hasher.generateCode();
+  while (Sale.findByCode(sale.code_sale, (err, data) => {}) == -1);
   Sale.create(sale, (err, data) => {
-    do sale.code_sale = Hasher.generateCode();
-    while (Sale.findByCode(sale.code_sale, (err, data) => {}) == -1);
-
     if (err)
       res.status(500).send({
         message: err.message || "Error while trying to create sale.",
