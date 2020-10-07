@@ -99,7 +99,7 @@ exports.findOne = (req, res) => {
 };
 
 exports.findAllByUser = (req, res) => {
-  Rating.findByIdUser(req.params.id_user, (err, data) => {
+  UsersRating.findByIdUser(req.params.id_user, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -108,7 +108,7 @@ exports.findAllByUser = (req, res) => {
       } else {
         res.status(500).send({
           message: "Error while searching for rating(user) with the user with the id " +
-          req.params.id_user
+            req.params.id_user
         });
       }
     } else
@@ -117,7 +117,7 @@ exports.findAllByUser = (req, res) => {
 };
 
 exports.findAllByStore = (req, res) => {
-  Rating.findByIdStore(req.params.id_store, (err, data) => {
+  UsersRating.findByIdStore(req.params.id_store, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -126,7 +126,7 @@ exports.findAllByStore = (req, res) => {
       } else {
         res.status(500).send({
           message: "Error while searching for rating(user) with the store with the id " +
-          req.params.id_user
+            req.params.id_user
         });
       }
     } else res.send(data.recordset);
@@ -169,7 +169,7 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  Rating.remove(req.params.code_rating, (err, data) => {
+  Rating.findByCode(req.params.code_rating, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -177,12 +177,36 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message: "Error when trying to update rating with the following code: " +
-            req.params.code_rating,
+          message: "Error while searching for rating with the code " +
+            req.params.code_rating
         });
       }
-    } else res.send({
-      message: `Rating has been deleted succesfully!`,
-    });
+    } else {
+      UsersRating.removeByIdRating(data.recordset[0].id_rating, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Rating(user) with the user with the id ${data.recordset[0].id_rating} wasn't found.`
+            });
+          } else {
+            res.status(500).send({
+              message: "Error when trying to delete rating(user) with the user with the following id: " +
+                data.recordset[0].id_rating,
+            });
+          }
+        } else {
+          Rating.remove(req.params.code_rating, (err, data) => {
+            if (err) {
+              res.status(500).send({
+                message: "Error when trying to delete rating with the following code: " +
+                  req.params.code_rating,
+              });
+            } else res.send({
+              message: `Rating has been deleted succesfully!`,
+            });
+          });
+        }
+      });
+    }
   });
 };

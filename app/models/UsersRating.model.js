@@ -185,4 +185,29 @@ UsersRating.remove = (code, result) => {
   );
 };
 
+
+UsersRating.removeByIdRating = (id, result) => {
+  sql.query(
+    "DELETE FROM UsersRating_Propped WHERE id_rating_usersrating = " + id,
+    (err, res) => {
+      if (err) {
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        result(
+          {
+            kind: "not_found",
+          },
+          null
+        );
+        return;
+      }
+
+      result(null, res);
+    }
+  );
+};
+
 module.exports = UsersRating;
