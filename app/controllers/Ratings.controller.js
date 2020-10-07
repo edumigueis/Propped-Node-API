@@ -27,7 +27,7 @@ exports.create = (req, res) => {
   } else { 
     do rating.code_rating = Hasher.generateCode();
     while (
-      Rating.findByCode(rating.code_rating, (err, data) => {}) != -1
+      Rating.findByCode(rating.code_rating, (err, data) => {}) == -1
     );
     Rating.create(rating, (err, data) => {
       if (err)
@@ -37,7 +37,7 @@ exports.create = (req, res) => {
       else {
         do usersrating.code_usersrating = Hasher.generateCode();
         while (
-          UsersRating.findByCode(usersrating.code_usersrating, (err, data) => {}) != -1
+          UsersRating.findByCode(usersrating.code_usersrating, (err, data) => {}) == -1
         );
         usersrating.id_rating_usersrating = data.recordset[0].id_rating;
         UsersRating.create(usersrating, (err, data) => {
@@ -77,7 +77,24 @@ exports.findOne = (req, res) => {
             req.params.code_rating
         });
       }
-    } else res.send(data.recordset);
+    } else {
+      UsersRating.findByIdRating(data.recordset[0].id_rating, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Rating(user) with the code ${req.params.code_rating} wasn't found.`
+            });
+          } else {
+            res.status(500).send({
+              message: "Error while searching for rating(user) with the code " +
+                req.params.code_rating
+            });
+          }
+        } else {
+          res.send(data.recordset);
+        }
+      });
+    }
   });
 };
 

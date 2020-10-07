@@ -21,7 +21,7 @@ exports.create = (req, res) => {
   } else {
     do formofpayment.code_formofpayment = Hasher.generateCode();
     while (
-      FormofPayment.findByCode(formofpayment.code_formofpayment, (err, data) => {}) != -1
+      FormofPayment.findByCode(formofpayment.code_formofpayment, (err, data) => {}) == -1
     );
     FormofPayment.create(formofpayment, (err, data) => {
       if (err)

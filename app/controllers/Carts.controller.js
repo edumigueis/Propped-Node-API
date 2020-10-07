@@ -20,7 +20,7 @@ exports.create = (req, res) => {
   } else {
     do cart.code_shoppingcart = Hasher.generateCode();
     while (
-      Cart.findByCode(cart.code_shoppingcart, (err, data) => {}) != -1
+      Cart.findByCode(cart.code_shoppingcart, (err, data) => {}) == -1
     );
     Cart.create(cart, (err, data) => {
       if (err)

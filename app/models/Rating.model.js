@@ -31,7 +31,6 @@ Rating.findByCode = (code, result) => {
         result(null, res);
         return;
       } else {
-        
         result({
             kind: "not_found",
           },

@@ -24,7 +24,7 @@ exports.create = (req, res) => {
   } else {
     do order.code_order = Hasher.generateCode();
     while (
-      Order.findByCode(order.code_order, (err, data) => { }) != -1
+      Order.findByCode(order.code_order, (err, data) => { }) == -1
     );
     Order.create(order, (err, data) => {
       if (err)

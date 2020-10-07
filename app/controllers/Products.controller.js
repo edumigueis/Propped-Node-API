@@ -26,7 +26,7 @@ exports.create = (req, res) => {
     });
   } else {
     do product.code_product = Hasher.generateCode();
-    while (Product.findByCode(product.code_product, (err, data) => {}) != -1);
+    while (Product.findByCode(product.code_product, (err, data) => {}) == -1);
     Product.create(product, (err, data) => {
       if (err)
         res.status(500).send({

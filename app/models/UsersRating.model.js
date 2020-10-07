@@ -47,6 +47,81 @@ UsersRating.findByCode = (code, result) => {
   );
 };
 
+UsersRating.findByIdRating = (id, result) => {
+  sql.query(
+    `SELECT * FROM UsersRating_Propped WHERE id_rating_usersrating = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
+UsersRating.findByIdUser = (id, result) => {
+  sql.query(
+    `SELECT * FROM UsersRating_Propped WHERE id_user_usersrating = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
+UsersRating.findByIdStore = (id, result) => {
+  sql.query(
+    `SELECT * FROM UsersRating_Propped WHERE id_store_usersrating = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 UsersRating.getAll = (result) => {
   sql.query("SELECT * FROM UsersRating_Propped", (err, res) => {
     if (err) {
