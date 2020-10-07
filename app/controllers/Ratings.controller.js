@@ -24,7 +24,7 @@ exports.create = (req, res) => {
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
     });
-  } else { 
+  } else {
     do rating.code_rating = Hasher.generateCode();
     while (
       Rating.findByCode(rating.code_rating, (err, data) => {}) == -1
@@ -95,6 +95,41 @@ exports.findOne = (req, res) => {
         }
       });
     }
+  });
+};
+
+exports.findAllByUser = (req, res) => {
+  Rating.findByIdUser(req.params.id_user, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Rating(user) with the user with the id ${req.params.id_user} wasn't found.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for rating(user) with the user with the id " +
+          req.params.id_user
+        });
+      }
+    } else
+      res.send(data.recordset);
+  });
+};
+
+exports.findAllByStore = (req, res) => {
+  Rating.findByIdStore(req.params.id_store, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Rating(user) with the store with the id ${req.params.id_store} wasn't found.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for rating(user) with the store with the id " +
+          req.params.id_user
+        });
+      }
+    } else res.send(data.recordset);
   });
 };
 
