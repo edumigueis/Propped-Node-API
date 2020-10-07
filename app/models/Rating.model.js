@@ -30,16 +30,16 @@ Rating.findByCode = (code, result) => {
       if (res.recordset.length > 0) {
         result(null, res);
         return;
+      } else {
+        
+        result({
+            kind: "not_found",
+          },
+          null
+        );
+
+        return -1;
       }
-
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
-
-      return -1;
     }
   );
 };
@@ -66,8 +66,7 @@ Rating.updateByCode = (code, rating, result) => {
       }
 
       if (res.affectedRows == 0) {
-        result(
-          {
+        result({
             kind: "not_found",
           },
           null
@@ -93,8 +92,7 @@ Rating.remove = (code, result) => {
       }
 
       if (res.affectedRows == 0) {
-        result(
-          {
+        result({
             kind: "not_found",
           },
           null

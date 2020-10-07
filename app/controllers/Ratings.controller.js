@@ -24,12 +24,10 @@ exports.create = (req, res) => {
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
     });
-  } else {
-    do rating.code_rating = '3FC38P0FXFGWRIP7VQUFBCEPQHUC5L';
+  } else { 
+    do rating.code_rating = Hasher.generateCode();
     while (
-      Rating.findByCode(rating.code_rating, (err, data) => {
-        console.log(data)
-      }) == -1
+      Rating.findByCode(rating.code_rating, (err, data) => {}) != -1
     );
     Rating.create(rating, (err, data) => {
       if (err)
@@ -39,7 +37,7 @@ exports.create = (req, res) => {
       else {
         do usersrating.code_usersrating = Hasher.generateCode();
         while (
-          Rating.findByCode(usersrating.code_usersrating, (err, data) => {}) == -1
+          UsersRating.findByCode(usersrating.code_usersrating, (err, data) => {}) != -1
         );
         usersrating.id_rating_usersrating = data.recordset[0].id_rating;
         UsersRating.create(usersrating, (err, data) => {
