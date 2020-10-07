@@ -22,7 +22,7 @@ exports.create = (req, res) => {
   });
 
   do user.code_user = Hasher.generateCode();
-  while (User.findByCode(user.code_user, (err, data) => { }) == -1);
+  while (User.findByCode(user.code_user, (err, data) => { }) != -1);
   User.create(user, (err, data) => {
     if (err)
       res.status(500).send({

@@ -29,7 +29,7 @@ exports.create = (req, res) => {
   } else {
     do store.code_store = Hasher.generateCode();
     while (
-      Store.findByCode(store.code_store, (err, data) => {}) == -1
+      Store.findByCode(store.code_store, (err, data) => {}) != -1
     );
     Store.create(store, (err, data) => {
       if (err)

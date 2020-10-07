@@ -20,7 +20,7 @@ exports.create = (req, res) => {
   } else {
     do attribute.code_attribute = Hasher.generateCode();
     while (
-      Attribute.findByCode(attribute.code_attribute, (err, data) => {}) == -1
+      Attribute.findByCode(attribute.code_attribute, (err, data) => {}) != -1
     );
     Attribute.create(attribute, (err, data) => {
       if (err)

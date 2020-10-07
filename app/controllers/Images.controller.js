@@ -21,7 +21,7 @@ exports.create = (req, res) => {
   } else {
     do image.code_image = Hasher.generateCode();
     while (
-      Image.findByCode(favorite.code_image, (err, data) => {}) == -1
+      Image.findByCode(favorite.code_image, (err, data) => {}) != -1
     );
     Image.create(image, (err, data) => {
       if (err)

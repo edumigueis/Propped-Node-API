@@ -23,7 +23,7 @@ exports.create = (req, res) => {
     });
   } else {
     do sale.code_sale = Hasher.generateCode();
-    while (Sale.findByCode(sale.code_sale, (err, data) => {}) == -1);
+    while (Sale.findByCode(sale.code_sale, (err, data) => {}) != -1);
     Sale.create(sale, (err, data) => {
       if (err)
         res.status(500).send({
