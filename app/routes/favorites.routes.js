@@ -5,12 +5,12 @@ module.exports = app => {
 
     app.get("/favorites", favorites.findAll);
 
-    app.get("/favorites/user/:id", favorites.findByUser);
+    app.get("/favorites/user/:code_favorite", favorites.findByUser);
   
-    app.get("/favorites/:id", favorites.findOne);
+    app.get("/favorites/:code_favorite", favorites.findOne);
   
-    app.put("/favorites/:id", favorites.update);
+    app.put("/favorites/:code_favorite", favorites.update);
   
-    app.delete("/favorites/:id", favorites.delete);
+    app.delete("/favorites/:code_favorite", favorites.delete);
   
   };

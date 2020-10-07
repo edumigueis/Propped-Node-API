@@ -5,9 +5,9 @@ module.exports = app => {
 
     app.get("/subcategories", subcategories.findAll);
 
-    app.get("/subcategories/:id", subcategories.findOne);
+    app.get("/subcategories/:code_subcategory", subcategories.findOne);
 
-    app.put("/subcategories/:id", subcategories.update);
+    app.put("/subcategories/:code_subcategory", subcategories.update);
 
-    app.delete("/subcategories/:id", subcategories.delete);
+    app.delete("/subcategories/:code_subcategory", subcategories.delete);
 };

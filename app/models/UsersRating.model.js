@@ -9,7 +9,7 @@ const UsersRating = function (usersrating) {
 
 UsersRating.create = (newUsersRating, result) => {
   sql.query(
-    `INSERT INTO UsersRating_Propped VALUES('${newUsersRating.code_usersrating}',${newUsersRating.id_rating_usersrating},${newUsersRating.id_user_usersrating},${newUsersRating.id_store_usersrating})`,
+    `INSERT INTO UsersRating_Propped VALUES(${newUsersRating.id_rating_usersrating},${newUsersRating.id_user_usersrating},${newUsersRating.id_store_usersrating},'${newUsersRating.code_usersrating}')`,
     (err, res) => {
       if (err) {
         result(err, null);

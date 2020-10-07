@@ -22,18 +22,24 @@ exports.create = (req, res) => {
     image_store: req.body.image_store
   });
 
-  do store.code_store = Hasher.generateCode();
-  while (
-    Store.findByCode(store.code_store, (err, data) => {}) == -1
-  );
-  Store.create(store, (err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Error while trying to create store.",
-      });
-    else 
-      res.send(data.recordset);
-  });
+  if (typeof store.name_store === "undefined" || store.registry_store === "undefined" || store.website_store === "undefined" || store.phone_store === "undefined" || store.postal_code_store === "undefined" || store.address_store === "undefined" || store.city_store === "undefined" || store.state_store === "undefined" || store.country_store === "undefined" || store.image_store === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    do store.code_store = Hasher.generateCode();
+    while (
+      Store.findByCode(store.code_store, (err, data) => {}) == -1
+    );
+    Store.create(store, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to create store.",
+        });
+      else
+        res.send(data.recordset);
+    });
+  }
 };
 
 exports.findAll = (req, res) => {
@@ -42,7 +48,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for stores.",
       });
-    else 
+    else
       res.send(data.recordset);
   });
 };
@@ -54,14 +60,12 @@ exports.findOne = (req, res) => {
         res.status(404).send({
           message: `Store with the code ${req.params.code_store} wasn't found.`,
         });
-      } 
-      else {
+      } else {
         res.status(500).send({
           message: "Error while searching for store with the code " + req.params.code_store,
         });
       }
-    } 
-    else 
+    } else
       res.send(data.recordset);
   });
 };
@@ -73,22 +77,28 @@ exports.update = (req, res) => {
     });
   }
 
-  Store.updateByCode(req.params.code_store, new Store(req.body), (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Store with the code ${req.params.code_store} wasn't found.`,
-        });
-      } 
-      else {
-        res.status(500).send({
-          message: "Error when trying to update store with the following code: " + req.params.code_store,
-        });
-      }
-    } 
-    else 
-      res.send(data.recordset);
-  });
+  var store = new Store(req.body);
+
+  if (typeof store.name_store === "undefined" || typeof store.registry_store === "undefined" || typeof store.website_store === "undefined" || typeof store.phone_store === "undefined" || typeof store.postal_code_store === "undefined" || typeof store.address_store === "undefined" || typeof store.city_store === "undefined" || typeof store.state_store === "undefined" || typeof store.country_store === "undefined" || typeof store.image_store === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Store.updateByCode(req.params.code_store, store, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Store with the code ${req.params.code_store} wasn't found.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error when trying to update store with the following code: " + req.params.code_store,
+          });
+        }
+      } else
+        res.send(data.recordset);
+    });
+  }
 };
 
 exports.delete = (req, res) => {
@@ -98,14 +108,12 @@ exports.delete = (req, res) => {
         res.status(404).send({
           message: `Store with the code ${req.params.code_store} wasn't found.`,
         });
-      } 
-      else {
+      } else {
         res.status(500).send({
           message: "Error when trying to update store with the following code: " + req.params.code_store,
         });
       }
-    } 
-    else {
+    } else {
       res.send({
         message: `Store has been deleted succesfully!`,
       });

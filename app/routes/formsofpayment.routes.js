@@ -5,9 +5,9 @@ module.exports = app => {
 
     app.get("/formsofpayment", formsofpayment.findAll);
 
-    app.get("/formsofpayment/:id", formsofpayment.findOne);
+    app.get("/formsofpayment/:code_formofpayment", formsofpayment.findOne);
 
-    app.put("/formsofpayment/:id", formsofpayment.update);
+    app.put("/formsofpayment/:code_formofpayment", formsofpayment.update);
 
-    app.delete("/formsofpayment/:id", formsofpayment.delete);
+    app.delete("/formsofpayment/:code_formofpayment", formsofpayment.delete);
   };

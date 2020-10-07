@@ -5,9 +5,9 @@ module.exports = app => {
   
     app.get("/attributes", attributes.findAll);
   
-    app.get("/attributes/:id", attributes.findOne);
+    app.get("/attributes/:code_attribute", attributes.findOne);
   
-    app.put("/attributes/:id", attributes.update);
+    app.put("/attributes/:code_attribute", attributes.update);
   
-    app.delete("/attributes/:id", attributes.delete);
+    app.delete("/attributes/:code_attribute", attributes.delete);
   };

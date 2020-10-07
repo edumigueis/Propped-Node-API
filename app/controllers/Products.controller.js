@@ -20,15 +20,21 @@ exports.create = (req, res) => {
     stock_product: req.body.stock_product
   });
 
-  do product.code_product = Hasher.generateCode();
-  while (Product.findByCode(product.code_product, (err, data) => {}) == -1);
-  Product.create(product, (err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Error while trying to create product.",
-      });
-    else res.send(data.recordset);
-  });
+  if (typeof product.id_store_product === "undefined" || product.id_category_product === "undefined" || product.id_subcategory_product === "undefined" || product.name_product === "undefined" || product.description_product === "undefined" || product.weight_product === "undefined" || product.price_product === "undefined" || product.stock_product === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    do product.code_product = Hasher.generateCode();
+    while (Product.findByCode(product.code_product, (err, data) => {}) == -1);
+    Product.create(product, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to create product.",
+        });
+      else res.send(data.recordset);
+    });
+  }
 };
 
 exports.findAll = (req, res) => {
@@ -65,24 +71,32 @@ exports.update = (req, res) => {
     });
   }
 
-  Product.updateByCode(
-    req.params.code_product,
-    new Product(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Product with the code ${req.params.code_product} wasn't found.`,
-          });
-        } else {
-          res.status(500).send({
-            message: "Error when trying to update product with the following code: " +
-              req.params.code_product,
-          });
-        }
-      } else res.send(data.recordset);
-    }
-  );
+  var product = new Product(req.body);
+
+  if (typeof product.id_store_product === "undefined" || product.id_category_product === "undefined" || product.id_subcategory_product === "undefined" || product.name_product === "undefined" || product.description_product === "undefined" || product.weight_product === "undefined" || product.price_product === "undefined" || product.stock_product === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Product.updateByCode(
+      req.params.code_product,
+      product,
+      (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Product with the code ${req.params.code_product} wasn't found.`,
+            });
+          } else {
+            res.status(500).send({
+              message: "Error when trying to update product with the following code: " +
+                req.params.code_product,
+            });
+          }
+        } else res.send(data.recordset);
+      }
+    );
+  }
 };
 
 exports.delete = (req, res) => {

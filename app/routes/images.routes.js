@@ -5,9 +5,9 @@ module.exports = app => {
 
     app.get("/images", images.findAll);
 
-    app.get("/images/:id", images.findOne);
+    app.get("/images/:code_image", images.findOne);
 
-    app.put("/images/:id", images.update);
+    app.put("/images/:code_image", images.update);
 
-    app.delete("/images/:id", images.delete);
+    app.delete("/images/:code_image", images.delete);
 };

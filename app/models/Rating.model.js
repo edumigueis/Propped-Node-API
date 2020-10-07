@@ -1,21 +1,19 @@
 const sql = require("./db.js");
 
 const Rating = function (rating) {
-  this.code_category = rating.code_category;
+  this.code_rating = rating.code_rating;
   this.stars_rating = rating.stars_rating;
 };
 
 Rating.create = (newRating, result) => {
   sql.query(
-    `INSERT INTO Rating_Propped VALUES('${newRating.code_rating}', ${newRating.name_rating})`,
+    `INSERT INTO Rating_Propped OUTPUT INSERTED.* VALUES(${newRating.stars_rating}, '${newRating.code_rating}')`,
     (err, res) => {
       if (err) {
         result(err, null);
         return;
       }
-      result(null, {
-        ...newRating,
-      });
+      result(null, res);
     }
   );
 };

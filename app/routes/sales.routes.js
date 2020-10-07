@@ -5,9 +5,9 @@ module.exports = app => {
 
     app.post("/sales", sales.create);
   
-    app.get("/sales/:id", sales.findOne);
+    app.get("/sales/:code_sale", sales.findOne);
   
-    app.put("/sales/:id", sales.update);
+    app.put("/sales/:code_sale", sales.update);
   
-    app.delete("/sales/:id", sales.delete);
+    app.delete("/sales/:code_sale", sales.delete);
   };

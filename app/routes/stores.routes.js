@@ -5,10 +5,10 @@ module.exports = app => {
   
     app.get("/stores", stores.findAll);
   
-    app.get("/stores/:id", stores.findOne);
+    app.get("/stores/:code_store", stores.findOne);
   
-    app.put("/stores/:id", stores.update);
+    app.put("/stores/:code_store", stores.update);
   
-    app.delete("/stores/:id", stores.delete);
+    app.delete("/stores/:code_store", stores.delete);
 
   };

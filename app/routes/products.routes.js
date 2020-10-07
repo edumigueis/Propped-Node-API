@@ -7,9 +7,9 @@ module.exports = app => {
 
   app.get("/products", products.findAll);
 
-  app.get("/products/:id", products.findOne);
+  app.get("/products/:code_product", products.findOne);
 
-  app.put("/products/:id", products.update);
+  app.put("/products/:code_product", products.update);
 
-  app.delete("/products/:id", products.delete);
+  app.delete("/products/:code_product", products.delete);
 };

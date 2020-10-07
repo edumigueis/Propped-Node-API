@@ -17,15 +17,21 @@ exports.create = (req, res) => {
     date_order: req.body.date_order,
   });
 
-  do sale.code_sale = Hasher.generateCode();
-  while (Sale.findByCode(sale.code_sale, (err, data) => {}) == -1);
-  Sale.create(sale, (err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Error while trying to create sale.",
-      });
-    else res.send(data.recordset);
-  });
+  if (typeof sale.id_store_sale === "undefined" || sale.delivery_time_sale === "undefined" || sale.amount_sale === "undefined" || sale.shipping_sale === "undefined" || sale.date_order === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    do sale.code_sale = Hasher.generateCode();
+    while (Sale.findByCode(sale.code_sale, (err, data) => {}) == -1);
+    Sale.create(sale, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to create sale.",
+        });
+      else res.send(data.recordset);
+    });
+  }
 };
 
 exports.findAll = (req, res) => {
@@ -47,8 +53,7 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for sale with the code " +
+          message: "Error while searching for sale with the code " +
             req.params.code_sale,
         });
       }
@@ -63,21 +68,28 @@ exports.update = (req, res) => {
     });
   }
 
-  Sale.updateByCode(req.params.code_sale, new Sale(req.body), (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Sale with the code ${req.params.code_sale} wasn't found.`,
-        });
-      } else {
-        res.status(500).send({
-          message:
-            "Error when trying to update sale with the following code: " +
-            req.params.code_sale,
-        });
-      }
-    } else res.send(data.recordset);
-  });
+  var sale = new Sale(req.body);
+
+  if (typeof sale.id_store_sale === "undefined" || sale.delivery_time_sale === "undefined" || sale.amount_sale === "undefined" || sale.shipping_sale === "undefined" || sale.date_order === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Sale.updateByCode(req.params.code_sale, sale, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Sale with the code ${req.params.code_sale} wasn't found.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error when trying to update sale with the following code: " +
+              req.params.code_sale,
+          });
+        }
+      } else res.send(data.recordset);
+    });
+  }
 };
 
 exports.delete = (req, res) => {
@@ -89,8 +101,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error when trying to update sale with the following code: " +
+          message: "Error when trying to update sale with the following code: " +
             req.params.code_sale,
         });
       }

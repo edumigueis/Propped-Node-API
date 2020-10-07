@@ -17,17 +17,23 @@ exports.create = (req, res) => {
     total_of_shipping_order: req.body.total_of_shipping_order,
   });
 
-  do order.code_order = Hasher.generateCode();
-  while (
-    Order.findByCode(order.code_order, (err, data) => {}) == -1
-  );
-  Order.create(order, (err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Error while trying to create order.",
-      });
-    else res.send(data.recordset);
-  });
+  if (typeof order.id_user_order === "undefined" || order.id_form_of_payment_order === "undefined" || order.date_order === "undefined" || order.total_order === "undefined" || order.total_of_shipping_order === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    do order.code_order = Hasher.generateCode();
+    while (
+      Order.findByCode(order.code_order, (err, data) => { }) == -1
+    );
+    Order.create(order, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to create order.",
+        });
+      else res.send(data.recordset);
+    });
+  }
 };
 
 exports.findAll = (req, res) => {
@@ -49,8 +55,7 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for order with the code " +
+          message: "Error while searching for order with the code " +
             req.params.code_order,
         });
       }
@@ -65,21 +70,28 @@ exports.update = (req, res) => {
     });
   }
 
-  Order.updateByCode(req.params.code_order, new Order(req.body), (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Order with the code ${req.params.code_order} wasn't found.`,
-        });
-      } else {
-        res.status(500).send({
-          message:
-            "Error when trying to update order with the following code: " +
-            req.params.code_order,
-        });
-      }
-    } else res.send(data.recordset);
-  });
+  var order = new Order(req.body);
+
+  if (typeof order.id_user_order === "undefined" || order.id_form_of_payment_order === "undefined" || order.date_order === "undefined" || order.total_order === "undefined" || order.total_of_shipping_order === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Order.updateByCode(req.params.code_order, order, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Order with the code ${req.params.code_order} wasn't found.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error when trying to update order with the following code: " +
+              req.params.code_order,
+          });
+        }
+      } else res.send(data.recordset);
+    });
+  }
 };
 
 exports.delete = (req, res) => {
@@ -91,8 +103,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error when trying to update order with the following code: " +
+          message: "Error when trying to update order with the following code: " +
             req.params.code_order,
         });
       }

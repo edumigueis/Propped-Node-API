@@ -1,6 +1,7 @@
 const Hasher = require("../data/Hasher.js");
 
 const Rating = require("../models/Rating.model.js");
+const UsersRating = require("../models/UsersRating.model.js");
 
 exports.create = (req, res) => {
 
@@ -11,20 +12,48 @@ exports.create = (req, res) => {
   }
 
   const rating = new Rating({
-    stars_rating: req.body.stars_rating,
+    stars_rating: req.body.stars_rating
   });
 
-  do rating.code_rating = Hasher.generateCode();
-  while (
-    Rating.findByCode(favorite.code_rating, (err, data) => {}) == -1
-  );
-  Rating.create(rating, (err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Error while trying to create rating."
-      });
-    else res.send(data.recordset);
+  const usersrating = new UsersRating({
+    id_user_usersrating: req.body.id_user_usersrating,
+    id_store_usersrating: req.body.id_store_usersrating,
   });
+
+  if (typeof rating.stars_rating === "undefined" || typeof usersrating.id_user_usersrating === "undefined" || typeof usersrating.id_store_usersrating === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    do rating.code_rating = '3FC38P0FXFGWRIP7VQUFBCEPQHUC5L';
+    while (
+      Rating.findByCode(rating.code_rating, (err, data) => {
+        console.log(data)
+      }) == -1
+    );
+    Rating.create(rating, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to create rating."
+        });
+      else {
+        do usersrating.code_usersrating = Hasher.generateCode();
+        while (
+          Rating.findByCode(usersrating.code_usersrating, (err, data) => {}) == -1
+        );
+        usersrating.id_rating_usersrating = data.recordset[0].id_rating;
+        UsersRating.create(usersrating, (err, data) => {
+          if (err)
+            res.status(500).send({
+              message: err.message || "Error while trying to create rating."
+            });
+          else {
+            res.send(data.recordset);
+          }
+        })
+      }
+    });
+  }
 };
 
 exports.findAll = (req, res) => {
@@ -46,12 +75,15 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for rating with the code " +
+          message: "Error while searching for rating with the code " +
             req.params.code_rating
         });
       }
-    } else res.send(data.recordset);
+    } else {
+      console.log(data);
+      res.send(data.recordset);
+
+    }
   });
 };
 
@@ -62,24 +94,32 @@ exports.update = (req, res) => {
     });
   }
 
-  Rating.updateByCode(
-    req.params.code_rating,
-    new Rating(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Rating with the code ${req.params.code_rating} wasn't found.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error when trying to update rating with the following code: " +
-            req.params.code_rating,
-          });
-        }
-      } else res.send(data.recordset);
-    }
-  );
+  var rating = new Rating(req.body);
+
+  if (typeof rating.stars_rating === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Rating.updateByCode(
+      req.params.code_rating,
+      rating,
+      (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Rating with the code ${req.params.code_rating} wasn't found.`
+            });
+          } else {
+            res.status(500).send({
+              message: "Error when trying to update rating with the following code: " +
+                req.params.code_rating,
+            });
+          }
+        } else res.send(data.recordset);
+      }
+    );
+  }
 };
 
 exports.delete = (req, res) => {
@@ -92,7 +132,7 @@ exports.delete = (req, res) => {
       } else {
         res.status(500).send({
           message: "Error when trying to update rating with the following code: " +
-          req.params.code_rating,
+            req.params.code_rating,
         });
       }
     } else res.send({

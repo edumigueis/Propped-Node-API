@@ -5,9 +5,9 @@ module.exports = app => {
   
     app.get("/ratings", ratings.findAll);
   
-    app.get("/ratings/:id", ratings.findOne);
+    app.get("/ratings/:code_rating", ratings.findOne);
   
-    app.put("/ratings/:id", ratings.update);
+    app.put("/ratings/:code_rating", ratings.update);
   
-    app.delete("/ratings/:id", ratings.delete);
+    app.delete("/ratings/:code_rating", ratings.delete);
   };
