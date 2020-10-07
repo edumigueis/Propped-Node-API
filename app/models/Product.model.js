@@ -36,7 +36,7 @@ Product.findByCode = (code, result) => {
         return;
       }
 
-      if (res.length > 0) {
+      if (res.recordset.length > 0) {
         result(null, res);
         return;
       }
@@ -129,7 +129,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
           return;
         }
 
-        if (res.length > 0) {
+        if (res.recordset.length > 0) {
           result(null, res);
           return;
         }
@@ -157,7 +157,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
           return;
         }
 
-        if (res.length > 0) {
+        if (res.recordset.length > 0) {
           result(null, res);
           return;
         }
@@ -185,7 +185,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
           return;
         }
 
-        if (res.length > 0) {
+        if (res.recordset.length > 0) {
           result(null, res);
           return;
         }
@@ -213,7 +213,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
           return;
         }
 
-        if (res.length > 0) {
+        if (res.recordset.length > 0) {
           result(null, res);
           return;
         }
@@ -241,7 +241,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
           return;
         }
 
-        if (res.length > 0) {
+        if (res.recordset.length > 0) {
           result(null, res);
           return;
         }
@@ -288,7 +288,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
                     return;
                   }
 
-                  if (res.length > 0) {
+                  if (res.recordset.length > 0) {
                     result(null, res);
                     return;
                   }
@@ -340,7 +340,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
                     return;
                   }
 
-                  if (res.length > 0) {
+                  if (res.recordset.length > 0) {
                     result(null, res);
                     return;
                   }
@@ -392,7 +392,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
                     return;
                   }
 
-                  if (res.length > 0) {
+                  if (res.recordset.length > 0) {
                     result(null, res);
                     return;
                   }
@@ -444,7 +444,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
                     return;
                   }
 
-                  if (res.length > 0) {
+                  if (res.recordset.length > 0) {
                     result(null, res);
                     return;
                   }
@@ -496,7 +496,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
                     return;
                   }
 
-                  if (res.length > 0) {
+                  if (res.recordset.length > 0) {
                     result(null, res);
                     return;
                   }
@@ -535,7 +535,7 @@ Product.findByStore = (id, result) => {
         return;
       }
 
-      if (res.length > 0) {
+      if (res.recordset.length > 0) {
         result(null, res);
         return;
       }

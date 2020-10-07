@@ -30,7 +30,7 @@ SalesOrder.findByCode = (code, result) => {
         return;
       }
 
-      if (res.length > 0) {
+      if (res.recordset.length > 0) {
         result(null, res);
         return;
       }

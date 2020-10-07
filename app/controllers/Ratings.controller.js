@@ -79,11 +79,7 @@ exports.findOne = (req, res) => {
             req.params.code_rating
         });
       }
-    } else {
-      console.log(data);
-      res.send(data.recordset);
-
-    }
+    } else res.send(data.recordset);
   });
 };
 

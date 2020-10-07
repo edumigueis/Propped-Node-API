@@ -39,7 +39,7 @@ User.findByCode = (code, result) => {
         return;
       }
 
-      if (res.length > 0) {
+      if (res.recordset.length > 0) {
         result(null, res);
         return;
       }
@@ -129,7 +129,7 @@ User.findByLoginData = (email, senha, result) => {
         return;
       }
 
-      if (res.length > 0) {
+      if (res.recordset.length > 0) {
         Hasher.comparePassword(senha, res.pass_user, function (res) {
           if (res) {
             result(null, res);
