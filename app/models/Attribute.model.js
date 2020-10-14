@@ -112,4 +112,30 @@ Attribute.remove = (code, result) => {
   );
 };
 
+Attribute.findByName = (name, result) => {
+  sql.query(
+    `SELECT * FROM Attribute_Propped WHERE code_attribute = '${name}'`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 module.exports = Attribute;
