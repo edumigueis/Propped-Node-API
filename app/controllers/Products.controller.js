@@ -1,6 +1,8 @@
 const Hasher = require("../data/Hasher.js");
 
 const Product = require("../models/Product.model.js");
+const ProductAttribute = require("../models/ProductAttribute.model.js");
+const Attribute = require("../models/Attribute.model.js");
 
 exports.create = (req, res) => {
   if (!req.body) {
@@ -20,20 +22,53 @@ exports.create = (req, res) => {
     stock_product: req.body.stock_product
   });
 
-  if (typeof product.id_store_product === "undefined" || product.id_category_product === "undefined" || product.id_subcategory_product === "undefined" || product.name_product === "undefined" || product.description_product === "undefined" || product.weight_product === "undefined" || product.price_product === "undefined" || product.stock_product === "undefined") {
+  const productAttribute = new ProductAttribute({
+    id_attribute_productattribute: req.body.id_attribute_productattribute,
+    id_product_productattribute: req.body.id_product_productattribute,
+    value_productattribute: req.body.value_productattribute,
+    available_productattribute: req.body.available_productattribute
+  });
+
+  if (typeof product.id_store_product === "undefined" || typeof product.id_category_product === "undefined" || typeof product.id_subcategory_product === "undefined" || typeof product.name_product === "undefined" || typeof product.description_product === "undefined" || typeof product.weight_product === "undefined" || typeof product.price_product === "undefined" || typeof product.stock_product === "undefined" || typeof productAttribute.id_attribute_productattribute === "undefined" || || typeof productAttribute.id_product_productattribute === "undefined" ||typeof productAttribute.value_productattribute === "undefined" || typeof productAttribute.available_productattribute === "undefined" || typeof req.body.name_attribute === "undefined") {
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
     });
   } else {
-    do product.code_product = Hasher.generateCode();
-    while (Product.findByCode(product.code_product, (err, data) => {}) == -1);
-    Product.create(product, (err, data) => {
+    Attribute.findByName(req.body.name_attribute, (err, data) => {
       if (err)
-        res.status(500).send({
-          message: err.message || "Error while trying to create product.",
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Attribute with the name ${req.body.name_attribute} wasn't found.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error while trying to create product."
+          });
+        }
+      else {
+        do product.code_product = Hasher.generateCode();
+        while (Product.findByCode(product.code_product, (err, data) => {}) == -1);
+        productAttribute.id_attribute_productattribute = data.recordset[0].id_attribute;
+        Product.create(product, (err, data2) => {
+          if (err)
+            res.status(500).send({
+              message: err.message || "Error while trying to create product.",
+            });
+          else {
+            do productAttribute.code_productattribute = Hasher.generateCode();
+            while (ProductAttribute.findByCode(productAttribute.code_productattribute, (err, data) => {}) == -1);
+            productAttribute.id_product_productattribute = data2.recordset[0].id_product;
+            ProductAttribute.create(productAttribute, (err, data3) => {
+              if (err)
+                res.status(500).send({
+                  message: err.message || "Error while trying to create product.",
+                });
+              else res.send(data2.recordset);
+            });
+          }
         });
-      else res.send(data.recordset);
-    });
+      }
+    })
   }
 };
 
