@@ -29,7 +29,7 @@ exports.create = (req, res) => {
     available_productattribute: req.body.available_productattribute
   });
 
-  if (typeof product.id_store_product === "undefined" || typeof product.id_category_product === "undefined" || typeof product.id_subcategory_product === "undefined" || typeof product.name_product === "undefined" || typeof product.description_product === "undefined" || typeof product.weight_product === "undefined" || typeof product.price_product === "undefined" || typeof product.stock_product === "undefined" || typeof productAttribute.id_attribute_productattribute === "undefined" || || typeof productAttribute.id_product_productattribute === "undefined" ||typeof productAttribute.value_productattribute === "undefined" || typeof productAttribute.available_productattribute === "undefined" || typeof req.body.name_attribute === "undefined") {
+  if (typeof product.id_store_product === "undefined" || typeof product.id_category_product === "undefined" || typeof product.id_subcategory_product === "undefined" || typeof product.name_product === "undefined" || typeof product.description_product === "undefined" || typeof product.weight_product === "undefined" || typeof product.price_product === "undefined" || typeof product.stock_product === "undefined" || typeof productAttribute.id_attribute_productattribute === "undefined" || typeof productAttribute.id_product_productattribute === "undefined" ||typeof productAttribute.value_productattribute === "undefined" || typeof productAttribute.available_productattribute === "undefined" || typeof req.body.name_attribute === "undefined") {
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
     });
