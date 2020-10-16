@@ -21,15 +21,21 @@ exports.create = (req, res) => {
     preference_user: req.body.preference_user,
   });
 
-  do user.code_user = Hasher.generateCode();
-  while (User.findByCode(user.code_user, (err, data) => { }) == -1);
-  User.create(user, (err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Error while trying to create user.",
-      });
-    else res.send(data.recordset);
-  });
+  if (typeof user.name_user === "undefined" || typeof user.email_user === "undefined" || typeof user.pass_user === "undefined" || typeof user.gender_user === "undefined" || typeof user.birth_date_user === "undefined" || typeof user.registry_user === "undefined" || typeof user.phone_user === "undefined" || typeof user.image_user === "undefined" || typeof user.preference_user === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    do user.code_user = Hasher.generateCode();
+    while (User.findByCode(user.code_user, (err, data) => {}) == -1);
+    User.create(user, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to create user.",
+        });
+      else res.send(data.recordset);
+    });
+  }
 };
 
 exports.findAll = (req, res) => {
@@ -51,8 +57,7 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for user with the code " +
+          message: "Error while searching for user with the code " +
             req.params.code_user,
         });
       }
@@ -67,21 +72,28 @@ exports.update = (req, res) => {
     });
   }
 
-  User.updateByCode(req.params.code_user, new User(req.body), (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `User with the code ${req.params.code_user} wasn't found.`,
-        });
-      } else {
-        res.status(500).send({
-          message:
-            "Error when trying to update user with the following code: " +
-            req.params.code_user,
-        });
-      }
-    } else res.send(data.recordset);
-  });
+  var user = new User(req.body);
+
+  if (typeof user.name_user === "undefined" || typeof user.email_user === "undefined" || typeof user.pass_user === "undefined" || typeof user.gender_user === "undefined" || typeof user.birth_date_user === "undefined" || typeof user.registry_user === "undefined" || typeof user.phone_user === "undefined" || typeof user.image_user === "undefined" || typeof user.preference_user === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    User.updateByCode(req.params.code_user, user, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `User with the code ${req.params.code_user} wasn't found.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error when trying to update user with the following code: " +
+              req.params.code_user,
+          });
+        }
+      } else res.send(data.recordset);
+    });
+  }
 };
 
 exports.delete = (req, res) => {
@@ -93,8 +105,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error when trying to update user with the following code: " +
+          message: "Error when trying to update user with the following code: " +
             req.params.code_user,
         });
       }
@@ -113,16 +124,13 @@ exports.login = (req, res) => {
         res.status(404).send({
           message: `User with the email ${req.params.email_user} wasn't found.`,
         });
-      }
-      else if (err.kind === "wrong_password") {
+      } else if (err.kind === "wrong_password") {
         res.status(403).send({
           message: `User with the email ${req.params.email_user} doesn´t have this password.`
         });
-      }
-      else {
+      } else {
         res.status(500).send({
-          message:
-            "Error when trying to verify user with this email and password."
+          message: "Error when trying to verify user with this email and password."
         });
       }
     } else {

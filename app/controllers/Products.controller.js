@@ -47,8 +47,6 @@ exports.create = (req, res) => {
           for (var i = 0; i < req.body.attributes.name_attribute.length; i++) {
 
             let productAttribute = new ProductAttribute({
-              id_attribute_productattribute: req.body.attributes.attribute[i].id_attribute_productattribute,
-              id_product_productattribute: req.body.attributes.attribute[i].id_product_productattribute,
               value_productattribute: req.body.attributes.attribute[i].value_productattribute,
               available_productattribute: req.body.attributes.attribute[i].available_productattribute
             });
@@ -78,6 +76,7 @@ exports.create = (req, res) => {
                   while (ProductAttribute.findByCode(productAttribute.code_productattribute, (err, data2) => {}) == -1);
 
                   productAttribute.id_product_productattribute = data0.recordset[0].id_product;
+                  productAttribute.id_attribute_productattribute = data1.recordset[0].id_attribute;
 
                   ProductAttribute.create(productAttribute, (err, data3) => {
                     if (err) {
@@ -85,13 +84,12 @@ exports.create = (req, res) => {
                         message: err.message || "Error while trying to create product.",
                       });
                     } 
-                    else
-                      res.send(data0.recordset);
                   });
                 }
               })
             }
           }
+          res.send(data0.recordset);
         }
       })
     }
