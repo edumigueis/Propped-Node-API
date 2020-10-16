@@ -17,7 +17,7 @@ exports.create = (req, res) => {
     total_of_shipping_order: req.body.total_of_shipping_order,
   });
 
-  if (typeof order.id_user_order === "undefined" || order.id_form_of_payment_order === "undefined" || order.date_order === "undefined" || order.total_order === "undefined" || order.total_of_shipping_order === "undefined") {
+  if (typeof order.id_user_order === "undefined" || typeof order.id_form_of_payment_order === "undefined" || typeof order.date_order === "undefined" || typeof order.total_order === "undefined" || typeof order.total_of_shipping_order === "undefined") {
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
     });
@@ -72,7 +72,7 @@ exports.update = (req, res) => {
 
   var order = new Order(req.body);
 
-  if (typeof order.id_user_order === "undefined" || order.id_form_of_payment_order === "undefined" || order.date_order === "undefined" || order.total_order === "undefined" || order.total_of_shipping_order === "undefined") {
+  if (typeof order.id_user_order === "undefined" || typeof order.id_form_of_payment_order === "undefined" || typeof order.date_order === "undefined" || typeof order.total_order === "undefined" || typeof order.total_of_shipping_order === "undefined") {
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
     });

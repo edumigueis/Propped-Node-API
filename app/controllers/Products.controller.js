@@ -133,7 +133,7 @@ exports.update = (req, res) => {
 
   var product = new Product(req.body);
 
-  if (typeof product.id_store_product === "undefined" || product.id_category_product === "undefined" || product.id_subcategory_product === "undefined" || product.name_product === "undefined" || product.description_product === "undefined" || product.weight_product === "undefined" || product.price_product === "undefined" || product.stock_product === "undefined") {
+  if (typeof product.id_store_product === "undefined" || typeof product.id_category_product === "undefined" || typeof product.id_subcategory_product === "undefined" || typeof product.name_product === "undefined" || typeof product.description_product === "undefined" || typeof product.weight_product === "undefined" || typeof product.price_product === "undefined" || typeof product.stock_product === "undefined") {
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
     });

@@ -14,17 +14,23 @@ exports.create = (req, res) => {
     name_subcategory: req.body.name_subcategory,
   });
 
-  do subcategory.code_subcategory = Hasher.generateCode();
-  while (
-    Subcategory.findByCode(subcategory.code_subcategory, (err, data) => {}) == -1
-  );
-  Subcategory.create(subcategory, (err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Error while trying to create subcategory.",
-      });
-    else res.send(data.recordset);
-  });
+  if (typeof subcategory.id_category_subcategory === "undefined" || typeof subcategory.name_subcategory === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    do subcategory.code_subcategory = Hasher.generateCode();
+    while (
+      Subcategory.findByCode(subcategory.code_subcategory, (err, data) => {}) == -1
+    );
+    Subcategory.create(subcategory, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to create subcategory.",
+        });
+      else res.send(data.recordset);
+    });
+  }
 };
 
 exports.findAll = (req, res) => {
@@ -46,8 +52,7 @@ exports.findOne = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error while searching for subcategory with the code " +
+          message: "Error while searching for subcategory with the code " +
             req.params.code_subcategory,
         });
       }
@@ -62,10 +67,14 @@ exports.update = (req, res) => {
     });
   }
 
-  Subcategory.updateByRA(
-    req.params.code_subcategory,
-    new Subcategory(req.body),
-    (err, data) => {
+  var subcategory = new Subcategory(req.body);
+
+  if (typeof subcategory.id_category_subcategory === "undefined" || typeof subcategory.name_subcategory === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Subcategory.updateByRA(req.params.code_subcategory, subcategory, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
@@ -73,15 +82,16 @@ exports.update = (req, res) => {
           });
         } else {
           res.status(500).send({
-            message:
-              "Error when trying to update subcategory with the following code: " +
+            message: "Error when trying to update subcategory with the following code: " +
               req.params.subcode_category,
           });
         }
       } else res.send(data.recordset);
-    }
-  );
+    })
+  }
 };
+
+
 
 exports.delete = (req, res) => {
   Subcategory.remove(req.params.code_subcategory, (err, data) => {
@@ -92,8 +102,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message:
-            "Error when trying to delete subcategory with the following code: " +
+          message: "Error when trying to delete subcategory with the following code: " +
             req.params.code_subcategory,
         });
       }
