@@ -22,7 +22,7 @@ exports.create = (req, res) => {
     image_store: req.body.image_store
   });
 
-  if (typeof store.name_store === "undefined" || store.registry_store === "undefined" || store.website_store === "undefined" || store.phone_store === "undefined" || store.postal_code_store === "undefined" || store.address_store === "undefined" || store.city_store === "undefined" || store.state_store === "undefined" || store.country_store === "undefined" || store.image_store === "undefined") {
+  if (typeof store.name_store === "undefined" || typeof store.registry_store === "undefined" || typeof store.website_store === "undefined" || typeof store.phone_store === "undefined" || typeof store.postal_code_store === "undefined" || typeof store.address_store === "undefined" || typeof store.city_store === "undefined" || typeof store.state_store === "undefined" || typeof store.country_store === "undefined" || typeof store.image_store === "undefined") {
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
     });

@@ -17,7 +17,7 @@ exports.create = (req, res) => {
     date_order: req.body.date_order,
   });
 
-  if (typeof sale.id_store_sale === "undefined" || sale.delivery_time_sale === "undefined" || sale.amount_sale === "undefined" || sale.shipping_sale === "undefined" || sale.date_order === "undefined") {
+  if (typeof sale.id_store_sale === "undefined" || typeof sale.delivery_time_sale === "undefined" || typeof sale.amount_sale === "undefined" || typeof sale.shipping_sale === "undefined" || typeof sale.date_order === "undefined") {
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
     });
