@@ -14,7 +14,7 @@ const Product = function (product) {
 
 Product.create = (newProduct, result) => {
   sql.query(
-    `INSERT INTO Product_Propped VALUES('${newProduct.code_product}',${newProduct.id_store_product},${newProduct.id_category_product},${newProduct.id_subcategory_product},'${newProduct.name_product}','${newProduct.description_product}',${newProduct.weight_product},${newProduct.price_product}, ${newProduct.stock_product})`,
+    `INSERT INTO Product_Propped VALUES(${newProduct.id_store_product},${newProduct.id_category_product},${newProduct.id_subcategory_product},'${newProduct.name_product}','${newProduct.description_product}',${newProduct.weight_product},${newProduct.price_product}, ${newProduct.stock_product},'${newProduct.code_product}')`,
     (err, res) => {
       if (err) {
         result(err, null);

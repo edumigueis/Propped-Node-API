@@ -114,7 +114,7 @@ Attribute.remove = (code, result) => {
 
 Attribute.findByName = (name, result) => {
   sql.query(
-    `SELECT * FROM Attribute_Propped WHERE code_attribute = '${name}'`,
+    `SELECT * FROM Attribute_Propped WHERE name_attribute = '${name}'`,
     (err, res) => {
       if (err) {
         result(err, null);

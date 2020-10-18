@@ -42,6 +42,7 @@ exports.create = (req, res) => {
           res.status(500).send({
             message: err.message || "Error while trying to create product.",
           });
+          return;
         } 
         else {
           for (var i = 0; i < req.body.attributes.name_attribute.length; i++) {
@@ -50,25 +51,28 @@ exports.create = (req, res) => {
               value_productattribute: req.body.attributes.attribute[i].value_productattribute,
               available_productattribute: req.body.attributes.attribute[i].available_productattribute
             });
-
-            if (typeof productAttribute.id_attribute_productattribute === "undefined" || typeof productAttribute.id_product_productattribute === "undefined" || typeof productAttribute.value_productattribute === "undefined" || typeof productAttribute.available_productattribute === "undefined" || typeof req.body.attributes.name_attribute[i] === "undefined") {
+            
+            if (typeof productAttribute.value_productattribute === "undefined" || typeof productAttribute.available_productattribute === "undefined" || typeof req.body.attributes.name_attribute[i] === "undefined") {
               res.status(400).send({
                 message: "Parts of the data weren't given correctly.",
               });
+              return;
             } 
             else {
-
+              console.log(req.body.attributes.name_attribute[i]);
               Attribute.findByName(req.body.attributes.name_attribute[i], (err, data1) => {
                 if (err) {
                   if (err.kind === "not_found") {
                     res.status(404).send({
                       message: `Attribute with the name ${req.body.attributes.name_attribute[i]} wasn't found.`,
                     });
+                    return;
                   } 
                   else {
                     res.status(500).send({
                       message: "Error while trying to create product."
                     });
+                    return;
                   }
                 } 
                 else {
@@ -83,6 +87,7 @@ exports.create = (req, res) => {
                       res.status(500).send({
                         message: err.message || "Error while trying to create product.",
                       });
+                      return;
                     } 
                   });
                 }
@@ -90,6 +95,7 @@ exports.create = (req, res) => {
             }
           }
           res.send(data0.recordset);
+          return;
         }
       })
     }

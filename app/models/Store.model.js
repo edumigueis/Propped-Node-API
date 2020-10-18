@@ -16,7 +16,7 @@ const Store = function (store) {
 
 Store.create = (newStore, result) => {
   sql.query(
-    `INSERT INTO Store_Propped VALUES('${newStore.code_store}','${newStore.name_store}','${newStore.registry_store}','${newStore.website_store}','${newStore.phone_store}','${newStore.postal_code_store}','${newStore.address_store}','${newStore.city_store}','${newStore.state_store}', '${newStore.country_store}', '${newStore.image_store}')`,
+    `INSERT INTO Store_Propped VALUES('${newStore.code_store}','${newStore.name_store}','${newStore.registry_store}','${newStore.website_store}','${newStore.phone_store}','${newStore.postal_code_store}','${newStore.address_store}','${newStore.city_store}','${newStore.state_store}', '${newStore.country_store}', CAST('${newStore.image_store}' as varbinary(max)))`,
     (err, res) => {
       if (err) {
         result(err, null);
