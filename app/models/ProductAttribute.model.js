@@ -10,7 +10,7 @@ const ProductAttribute = function (productattribute) {
 
 ProductAttribute.create = (newProductAttribute, result) => {
   sql.query(
-    `INSERT INTO ProductAttribute_Propped VALUES('${newProductAttribute.code_productattribute}',${newProductAttribute.id_attribute_productattribute},${newProductAttribute.id_product_productattribute},${newProductAttribute.value_productattribute},${newProductAttribute.available_productattribute})`,
+    `INSERT INTO ProductAttribute_Propped VALUES('${newProductAttribute.code_productattribute}',${newProductAttribute.id_attribute_productattribute},${newProductAttribute.id_product_productattribute},'${newProductAttribute.value_productattribute}',${newProductAttribute.available_productattribute})`,
     (err, res) => {
       if (err) {
         result(err, null);

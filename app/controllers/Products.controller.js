@@ -5,13 +5,18 @@ const ProductAttribute = require("../models/ProductAttribute.model.js");
 const Attribute = require("../models/Attribute.model.js");
 
 exports.create = (req, res) => {
+
+  let erro = false;
+
   if (!req.body) {
+    erro = true;
     res.status(400).send({
       message: "Empty params",
     });
   }
 
   if (req.body.attributes.name_attribute.length != req.body.attributes.attribute.length) {
+    erro = true;
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
     });
@@ -39,6 +44,7 @@ exports.create = (req, res) => {
 
       Product.create(product, (err, data0) => {
         if (err) {
+          erro = true;
           res.status(500).send({
             message: err.message || "Error while trying to create product.",
           });
@@ -62,6 +68,7 @@ exports.create = (req, res) => {
               console.log(req.body.attributes.name_attribute[i]);
               Attribute.findByName(req.body.attributes.name_attribute[i], (err, data1) => {
                 if (err) {
+                  erro = true;
                   if (err.kind === "not_found") {
                     res.status(404).send({
                       message: `Attribute with the name ${req.body.attributes.name_attribute[i]} wasn't found.`,
@@ -84,6 +91,8 @@ exports.create = (req, res) => {
 
                   ProductAttribute.create(productAttribute, (err, data3) => {
                     if (err) {
+                      erro = true;
+                      console.log('adsdsdsdsdsd')
                       res.status(500).send({
                         message: err.message || "Error while trying to create product.",
                       });
@@ -93,9 +102,12 @@ exports.create = (req, res) => {
                 }
               })
             }
-          }
-          res.send(data0.recordset);
-          return;
+
+            if(i == req.body.attributes.name_attribute.length - 1 && !erro)
+            {
+              res.send(data0.recordset);
+            }
+          }        
         }
       })
     }
