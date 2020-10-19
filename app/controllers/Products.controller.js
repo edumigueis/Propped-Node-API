@@ -6,22 +6,18 @@ const Attribute = require("../models/Attribute.model.js");
 
 exports.create = (req, res) => {
 
-  let erro = false;
+  var erro = null;
+  var passou = false;
 
   if (!req.body) {
-    erro = true;
     res.status(400).send({
       message: "Empty params",
     });
   }
 
   if (req.body.attributes.name_attribute.length != req.body.attributes.attribute.length) {
-    erro = true;
-    res.status(400).send({
-      message: "Parts of the data weren't given correctly.",
-    });
-  } 
-  else {
+    erro = '400';
+  } else {
     const product = new Product({
       id_store_product: req.body.id_store_product,
       id_category_product: req.body.id_category_product,
@@ -34,54 +30,28 @@ exports.create = (req, res) => {
     });
 
     if (typeof product.id_store_product === "undefined" || typeof product.id_category_product === "undefined" || typeof product.id_subcategory_product === "undefined" || typeof product.name_product === "undefined" || typeof product.description_product === "undefined" || typeof product.weight_product === "undefined" || typeof product.price_product === "undefined" || typeof product.stock_product === "undefined") {
-      res.status(400).send({
-        message: "Parts of the data weren't given correctly.",
-      });
-    } 
-    else {
+      erro = '400';
+    } else {
       do product.code_product = Hasher.generateCode();
       while (Product.findByCode(product.code_product, (err, data) => {}) == -1);
 
       Product.create(product, (err, data0) => {
         if (err) {
-          erro = true;
-          res.status(500).send({
-            message: err.message || "Error while trying to create product.",
-          });
-          return;
-        } 
-        else {
+          erro = err;
+        } else {
           for (var i = 0; i < req.body.attributes.name_attribute.length; i++) {
 
             let productAttribute = new ProductAttribute({
               value_productattribute: req.body.attributes.attribute[i].value_productattribute,
               available_productattribute: req.body.attributes.attribute[i].available_productattribute
             });
-            
+
             if (typeof productAttribute.value_productattribute === "undefined" || typeof productAttribute.available_productattribute === "undefined" || typeof req.body.attributes.name_attribute[i] === "undefined") {
-              res.status(400).send({
-                message: "Parts of the data weren't given correctly.",
-              });
-              return;
-            } 
-            else {
-              console.log(req.body.attributes.name_attribute[i]);
+              erro = '400';
+            } else {
               Attribute.findByName(req.body.attributes.name_attribute[i], (err, data1) => {
-                if (err) {
-                  erro = true;
-                  if (err.kind === "not_found") {
-                    res.status(404).send({
-                      message: `Attribute with the name ${req.body.attributes.name_attribute[i]} wasn't found.`,
-                    });
-                    return;
-                  } 
-                  else {
-                    res.status(500).send({
-                      message: "Error while trying to create product."
-                    });
-                    return;
-                  }
-                } 
+                if (err)
+                  erro = err;
                 else {
                   do productAttribute.code_productattribute = Hasher.generateCode();
                   while (ProductAttribute.findByCode(productAttribute.code_productattribute, (err, data2) => {}) == -1);
@@ -91,23 +61,32 @@ exports.create = (req, res) => {
 
                   ProductAttribute.create(productAttribute, (err, data3) => {
                     if (err) {
-                      erro = true;
-                      console.log('adsdsdsdsdsd')
-                      res.status(500).send({
-                        message: err.message || "Error while trying to create product.",
-                      });
-                      return;
-                    } 
+                      erro = err;
+                    }
+                    if (!passou) {
+                      passou = true;
+                      if (erro != null) {
+                        if (erro == '400') {
+                          res.status(400).send({
+                            message: "Parts of the data weren't given correctly.",
+                          });
+                        } else if (erro.kind === "not_found") {
+                          res.status(404).send({
+                            message: `Attribute with the code ${req.params.code_rating} wasn't found.`
+                          });
+                        } else {
+                          res.status(500).send({
+                            message: err.message || "Error while trying to create product."
+                          });
+                        }
+                      } else
+                        res.send(data0.recordset);
+                    }
                   });
                 }
               })
             }
-
-            if(i == req.body.attributes.name_attribute.length - 1 && !erro)
-            {
-              res.send(data0.recordset);
-            }
-          }        
+          }
         }
       })
     }
