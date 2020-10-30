@@ -7,7 +7,7 @@ const Image = function (image) {
 
 Image.create = (newImage, result) => {
   sql.query(
-    `INSERT INTO Image_Propped VALUES('${newImage.code_image}',CAST('${newImage.name_image}' as varbinary(max)))`,
+    `INSERT INTO Image_Propped VALUES('${newImage.code_image}', '${newImage.name_image}')`,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -60,7 +60,7 @@ Image.getAll = (result) => {
 Image.updateByCode = (code, image, result) => {
   image.code_image = code;
   sql.query(
-    `UPDATE Image_Propped SET photo_image = CAST('${newImage.name_image}' as varbinary(max)) WHERE code_category = '${code}'`,
+    `UPDATE Image_Propped SET photo_image = '${newImage.name_image}' WHERE code_category = '${code}'`,
     (err, res) => {
       if (err) {
         result(null, err);
