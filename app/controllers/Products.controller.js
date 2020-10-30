@@ -228,6 +228,6 @@ exports.findByParams = (req, res) => {
             message: "Error while searching for product with these attributes",
           });
         }
-      } else res.send(data.recordset);
+      } else res.send(data);
     });
 };
