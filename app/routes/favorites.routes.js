@@ -12,5 +12,4 @@ module.exports = app => {
     app.put("/favorites/:code_favorite", favorites.update);
   
     app.delete("/favorites/:code_favorite", favorites.delete);
-  
   };

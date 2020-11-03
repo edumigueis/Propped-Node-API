@@ -182,5 +182,3 @@ create table UsersRating_Propped(
 	constraint fkStore_UsersRating_Propped foreign key (id_store_usersrating) references Store_Propped(id_store)
 )
 
-
-
