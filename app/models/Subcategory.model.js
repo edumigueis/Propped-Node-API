@@ -47,6 +47,32 @@ Subcategory.findByCode = (code, result) => {
   );
 };
 
+Subcategory.findByCategory = (id_category_subcategory, result) => {
+  sql.query(
+    `SELECT * FROM Subcategory_Propped WHERE id_category_subcategory = ${id_category_subcategory}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 Subcategory.getAll = (result) => {
   sql.query("SELECT * FROM Subcategory_Propped", (err, res) => {
     if (err) {
