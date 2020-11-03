@@ -8,7 +8,7 @@ create table User_Propped(
 	birth_date_user date not null,
 	registry_user varchar(30) not null,
 	phone_user varchar(30) not null,
-	image_user varbinary(max),
+	image_user varchar(500),
 	preference_user varchar(30) not null
 )
 
@@ -24,7 +24,7 @@ create table Store_Propped(
 	city_store varchar(60) not null,
 	state_store varchar(60) not null,
 	country_store varchar(60) not null,
-	image_store varbinary(max) not null
+	image_store varchar(500) not null
 )
 
 create table FormofPayment_Propped(
@@ -153,7 +153,7 @@ create table ShoppingCart_Propped(
 create table Image_Propped(
 	id_image int identity primary key not null,
 	code_image varchar(100) not null,
-	photo_image varbinary(max) not null
+	photo_image varchar(500) not null
 )
 
 create table ImagesProduct_Propped(
