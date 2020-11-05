@@ -33,7 +33,10 @@ exports.create = (req, res) => {
         res.status(500).send({
           message: err.message || "Error while trying to create user.",
         });
-      else res.send(data.recordset);
+      else {
+        res.status(201);
+        res.send(data.recordset);
+      }
     });
   }
 };
