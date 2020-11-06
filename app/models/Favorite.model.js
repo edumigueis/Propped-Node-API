@@ -7,6 +7,7 @@ const Favorite = function (favorite) {
 };
 
 Favorite.create = (newFavorite, result) => {
+  console.log(newFavorite);
   sql.query(
     `INSERT INTO Favorite_Propped VALUES('${newFavorite.code_favorite}',${newFavorite.id_user_favorite},${newFavorite.id_product_favorite})`,
     (err, res) => {

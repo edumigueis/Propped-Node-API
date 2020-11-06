@@ -73,7 +73,7 @@ exports.findByCategory = (req, res) => {
             req.params.id_category_subcategory,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 

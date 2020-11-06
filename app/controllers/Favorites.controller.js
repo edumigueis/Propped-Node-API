@@ -129,6 +129,6 @@ exports.findByUser = (req, res) => {
             req.params.id_user_favorite,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };

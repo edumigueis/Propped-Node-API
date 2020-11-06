@@ -66,7 +66,7 @@ exports.findOne = (req, res) => {
         });
       }
     } else
-      res.send(data.recordset);
+      res.status(200).send(data.recordset);
   });
 };
 

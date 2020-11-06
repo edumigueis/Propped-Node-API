@@ -31,7 +31,7 @@ Store.create = (newStore, result) => {
 
 Store.findByCode = (code, result) => {
   sql.query(
-    `SELECT * FROM Store_Propped WHERE code_store = '${code}'`,
+    `SELECT * FROM Store_Propped WHERE id_store = '${code}'`,
     (err, res) => {
       if (err) {
         result(err, null);

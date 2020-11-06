@@ -64,7 +64,7 @@ exports.findOne = (req, res) => {
             req.params.code_user,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
