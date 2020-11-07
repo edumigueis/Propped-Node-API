@@ -35,7 +35,7 @@ create table FormofPayment_Propped(
 )
 
 create table Favorite_Propped(
-	id_favorite int primary key not null,
+	id_favorite int identity primary key not null,
 	code_favorite varchar(100) not null,
 	id_user_favorite int not null,
 	id_product_favorite int not null,
