@@ -138,4 +138,29 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
 
 }
 
+Product.findByStore = (id_store_product, result) => {
+  sql.query(
+    `SELECT * FROM Product_Propped WHERE id_store_product = ${id_store_product}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result({
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 module.exports = Product;
