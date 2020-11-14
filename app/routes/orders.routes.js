@@ -5,6 +5,8 @@ module.exports = app => {
 
   app.get("/orders", orders.findAll);
 
+  app.get("/orders/id/:id_order", orders.findById);
+
   app.get("/orders/:code_order", orders.findOne);
 
   app.put("/orders/:code_order", orders.update);

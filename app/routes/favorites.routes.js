@@ -6,6 +6,8 @@ module.exports = app => {
     app.get("/favorites", favorites.findAll);
 
     app.get("/favorites/user/:id_user_favorite", favorites.findByUser);
+
+    app.get("/favorites/id/:id_favorite", favorites.findById);
   
     app.get("/favorites/:code_favorite", favorites.findOne);
   

@@ -7,6 +7,8 @@ module.exports = app => {
 
   app.get("/carts/:code_cart", carts.findOne);
 
+  app.get("/carts/id/:id_cart", carts.findById);
+
   app.put("/carts/:code_cart", carts.update);
 
   app.delete("/carts/:code_cart", carts.delete);

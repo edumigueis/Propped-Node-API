@@ -6,6 +6,8 @@ module.exports = app => {
     app.get("/stores", stores.findAll);
   
     app.get("/stores/:code_store", stores.findOne);
+
+    app.get("/stores/id/:id_store", stores.findById);
   
     app.put("/stores/:code_store", stores.update);
   

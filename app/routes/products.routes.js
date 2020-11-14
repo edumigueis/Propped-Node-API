@@ -7,6 +7,8 @@ module.exports = app => {
 
   app.get("/products", products.findAll);
 
+  app.get("/products/id/:id_product", products.findById);
+
   app.get("/products/store/:id_store_product", products.findByStore);
 
   app.get("/products/:code_product", products.findOne);

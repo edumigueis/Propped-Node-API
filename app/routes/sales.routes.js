@@ -6,6 +6,8 @@ module.exports = app => {
     app.post("/sales", sales.create);
   
     app.get("/sales/:code_sale", sales.findOne);
+
+    app.get("/sales/id/:id_sale", sales.findById);
   
     app.put("/sales/:code_sale", sales.update);
   

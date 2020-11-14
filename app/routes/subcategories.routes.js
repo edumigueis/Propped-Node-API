@@ -7,6 +7,8 @@ module.exports = app => {
 
     app.get("/subcategories/:code_subcategory", subcategories.findOne);
 
+    app.get("/subcategories/id/:id_subcategory", subcategories.findById);
+
     app.get("/subcategories/category/:id_category_subcategory", subcategories.findByCategory);
 
     app.put("/subcategories/:code_subcategory", subcategories.update);

@@ -7,6 +7,8 @@ module.exports = app => {
 
     app.get("/categories/:code_category", categories.findOne);
 
+    app.get("/categories/id/:id_category", categories.findById);
+
     app.put("/categories/:code_category", categories.update);
 
     app.delete("/categories/:code_category", categories.delete);
