@@ -121,59 +121,20 @@ exports.findOne = (req, res) => {
   });
 };
 
-exports.update = (req, res) => {
-  if (!req.body) {
-    res.status(400).send({
-      message: "Body of request can not be empty.",
-    });
-  }
-
-  var product = new Product(req.body);
-
-  if (typeof product.id_store_product === "undefined" || typeof product.id_category_product === "undefined" || typeof product.id_subcategory_product === "undefined" || typeof product.name_product === "undefined" || typeof product.description_product === "undefined" || typeof product.weight_product === "undefined" || typeof product.price_product === "undefined" || typeof product.stock_product === "undefined") {
-    res.status(400).send({
-      message: "Parts of the data weren't given correctly.",
-    });
-  } else {
-    Product.updateByCode(
-      req.params.code_product,
-      product,
-      (err, data) => {
-        if (err) {
-          if (err.kind === "not_found") {
-            res.status(404).send({
-              message: `Product with the code ${req.params.code_product} wasn't found.`,
-            });
-          } else {
-            res.status(500).send({
-              message: "Error when trying to update product with the following code: " +
-                req.params.code_product,
-            });
-          }
-        } else res.send(data.recordset);
-      }
-    );
-  }
-};
-
-exports.delete = (req, res) => {
-  Product.remove(req.params.code_product, (err, data) => {
+exports.findById = (req, res) => {
+  Product.findById(req.params.id_product, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Product with the code ${req.params.code_product} wasn't found.`,
+          message: `Product with the id ${req.params.id_product} wasn't found.`,
         });
       } else {
         res.status(500).send({
-          message: "Error when trying to update product with the following code: " +
-            req.params.code_product,
+          message: "Error while searching for product with the id " +
+            req.params.id_product,
         });
       }
-    } else {
-      res.send({
-        message: `Product has been deleted succesfully!`,
-      });
-    }
+    } else res.send(data.recordset);
   });
 };
 
@@ -230,4 +191,60 @@ exports.findByParams = (req, res) => {
         }
       } else res.send(data);
     });
+};
+
+exports.update = (req, res) => {
+  if (!req.body) {
+    res.status(400).send({
+      message: "Body of request can not be empty.",
+    });
+  }
+
+  var product = new Product(req.body);
+
+  if (typeof product.id_store_product === "undefined" || typeof product.id_category_product === "undefined" || typeof product.id_subcategory_product === "undefined" || typeof product.name_product === "undefined" || typeof product.description_product === "undefined" || typeof product.weight_product === "undefined" || typeof product.price_product === "undefined" || typeof product.stock_product === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
+    });
+  } else {
+    Product.updateByCode(
+      req.params.code_product,
+      product,
+      (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Product with the code ${req.params.code_product} wasn't found.`,
+            });
+          } else {
+            res.status(500).send({
+              message: "Error when trying to update product with the following code: " +
+                req.params.code_product,
+            });
+          }
+        } else res.send(data.recordset);
+      }
+    );
+  }
+};
+
+exports.delete = (req, res) => {
+  Product.remove(req.params.code_product, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Product with the code ${req.params.code_product} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error when trying to update product with the following code: " +
+            req.params.code_product,
+        });
+      }
+    } else {
+      res.send({
+        message: `Product has been deleted succesfully!`,
+      });
+    }
+  });
 };

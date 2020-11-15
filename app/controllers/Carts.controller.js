@@ -59,6 +59,23 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findById = (req, res) => {
+  Cart.findById(req.params.id_cart, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Cart with the id ${req.params.id_cart} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for cart with the id " +
+            req.params.id_cart,
+        });
+      }
+    } else res.send(data.recordset);
+  });
+};
+
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({

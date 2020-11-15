@@ -60,6 +60,23 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findById = (req, res) => {
+  Image.findById(req.params.id_image, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Image with the id ${req.params.id_image} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for image with the id " +
+            req.params.id_image,
+        });
+      }
+    } else res.send(data.recordset);
+  });
+};
+
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({

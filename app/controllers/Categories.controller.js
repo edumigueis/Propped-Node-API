@@ -59,6 +59,23 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findById = (req, res) => {
+  Category.findById(req.params.id_category, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Category with the id ${req.params.id_category} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for category with the id " +
+            req.params.id_category,
+        });
+      }
+    } else res.send(data.recordset);
+  });
+};
+
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({

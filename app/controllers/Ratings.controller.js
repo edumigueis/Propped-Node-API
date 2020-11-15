@@ -98,6 +98,23 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findById = (req, res) => {
+  Rating.findById(req.params.id_rating, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Rating with the id ${req.params.id_rating} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for rating with the id " +
+            req.params.id_rating,
+        });
+      }
+    } else res.send(data.recordset);
+  });
+};
+
 exports.findAllByUser = (req, res) => {
   UsersRating.findByIdUser(req.params.id_user, (err, data) => {
     if (err) {

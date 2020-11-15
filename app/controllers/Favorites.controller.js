@@ -60,6 +60,40 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findById = (req, res) => {
+  Favorite.findById(req.params.id_favorite, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Favorite with the id ${req.params.id_favorite} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for favorite with the id " +
+            req.params.id_favorite,
+        });
+      }
+    } else res.send(data.recordset);
+  });
+};
+
+exports.findByUser = (req, res) => {
+  Favorite.findByUser(req.params.id_user_favorite, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Favorite with the user ${req.params.id_user_favorite} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for favorite with the user " +
+            req.params.id_user_favorite,
+        });
+      }
+    } else res.status(200).send(data.recordset);
+  });
+};
+
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({
@@ -113,22 +147,5 @@ exports.delete = (req, res) => {
         message: `Favorite has been deleted succesfully!`,
       });
     }
-  });
-};
-
-exports.findByUser = (req, res) => {
-  Favorite.findByUser(req.params.id_user_favorite, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Favorite with the user ${req.params.id_user_favorite} wasn't found.`,
-        });
-      } else {
-        res.status(500).send({
-          message: "Error while searching for favorite with the user " +
-            req.params.id_user_favorite,
-        });
-      }
-    } else res.status(200).send(data.recordset);
   });
 };

@@ -60,8 +60,24 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findById = (req, res) => {
+  FormofPayment.findById(req.params.id_formofpayment, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Form of payment with the id ${req.params.id_formofpayment} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for form of payment with the id " +
+            req.params.id_formofpayment,
+        });
+      }
+    } else res.send(data.recordset);
+  });
+};
+
 exports.update = (req, res) => {
-  // Validate Request
   if (!req.body) {
     res.status(400).send({
       message: "Body of request can not be empty.",

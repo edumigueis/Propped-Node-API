@@ -59,6 +59,23 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findById = (req, res) => {
+  Attribute.findById(req.params.id_attribute, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Attribute with the id ${req.params.id_attribute} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for attribute with the id " +
+            req.params.id_attribute,
+        });
+      }
+    } else res.send(data.recordset);
+  });
+};
+
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({

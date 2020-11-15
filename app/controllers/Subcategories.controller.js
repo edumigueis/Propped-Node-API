@@ -60,6 +60,23 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findById = (req, res) => {
+  Subcategory.findById(req.params.id_subcategory, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Subcategory with the id ${req.params.id_subcategory} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for subcategory with the id " +
+            req.params.id_subcategory,
+        });
+      }
+    } else res.send(data.recordset);
+  });
+};
+
 exports.findByCategory = (req, res) => {
   Subcategory.findByCategory(req.params.id_category_subcategory, (err, data) => {
     if (err) {
@@ -107,8 +124,6 @@ exports.update = (req, res) => {
     })
   }
 };
-
-
 
 exports.delete = (req, res) => {
   Subcategory.remove(req.params.code_subcategory, (err, data) => {

@@ -70,6 +70,23 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findById = (req, res) => {
+  Store.findById(req.params.id_store, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Store with the id ${req.params.id_store} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for store with the id " +
+            req.params.id_store,
+        });
+      }
+    } else res.send(data.recordset);
+  });
+};
+
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({
