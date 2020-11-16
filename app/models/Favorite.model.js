@@ -58,6 +58,57 @@ Favorite.getAll = (result) => {
   });
 };
 
+Favorite.findByUser = (id, result) => {
+  sql.query(
+    `SELECT * FROM Favorite_Propped WHERE id_user_favorite = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
+Favorite.findById = (id, result) => {
+  sql.query(
+    `SELECT * FROM Favorite_Propped WHERE id_favorite = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 Favorite.updateByCode = (code, favorite, result) => {
   favorite.code_favorite = code;
   sql.query(
@@ -106,31 +157,6 @@ Favorite.remove = (code, result) => {
       }
 
       result(null, res);
-    }
-  );
-};
-
-Favorite.findByUser = (id, result) => {
-  sql.query(
-    `SELECT * FROM Favorite_Propped WHERE id_user_favorite = ${id}`,
-    (err, res) => {
-      if (err) {
-        result(err, null);
-        return;
-      }
-
-      if (res.recordset.length > 0) {
-        result(null, res);
-        return;
-      }
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
-
-      return -1;
     }
   );
 };

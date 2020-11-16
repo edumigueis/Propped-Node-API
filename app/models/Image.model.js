@@ -57,6 +57,32 @@ Image.getAll = (result) => {
   });
 };
 
+Image.findById = (id, result) => {
+  sql.query(
+    `SELECT * FROM Image_Propped WHERE id_image = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 Image.updateByCode = (code, image, result) => {
   image.code_image = code;
   sql.query(

@@ -5,6 +5,8 @@ module.exports = app => {
   
     app.get("/users", users.findAll);
 
+    app.get("/users/login/:email_user/:pass_user", users.login);
+
     app.get("/users/id/:id_user", users.findById);
   
     app.get("/users/:code_user", users.findOne);

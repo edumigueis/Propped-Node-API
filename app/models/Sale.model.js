@@ -60,6 +60,32 @@ Sale.getAll = (result) => {
   });
 };
 
+Sale.findById = (id, result) => {
+  sql.query(
+    `SELECT * FROM Sale_Propped WHERE id_sale = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 Sale.updateByCode = (code, sale, result) => {
   sale.code_sale = code;
   sql.query(

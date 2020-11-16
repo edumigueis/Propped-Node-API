@@ -57,6 +57,33 @@ Category.getAll = (result) => {
   });
 };
 
+
+Category.findById = (id, result) => {
+  sql.query(
+    `SELECT * FROM Category_Propped WHERE id_category = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 Category.updateByCode = (code, category, result) => {
   category.code_category = code;
   sql.query(

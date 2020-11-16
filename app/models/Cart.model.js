@@ -59,6 +59,58 @@ Cart.getAll = (result) => {
   });
 };
 
+Cart.findByUser = (id, result) => {
+  sql.query(
+    `SELECT * FROM ShoppingCart_Propped WHERE id_user_shoppingcart = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
+Cart.findById = (id, result) => {
+  sql.query(
+    `SELECT * FROM Cart_Propped WHERE id_cart = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 Cart.updateByCode = (code, cart, result) => {
   cart.code_shoppingcart = code;
   sql.query(
@@ -108,32 +160,6 @@ Cart.remove = (code, result) => {
       }
 
       result(null, res);
-    }
-  );
-};
-
-Cart.findByUser = (id, result) => {
-  sql.query(
-    `SELECT * FROM ShoppingCart_Propped WHERE id_user_shoppingcart = ${id}`,
-    (err, res) => {
-      if (err) {
-        result(err, null);
-        return;
-      }
-
-      if (res.recordset.length > 0) {
-        result(null, res);
-        return;
-      }
-
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
-
-      return -1;
     }
   );
 };

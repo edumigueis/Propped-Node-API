@@ -66,6 +66,32 @@ Store.getAll = (result) => {
   });
 };
 
+Store.findById = (id, result) => {
+  sql.query(
+    `SELECT * FROM Store_Propped WHERE id_store = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 Store.updateByCode = (code, store, result) => {
   store.code_store = code;
   sql.query(

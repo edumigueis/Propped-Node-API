@@ -40,8 +40,8 @@ Product.findByCode = (code, result) => {
       }
 
       result({
-          kind: "not_found",
-        },
+        kind: "not_found",
+      },
         null
       );
 
@@ -61,6 +61,84 @@ Product.getAll = (result) => {
   });
 };
 
+
+Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
+
+  let query = "SELECT * FROM Product_Propped WHERE";
+  {
+    if (name != "") {
+      query += " name_product = '" + name + "'";
+
+      if (idCategory != -1)
+        query += " and id_category_product = " + idCategory;
+
+      if (idSubcategory != -1)
+        query += " and id_subcategory_product = " + idSubcategory;
+    }
+    else if (idCategory != -1) {
+      query += " id_category_product = " + idCategory;
+
+      if (idSubcategory != -1)
+        query += " and id_subcategory_product = " + idSubcategory;
+    }
+    else
+      result({ kind: "bad_request", }, null);
+  }
+  console.log(query);
+
+}
+
+Product.findByStore = (id_store_product, result) => {
+  sql.query(
+    `SELECT * FROM Product_Propped WHERE id_store_product = ${id_store_product}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result({
+        kind: "not_found",
+      },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
+Product.findById = (id, result) => {
+  sql.query(
+    `SELECT * FROM Product_Propped WHERE id_product = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 Product.updateByCode = (code, product, result) => {
   product.code_product = code;
   sql.query(
@@ -74,8 +152,8 @@ Product.updateByCode = (code, product, result) => {
 
       if (res.affectedRows == 0) {
         result({
-            kind: "not_found",
-          },
+          kind: "not_found",
+        },
           null
         );
         return;
@@ -100,65 +178,14 @@ Product.remove = (code, result) => {
 
       if (res.affectedRows == 0) {
         result({
-            kind: "not_found",
-          },
+          kind: "not_found",
+        },
           null
         );
         return;
       }
 
       result(null, res);
-    }
-  );
-};
-
-Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
- 
-    let query = "SELECT * FROM Product_Propped WHERE";
-    {
-      if (name != ""){
-          query += " name_product = '" + name + "'";
-
-        if (idCategory != -1) 
-          query += " and id_category_product = " + idCategory;
-
-        if (idSubcategory != -1) 
-          query += " and id_subcategory_product = " + idSubcategory;
-      }
-      else if (idCategory != -1){
-        query += " id_category_product = " + idCategory;
-
-        if (idSubcategory != -1)
-          query += " and id_subcategory_product = " + idSubcategory;
-      }
-      else
-        result({kind: "bad_request",},null);
-    }
-    console.log(query);
-
-}
-
-Product.findByStore = (id_store_product, result) => {
-  sql.query(
-    `SELECT * FROM Product_Propped WHERE id_store_product = ${id_store_product}`,
-    (err, res) => {
-      if (err) {
-        result(err, null);
-        return;
-      }
-
-      if (res.recordset.length > 0) {
-        result(null, res);
-        return;
-      }
-
-      result({
-          kind: "not_found",
-        },
-        null
-      );
-
-      return -1;
     }
   );
 };

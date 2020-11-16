@@ -54,6 +54,32 @@ Rating.getAll = (result) => {
   });
 };
 
+Rating.findById = (id, result) => {
+  sql.query(
+    `SELECT * FROM Rating_Propped WHERE id_rating = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 Rating.updateByCode = (code, rating, result) => {
   rating.code_rating = code;
   sql.query(

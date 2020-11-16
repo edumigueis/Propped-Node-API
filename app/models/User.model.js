@@ -67,6 +67,69 @@ User.getAll = (result) => {
   });
 };
 
+User.findByLoginData = (email, senha, result) => {
+  sql.query(
+    `SELECT * FROM User_Propped WHERE email_user = '${email}'`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        Hasher.comparePassword(senha, res.pass_user, function (res) {
+          if (res) {
+            result(null, res);
+            return;
+          }
+          else {
+            result(
+              {
+                kind: "wrong_password",
+              },
+              null
+            );
+            return;
+          }
+        });
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+    }
+  );
+};
+
+User.findById = (id, result) => {
+  sql.query(
+    `SELECT * FROM User_Propped WHERE id_user = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 User.updateByCode = (code, user, result) => {
   user.code_user = code;
   sql.query(
@@ -116,43 +179,6 @@ User.remove = (code, result) => {
       }
 
       result(null, res);
-    }
-  );
-};
-
-User.findByLoginData = (email, senha, result) => {
-  sql.query(
-    `SELECT * FROM User_Propped WHERE email_user = '${email}'`,
-    (err, res) => {
-      if (err) {
-        result(err, null);
-        return;
-      }
-
-      if (res.recordset.length > 0) {
-        Hasher.comparePassword(senha, res.pass_user, function (res) {
-          if (res) {
-            result(null, res);
-            return;
-          }
-          else {
-            result(
-              {
-                kind: "wrong_password",
-              },
-              null
-            );
-            return;
-          }
-        });
-      }
-
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
     }
   );
 };

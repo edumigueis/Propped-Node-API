@@ -60,6 +60,32 @@ Order.getAll = (result) => {
   });
 };
 
+Order.findById = (id, result) => {
+  sql.query(
+    `SELECT * FROM Order_Propped WHERE id_order = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 Order.updateByCode = (code, order, result) => {
   order.code_order = code;
   sql.query(

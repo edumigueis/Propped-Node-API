@@ -45,6 +45,32 @@ FormofPayment.findByCode = (code, result) => {
   );
 };
 
+FormofPayment.findById = (id, result) => {
+  sql.query(
+    `SELECT * FROM FormofPayment_Propped WHERE id_formofpayment = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 FormofPayment.getAll = (result) => {
   sql.query("SELECT * FROM FormofPayment_Propped", (err, res) => {
     if (err) {
