@@ -11,6 +11,10 @@ module.exports = app => {
 
   app.get("/products/store/:id_store_product", products.findByStore);
 
+  app.get("/products/images/:code_product", products.findAllImages);
+
+  app.get("/products/image/:code_product", products.findFirstImage);
+
   app.get("/products/:code_product", products.findOne);
 
   app.put("/products/:code_product", products.update);

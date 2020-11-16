@@ -193,6 +193,40 @@ exports.findByParams = (req, res) => {
     });
 };
 
+exports.findAllImages = (req, res) => {
+  Product.findAllImages(req.params.code_product, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Product with the code ${req.params.code_product} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for images of product with the code " +
+            req.params.code_product,
+        });
+      }
+    } else res.status(200).send(data.recordset);
+  });
+};
+
+exports.findFirstImage = (req, res) => {
+  Product.findFirstImage(req.params.code_product, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Product with the code ${req.params.code_product} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for image of product with the code " +
+            req.params.code_product,
+        });
+      }
+    } else res.status(200).send(data.recordset);
+  });
+};
+
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({

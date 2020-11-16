@@ -8,7 +8,7 @@ const ImagesProduct = function (imagesproduct) {
 
 ImagesProduct.create = (newImagesProduct, result) => {
   sql.query(
-    `INSERT INTO ImagesProduct_Propped VALUES('${newImagesProduct.code_imagesproduct}',${newImagesProduct.id_image_imagesproduct},${newImagesProduct.id_product_imagesproduct})`,
+    `INSERT INTO ImagesProduct_Propped VALUES(${newImagesProduct.id_product_imagesproduct},${newImagesProduct.id_image_imagesproduct},'${newImagesProduct.code_imagesproduct}')`,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -55,6 +55,56 @@ ImagesProduct.getAll = (result) => {
 
     result(null, res);
   });
+};
+
+ImagesProduct.findAllImagesByProduct = (id, result) => {
+  sql.query(
+    `SELECT * FROM ImagesProduct_Propped WHERE id_product_imagesproduct = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
+ImagesProduct.findFirstImageByProduct = (id, result) => {
+  sql.query(
+    `SELECT * FROM ImagesProduct_Propped WHERE id_product_imagesproduct = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
 };
 
 ImagesProduct.updateByCode = (code, imagesproduct, result) => {
