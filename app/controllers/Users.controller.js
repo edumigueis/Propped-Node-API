@@ -67,6 +67,24 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findById = (req, res) => {
+  User.findById(req.params.id_user, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `User with the id ${req.params.id_user} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for user with the id " +
+            req.params.id_user,
+        });
+      }
+    } else res.status(200).send(data.recordset);
+  });
+};
+
+
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({
