@@ -28,7 +28,7 @@ exports.create = (req, res) => {
         res.status(500).send({
           message: err.message || "Error while trying to create form of payment.",
         });
-      else res.send(data.recordset);
+      else res.status(201).send(data.recordset);
     });
   }
 };
@@ -39,7 +39,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for forms of payments.",
       });
-    else res.send(data.recordset);
+    else res.status(200).send(data.recordset);
   });
 };
 
@@ -56,7 +56,7 @@ exports.findOne = (req, res) => {
             req.params.code_formofpayment,
         });
       }
-    } else res.send(data);
+    } else res.status(200).send(data);
   });
 };
 
@@ -73,7 +73,7 @@ exports.findById = (req, res) => {
             req.params.id_formofpayment,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -105,7 +105,7 @@ exports.update = (req, res) => {
                 req.params.code_formofpayment,
             });
           }
-        } else res.send(data.recordset);
+        } else res.status(204).send(data.recordset);
       }
     );
   }

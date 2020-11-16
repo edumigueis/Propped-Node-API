@@ -29,7 +29,7 @@ exports.create = (req, res) => {
         res.status(500).send({
           message: err.message || "Error while trying to create sale.",
         });
-      else res.send(data.recordset);
+      else res.status(201).send(data.recordset);
     });
   }
 };
@@ -40,7 +40,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for sales.",
       });
-    else res.send(data.recordset);
+    else res.status(200).send(data.recordset);
   });
 };
 
@@ -57,7 +57,7 @@ exports.findOne = (req, res) => {
             req.params.code_sale,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -74,7 +74,7 @@ exports.findById = (req, res) => {
             req.params.id_sale,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -104,7 +104,7 @@ exports.update = (req, res) => {
               req.params.code_sale,
           });
         }
-      } else res.send(data.recordset);
+      } else res.status(204).send(data.recordset);
     });
   }
 };

@@ -27,7 +27,7 @@ exports.create = (req, res) => {
         res.status(500).send({
           message: err.message || "Error while trying to create category.",
         });
-      else res.send(data.recordset);
+      else res.status(201).send(data.recordset);
     });
   }
 };
@@ -38,7 +38,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for categories.",
       });
-    else res.send(data.recordset);
+    else res.status(200).send(data.recordset);
   });
 };
 
@@ -55,7 +55,7 @@ exports.findOne = (req, res) => {
             req.params.code_category,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -72,7 +72,7 @@ exports.findById = (req, res) => {
             req.params.id_category,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -105,7 +105,7 @@ exports.update = (req, res) => {
                 req.params.code_category,
             });
           }
-        } else res.send(data.recordset);
+        } else res.status(204).send(data.recordset);
       }
     );
   }

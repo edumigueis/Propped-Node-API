@@ -34,8 +34,7 @@ exports.create = (req, res) => {
           message: err.message || "Error while trying to create user.",
         });
       else {
-        res.status(201);
-        res.send(data.recordset);
+        res.status(201).send(data.recordset);
       }
     });
   }
@@ -47,7 +46,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for users.",
       });
-    else res.send(data.recordset);
+    else res.status(200).send(data.recordset);
   });
 };
 
@@ -94,7 +93,7 @@ exports.update = (req, res) => {
               req.params.code_user,
           });
         }
-      } else res.send(data.recordset);
+      } else res.status(204).send(data.recordset);
     });
   }
 };
@@ -137,7 +136,7 @@ exports.login = (req, res) => {
         });
       }
     } else {
-      res.send({
+      res.status(200).send({
         message: `All data is correct! User will be logged in.`,
       });
     }

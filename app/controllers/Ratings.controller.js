@@ -46,7 +46,7 @@ exports.create = (req, res) => {
               message: err.message || "Error while trying to create rating."
             });
           else {
-            res.send(data.recordset);
+            res.status(201).send(data.recordset);
           }
         })
       }
@@ -60,7 +60,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for ratings."
       });
-    else res.send(data.recordset);
+    else res.status(200).send(data.recordset);
   });
 };
 
@@ -91,7 +91,7 @@ exports.findOne = (req, res) => {
             });
           }
         } else {
-          res.send(data.recordset);
+          res.status(200).send(data.recordset);
         }
       });
     }
@@ -111,7 +111,7 @@ exports.findById = (req, res) => {
             req.params.id_rating,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -129,7 +129,7 @@ exports.findAllByUser = (req, res) => {
         });
       }
     } else
-      res.send(data.recordset);
+      res.status(200).send(data.recordset);
   });
 };
 
@@ -146,7 +146,7 @@ exports.findAllByStore = (req, res) => {
             req.params.id_user
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -179,7 +179,7 @@ exports.update = (req, res) => {
                 req.params.code_rating,
             });
           }
-        } else res.send(data.recordset);
+        } else res.status(204).send(data.recordset);
       }
     );
   }

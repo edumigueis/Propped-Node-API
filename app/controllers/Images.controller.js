@@ -28,7 +28,7 @@ exports.create = (req, res) => {
         res.status(500).send({
           message: err.message || "Error while trying to create image."
         });
-      else res.send(data.recordset);
+      else res.status(201).send(data.recordset);
     });
   }
 };
@@ -39,7 +39,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for images."
       });
-    else res.send(data.recordset);
+    else res.status(200).send(data.recordset);
   });
 };
 
@@ -56,7 +56,7 @@ exports.findOne = (req, res) => {
             req.params.code_image
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -73,7 +73,7 @@ exports.findById = (req, res) => {
             req.params.id_image,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -106,7 +106,7 @@ exports.update = (req, res) => {
                 req.params.code_image,
             });
           }
-        } else res.send(data.recordset);
+        } else res.status(204).send(data.recordset);
       }
     );
   }

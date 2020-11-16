@@ -84,7 +84,7 @@ ImagesProduct.findAllImagesByProduct = (id, result) => {
 
 ImagesProduct.findFirstImageByProduct = (id, result) => {
   sql.query(
-    `SELECT * FROM ImagesProduct_Propped WHERE id_product_imagesproduct = ${id}`,
+    `SELECT TOP(1)* FROM ImagesProduct_Propped WHERE id_product_imagesproduct = ${id}`,
     (err, res) => {
       if (err) {
         result(err, null);

@@ -2,6 +2,7 @@ const Hasher = require("../data/Hasher.js");
 
 const Product = require("../models/Product.model.js");
 const ProductAttribute = require("../models/ProductAttribute.model.js");
+const ImagesProduct = require("../models/ImagesProduct.model.js");
 const Attribute = require("../models/Attribute.model.js");
 
 exports.create = (req, res) => {
@@ -80,7 +81,7 @@ exports.create = (req, res) => {
                           });
                         }
                       } else
-                        res.send(data0.recordset);
+                        res.status(201).send(data0.recordset);
                     }
                   });
                 }
@@ -100,7 +101,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for products.",
       });
-    else res.send(data.recordset);
+    else res.status(200).send(data.recordset);
   });
 };
 
@@ -134,7 +135,7 @@ exports.findById = (req, res) => {
             req.params.id_product,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -151,7 +152,7 @@ exports.findByName = (req, res) => {
             req.params.name_product,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -168,7 +169,7 @@ exports.findByStore = (req, res) => {
             req.params.id_store_product,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -194,7 +195,7 @@ exports.findByParams = (req, res) => {
 };
 
 exports.findAllImages = (req, res) => {
-  Product.findAllImages(req.params.code_product, (err, data) => {
+  ImagesProduct.findAllImagesByProduct(req.params.code_product, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -211,7 +212,7 @@ exports.findAllImages = (req, res) => {
 };
 
 exports.findFirstImage = (req, res) => {
-  Product.findFirstImage(req.params.code_product, (err, data) => {
+  ImagesProduct.findFirstImageByProduct(req.params.code_product, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -256,7 +257,7 @@ exports.update = (req, res) => {
                 req.params.code_product,
             });
           }
-        } else res.send(data.recordset);
+        } else res.status(204).send(data.recordset);
       }
     );
   }

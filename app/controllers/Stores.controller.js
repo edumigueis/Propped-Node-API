@@ -37,7 +37,7 @@ exports.create = (req, res) => {
           message: err.message || "Error while trying to create store.",
         });
       else
-        res.send(data.recordset);
+        res.status(201).send(data.recordset);
     });
   }
 };
@@ -49,7 +49,7 @@ exports.findAll = (req, res) => {
         message: err.message || "Error while searching for stores.",
       });
     else
-      res.send(data.recordset);
+      res.status(200).send(data.recordset);
   });
 };
 
@@ -83,7 +83,7 @@ exports.findById = (req, res) => {
             req.params.id_store,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -113,7 +113,7 @@ exports.update = (req, res) => {
           });
         }
       } else
-        res.send(data.recordset);
+        res.status(204).send(data.recordset);
     });
   }
 };

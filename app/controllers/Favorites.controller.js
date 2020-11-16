@@ -28,7 +28,7 @@ exports.create = (req, res) => {
         res.status(500).send({
           message: err.message || "Error while trying to create favorite.",
         });
-      else res.send(data.recordset);
+      else res.status(201).send(data.recordset);
     });
   }
 };
@@ -39,7 +39,7 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message: err.message || "Error while searching for favorites.",
       });
-    else res.send(data.recordset);
+    else res.status(200).send(data.recordset);
   });
 };
 
@@ -56,7 +56,7 @@ exports.findOne = (req, res) => {
             req.params.code_favorite,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -73,7 +73,7 @@ exports.findById = (req, res) => {
             req.params.id_favorite,
         });
       }
-    } else res.send(data.recordset);
+    } else res.status(200).send(data.recordset);
   });
 };
 
@@ -90,7 +90,7 @@ exports.findByUser = (req, res) => {
             req.params.id_user_favorite,
         });
       }
-    } else res.status(200).send(data.recordset);
+    } else res.status(200).status(200).send(data.recordset);
   });
 };
 
@@ -123,7 +123,7 @@ exports.update = (req, res) => {
                 req.params.code_favorite,
             });
           }
-        } else res.send(data.recordset);
+        } else res.status(204).send(data.recordset);
       }
     );
   }
