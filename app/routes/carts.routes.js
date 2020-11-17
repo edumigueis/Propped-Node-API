@@ -3,6 +3,8 @@ module.exports = app => {
 
   app.post("/carts", carts.create);
 
+  app.post("/carts/product", carts.addProduct);
+
   app.get("/carts", carts.findAll);
 
   app.get("/carts/:code_shoppingcart", carts.findOne);

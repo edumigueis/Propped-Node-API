@@ -33,6 +33,38 @@ exports.create = (req, res) => {
   }
 };
 
+exports.addProduct = (req, res) => {
+  if (!req.body) {
+    res.status(400).send({
+      message: "Empty params",
+    });
+  }
+
+  const productsshoppingcart = new ProductsShoppingCart({
+    id_product_productsshoppingcart: req.body.id_user_shoppingcart,
+    id_shoppingcart_productsshoppingcart: req.body.id_shoppingcart_productsshoppingcart,
+    amount_productsshoppingcart: req.body.amount_productsshoppingcart
+  });
+
+  if (typeof productsshoppingcart.id_product_productsshoppingcart === "undefined" || typeof productsshoppingcart.id_shoppingcart_productsshoppingcart === "undefined" || typeof productsshoppingcart.amount_productsshoppingcart === "undefined") {
+    res.status(400).send({
+      message: err.message || "Parts of the data weren't given correctly.",
+    });
+  } else {
+    do productsshoppingcart.code_productsshoppingcart = Hasher.generateCode();
+    while (
+      ProductsShoppingCart.findByCode(productsshoppingcart.code_productsshoppingcart, (err, data) => {}) == -1
+    );
+    ProductsShoppingCart.create(productsshoppingcart, (err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Error while trying to add product into cart.",
+        });
+      else res.status(201).send(data.recordset);
+    });
+  }
+};
+
 exports.findAll = (req, res) => {
   ShoppingCart.getAll((err, data) => {
     if (err)
