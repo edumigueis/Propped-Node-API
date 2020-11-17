@@ -28,6 +28,8 @@ create table Store_Propped(
 	description_store varchar(1000) not null
 )
 
+select * from Store_propped
+
 create table FormofPayment_Propped(
 	id_formofpayment int identity primary key not null,
 	code_formofpayment varchar(100) not null,

@@ -20,7 +20,7 @@ exports.create = (req, res) => {
     state_store: req.body.state_store,
     country_store: req.body.country_store,
     image_store: req.body.image_store,
-    description_store = req.body.description_store
+    description_store : req.body.description_store
   });
 
   if (typeof store.name_store === "undefined" || typeof store.registry_store === "undefined" || typeof store.website_store === "undefined" || typeof store.phone_store === "undefined" || typeof store.postal_code_store === "undefined" || typeof store.address_store === "undefined" || typeof store.city_store === "undefined" || typeof store.state_store === "undefined" || typeof store.country_store === "undefined" || typeof store.image_store === "undefined" || typeof store.description_store === "undefined") {
