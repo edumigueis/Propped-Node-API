@@ -111,6 +111,32 @@ ShoppingCart.findById = (id, result) => {
   );
 };
 
+ShoppingCart.findByUser = (id, result) => {
+  sql.query(
+    `SELECT * FROM Cart_Propped WHERE id_user_shoppingcart = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 ShoppingCart.updateByCode = (code, cart, result) => {
   cart.code_shoppingcart = code;
   sql.query(

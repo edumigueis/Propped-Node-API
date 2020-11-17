@@ -5,11 +5,15 @@ module.exports = app => {
 
   app.get("/carts", carts.findAll);
 
-  app.get("/carts/:code_cart", carts.findOne);
+  app.get("/carts/:code_shoppingcart", carts.findOne);
 
-  app.get("/carts/id/:id_cart", carts.findById);
+  app.get("/carts/id/:id_shoppingcart", carts.findById);
 
-  app.put("/carts/:code_cart", carts.update);
+  app.get("/carts/user/:id_user_shoppingcart", carts.findById);
 
-  app.delete("/carts/:code_cart", carts.delete);
+  app.get("/carts/products/:id_shoppingcart", carts.findAllProducts);
+
+  app.put("/carts/:code_shoppingcart", carts.update);
+
+  app.delete("/carts/:code_shoppingcart", carts.delete);
 };

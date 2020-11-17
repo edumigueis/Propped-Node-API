@@ -228,16 +228,16 @@ exports.findByParams = (req, res) => {
 };
 
 exports.findAllImages = (req, res) => {
-  ImagesProduct.findAllImagesByProduct(req.params.code_product, (err, data) => {
+  ImagesProduct.findAllImagesByProduct(req.params.id_product, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Product with the code ${req.params.code_product} wasn't found.`,
+          message: `Product with the id ${req.params.id_product} do not have images.`,
         });
       } else {
         res.status(500).send({
-          message: "Error while searching for images of product with the code " +
-            req.params.code_product,
+          message: "Error while searching for images of product with the id " +
+          req.params.id_product,
         });
       }
     } else res.status(200).send(data.recordset);
@@ -245,16 +245,16 @@ exports.findAllImages = (req, res) => {
 };
 
 exports.findFirstImage = (req, res) => {
-  ImagesProduct.findFirstImageByProduct(req.params.code_product, (err, data) => {
+  ImagesProduct.findFirstImageByProduct(req.params.id_product, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Product with the code ${req.params.code_product} wasn't found.`,
+          message: `Product with the id ${req.params.id_product} do not have images.`,
         });
       } else {
         res.status(500).send({
-          message: "Error while searching for image of product with the code " +
-            req.params.code_product,
+          message: "Error while searching for image of product with the id " +
+          req.params.id_product,
         });
       }
     } else res.status(200).send(data.recordset);

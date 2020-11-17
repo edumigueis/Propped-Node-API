@@ -1,6 +1,7 @@
 const Hasher = require("../data/Hasher.js");
 
 const ShoppingCart = require("../models/ShoppingCart.model.js");
+const ProductsShoppingCart = require("../models/ProductsShoppingCart.model.js");
 
 exports.create = (req, res) => {
   if (!req.body) {
@@ -87,6 +88,23 @@ exports.findByUser = (req, res) => {
         res.status(500).send({
           message: "Error while searching for cart with the user with the id " +
           req.params.id_user_shoppingcart,
+        });
+      }
+    } else res.status(200).send(data.recordset);
+  });
+};
+
+exports.findAllProducts = (req, res) => {
+  ProductsShoppingCart.findAllProductsByCart(req.params.id_shoppingcart, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `ShoppingCart with the id ${req.params.id_shoppingcart} is empty.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for content of cart with the id " +
+          req.params.id_shoppingcart,
         });
       }
     } else res.status(200).send(data.recordset);
