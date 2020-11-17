@@ -19,10 +19,11 @@ exports.create = (req, res) => {
     city_store: req.body.city_store,
     state_store: req.body.state_store,
     country_store: req.body.country_store,
-    image_store: req.body.image_store
+    image_store: req.body.image_store,
+    description_store = req.body.description_store
   });
 
-  if (typeof store.name_store === "undefined" || typeof store.registry_store === "undefined" || typeof store.website_store === "undefined" || typeof store.phone_store === "undefined" || typeof store.postal_code_store === "undefined" || typeof store.address_store === "undefined" || typeof store.city_store === "undefined" || typeof store.state_store === "undefined" || typeof store.country_store === "undefined" || typeof store.image_store === "undefined") {
+  if (typeof store.name_store === "undefined" || typeof store.registry_store === "undefined" || typeof store.website_store === "undefined" || typeof store.phone_store === "undefined" || typeof store.postal_code_store === "undefined" || typeof store.address_store === "undefined" || typeof store.city_store === "undefined" || typeof store.state_store === "undefined" || typeof store.country_store === "undefined" || typeof store.image_store === "undefined" || typeof store.description_store === "undefined") {
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
     });
@@ -96,7 +97,7 @@ exports.update = (req, res) => {
 
   var store = new Store(req.body);
 
-  if (typeof store.name_store === "undefined" || typeof store.registry_store === "undefined" || typeof store.website_store === "undefined" || typeof store.phone_store === "undefined" || typeof store.postal_code_store === "undefined" || typeof store.address_store === "undefined" || typeof store.city_store === "undefined" || typeof store.state_store === "undefined" || typeof store.country_store === "undefined" || typeof store.image_store === "undefined") {
+  if (typeof store.name_store === "undefined" || typeof store.registry_store === "undefined" || typeof store.website_store === "undefined" || typeof store.phone_store === "undefined" || typeof store.postal_code_store === "undefined" || typeof store.address_store === "undefined" || typeof store.city_store === "undefined" || typeof store.state_store === "undefined" || typeof store.country_store === "undefined" || typeof store.image_store === "undefined" || typeof store.description_store === "undefined") {
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
     });

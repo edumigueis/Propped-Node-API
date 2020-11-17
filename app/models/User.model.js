@@ -17,7 +17,7 @@ const User = function (user) {
 
 User.create = (newUser, result) => {
   sql.query(
-    `INSERT INTO User_Propped VALUES('${newUser.code_user}','${newUser.name_user}','${newUser.email_user}','${newUser.pass_user}','${newUser.gender_user}','${newUser.birth_date_user}','${newUser.registry_user}','${newUser.phone_user}', CAST('${newUser.image_user}' as varbinary(max)), '${newUser.preference_user}')`,
+    `INSERT INTO User_Propped VALUES('${newUser.code_user}','${newUser.name_user}','${newUser.email_user}','${newUser.pass_user}','${newUser.gender_user}','${newUser.birth_date_user}','${newUser.registry_user}','${newUser.phone_user}', '${newUser.image_user}', '${newUser.preference_user}')`,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -133,7 +133,7 @@ User.findById = (id, result) => {
 User.updateByCode = (code, user, result) => {
   user.code_user = code;
   sql.query(
-    `UPDATE User_Propped SET name_user = '${user.name_user}', email_user = '${user.email_user}', pass_user = '${user.pass_user}', gender_user= '${user.gender_user}', birth_date_user= '${user.birth_date_user}', registry_user= '${user.registry_user}', phone_user= '${user.phone_user}', image_user= CAST('${user.image_user}' as varbinary(max)), preference_user = '${user.preference_user}'  WHERE code_user = '${code}'`,
+    `UPDATE User_Propped SET name_user = '${user.name_user}', email_user = '${user.email_user}', pass_user = '${user.pass_user}', gender_user= '${user.gender_user}', birth_date_user= '${user.birth_date_user}', registry_user= '${user.registry_user}', phone_user= '${user.phone_user}', image_user= '${user.image_user}', preference_user = '${user.preference_user}'  WHERE code_user = '${code}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);

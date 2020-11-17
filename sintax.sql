@@ -24,7 +24,8 @@ create table Store_Propped(
 	city_store varchar(60) not null,
 	state_store varchar(60) not null,
 	country_store varchar(60) not null,
-	image_store varchar(500) not null
+	image_store varchar(500) not null,
+	description_store varchar(1000) not null
 )
 
 create table FormofPayment_Propped(
