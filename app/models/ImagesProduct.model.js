@@ -8,7 +8,7 @@ const ImagesProduct = function (imagesproduct) {
 
 ImagesProduct.create = (newImagesProduct, result) => {
   sql.query(
-    `INSERT INTO ImagesProduct_Propped VALUES(${newImagesProduct.id_product_imagesproduct},${newImagesProduct.id_image_imagesproduct},'${newImagesProduct.code_imagesproduct}')`,
+    `INSERT INTO ImagesProduct_Propped VALUES(${newImagesProduct.id_image_imagesproduct},${newImagesProduct.id_product_imagesproduct},'${newImagesProduct.code_imagesproduct}')`,
     (err, res) => {
       if (err) {
         result(err, null);

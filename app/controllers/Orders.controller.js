@@ -106,7 +106,7 @@ exports.update = (req, res) => {
               req.params.code_order,
           });
         }
-      } else res.status(204).send(data.recordset);
+      } else res.status(200).send(data.recordset);
     });
   }
 };
@@ -125,7 +125,7 @@ exports.delete = (req, res) => {
         });
       }
     } else {
-      res.send({
+      res.status(200).send({
         message: `Order has been deleted succesfully!`,
       });
     }

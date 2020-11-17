@@ -1,0 +1,26 @@
+/*{
+    "id_store_product": 1,
+    "id_category_product": 8,
+    "id_subcategory_product": 4,
+    "name_product": "El Sun Hat",
+    "description_product": "Un sun hat.",
+    "weight_product": 0.2,
+    "price_product": 80.00,
+    "stock_product": 24,
+    "attributes" : {
+        "name_attribute": ["Color", "Color", "Material"],
+        "attribute": [{
+            "value_productattribute": "Brown/Red",
+            "available_productattribute": 0
+        },
+        {
+            "value_productattribute": "Yellow",
+            "available_productattribute": 1
+        },
+        {
+            "value_productattribute": "Polyester",
+            "available_productattribute": 1
+        }]
+    },
+    "images": ["img1", "img2", "img3"]
+}*/

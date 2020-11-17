@@ -179,7 +179,7 @@ exports.update = (req, res) => {
                 req.params.code_rating,
             });
           }
-        } else res.status(204).send(data.recordset);
+        } else res.status(200).send(data.recordset);
       }
     );
   }
@@ -218,7 +218,7 @@ exports.delete = (req, res) => {
                 message: "Error when trying to delete rating with the following code: " +
                   req.params.code_rating,
               });
-            } else res.send({
+            } else res.status(200).send({
               message: `Rating has been deleted succesfully!`,
             });
           });

@@ -1,13 +1,13 @@
 const sql = require("./db.js");
 
-const Cart = function (cart) {
+const ShoppingCart = function (cart) {
   this.code_shoppingcart = cart.code_shoppingcart;
   this.id_user_shoppingcart = cart.id_user_shoppingcart;
 };
 
-Cart.create = (newCart, result) => {
+ShoppingCart.create = (newCart, result) => {
   sql.query(
-    `INSERT INTO ShoppingCart_Propped VALUES('${newCart.code_shoppingcart}', ${newCart.id_user_shoppingcart})`,
+    `INSERT INTO ShoppingCart_Propped VALUES('${newShoppingCart.code_shoppingcart}', ${newShoppingCart.id_user_shoppingcart})`,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -20,7 +20,7 @@ Cart.create = (newCart, result) => {
   );
 };
 
-Cart.findByCode = (code, result) => {
+ShoppingCart.findByCode = (code, result) => {
   sql.query(
     `SELECT * FROM ShoppingCart_Propped WHERE code_shoppingcart = '${code}'`,
     (err, res) => {
@@ -46,7 +46,7 @@ Cart.findByCode = (code, result) => {
   );
 };
 
-Cart.getAll = (result) => {
+ShoppingCart.getAll = (result) => {
   sql.query("SELECT * FROM ShoppingCart_Propped", (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -59,7 +59,7 @@ Cart.getAll = (result) => {
   });
 };
 
-Cart.findByUser = (id, result) => {
+ShoppingCart.findByUser = (id, result) => {
   sql.query(
     `SELECT * FROM ShoppingCart_Propped WHERE id_user_shoppingcart = ${id}`,
     (err, res) => {
@@ -85,7 +85,7 @@ Cart.findByUser = (id, result) => {
   );
 };
 
-Cart.findById = (id, result) => {
+ShoppingCart.findById = (id, result) => {
   sql.query(
     `SELECT * FROM Cart_Propped WHERE id_cart = ${id}`,
     (err, res) => {
@@ -111,7 +111,7 @@ Cart.findById = (id, result) => {
   );
 };
 
-Cart.updateByCode = (code, cart, result) => {
+ShoppingCart.updateByCode = (code, cart, result) => {
   cart.code_shoppingcart = code;
   sql.query(
     `UPDATE ShoppingCart_Propped SET id_user_shoppingcart = ${cart.id_user_shoppingcart} WHERE code_shoppingcart = '${code}'`,
@@ -140,7 +140,7 @@ Cart.updateByCode = (code, cart, result) => {
   );
 };
 
-Cart.remove = (code, result) => {
+ShoppingCart.remove = (code, result) => {
   sql.query(
     "DELETE FROM ShoppingCart_Propped WHERE code_shoppingcart = '" + code + "'",
     (err, res) => {
@@ -164,4 +164,4 @@ Cart.remove = (code, result) => {
   );
 };
 
-module.exports = Cart;
+module.exports = ShoppingCart;

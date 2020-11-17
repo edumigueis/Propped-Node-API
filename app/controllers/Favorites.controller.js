@@ -123,7 +123,7 @@ exports.update = (req, res) => {
                 req.params.code_favorite,
             });
           }
-        } else res.status(204).send(data.recordset);
+        } else res.status(200).send(data.recordset);
       }
     );
   }
@@ -143,7 +143,7 @@ exports.delete = (req, res) => {
         });
       }
     } else {
-      res.send({
+      res.status(200).send({
         message: `Favorite has been deleted succesfully!`,
       });
     }

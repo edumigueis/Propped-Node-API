@@ -84,6 +84,29 @@ exports.findById = (req, res) => {
   });
 };
 
+exports.login = (req, res) => {
+  User.findByLoginData(req.params.email_user, req.params.pass_user, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `User with the email ${req.params.email_user} wasn't found.`,
+        });
+      } else if (err.kind === "wrong_password") {
+        res.status(403).send({
+          message: `User with the email ${req.params.email_user} doesn´t have this password.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error when trying to verify user with this email and password."
+        });
+      }
+    } else {
+      res.status(200).send({
+        message: `All data is correct! User will be logged in.`,
+      });
+    }
+  })
+};
 
 exports.update = (req, res) => {
   if (!req.body) {
@@ -111,7 +134,7 @@ exports.update = (req, res) => {
               req.params.code_user,
           });
         }
-      } else res.status(204).send(data.recordset);
+      } else res.status(200).send(data.recordset);
     });
   }
 };
@@ -130,33 +153,9 @@ exports.delete = (req, res) => {
         });
       }
     } else {
-      res.send({
+      res.status(200).send({
         message: `User has been deleted succesfully!`,
       });
     }
   });
-};
-
-exports.login = (req, res) => {
-  User.findByLoginData(req.params.email_user, req.params.pass_user, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `User with the email ${req.params.email_user} wasn't found.`,
-        });
-      } else if (err.kind === "wrong_password") {
-        res.status(403).send({
-          message: `User with the email ${req.params.email_user} doesn´t have this password.`
-        });
-      } else {
-        res.status(500).send({
-          message: "Error when trying to verify user with this email and password."
-        });
-      }
-    } else {
-      res.status(200).send({
-        message: `All data is correct! User will be logged in.`,
-      });
-    }
-  })
 };

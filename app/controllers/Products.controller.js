@@ -3,6 +3,7 @@ const Hasher = require("../data/Hasher.js");
 const Product = require("../models/Product.model.js");
 const ProductAttribute = require("../models/ProductAttribute.model.js");
 const ImagesProduct = require("../models/ImagesProduct.model.js");
+const Image = require("../models/Image.model.js");
 const Attribute = require("../models/Attribute.model.js");
 
 exports.create = (req, res) => {
@@ -33,6 +34,7 @@ exports.create = (req, res) => {
     if (typeof product.id_store_product === "undefined" || typeof product.id_category_product === "undefined" || typeof product.id_subcategory_product === "undefined" || typeof product.name_product === "undefined" || typeof product.description_product === "undefined" || typeof product.weight_product === "undefined" || typeof product.price_product === "undefined" || typeof product.stock_product === "undefined") {
       erro = '400';
     } else {
+
       do product.code_product = Hasher.generateCode();
       while (Product.findByCode(product.code_product, (err, data) => {}) == -1);
 
@@ -40,20 +42,28 @@ exports.create = (req, res) => {
         if (err) {
           erro = err;
         } else {
-          for (var i = 0; i < req.body.attributes.name_attribute.length; i++) {
+          
+          for (var i = 0, i2 = 0; i < req.body.attributes.name_attribute.length, i2 < req.body.images.length; i++, i2++) {
 
             let productAttribute = new ProductAttribute({
               value_productattribute: req.body.attributes.attribute[i].value_productattribute,
               available_productattribute: req.body.attributes.attribute[i].available_productattribute
             });
 
-            if (typeof productAttribute.value_productattribute === "undefined" || typeof productAttribute.available_productattribute === "undefined" || typeof req.body.attributes.name_attribute[i] === "undefined") {
+            let image = new Image({
+              photo_image: req.body.images[i2]
+            });
+
+            if (typeof productAttribute.value_productattribute === "undefined" || typeof productAttribute.available_productattribute === "undefined" || typeof req.body.attributes.name_attribute[i] === "undefined" || typeof req.body.images[i2] === "undefined") {
               erro = '400';
             } else {
+              
               Attribute.findByName(req.body.attributes.name_attribute[i], (err, data1) => {
+              
                 if (err)
                   erro = err;
                 else {
+
                   do productAttribute.code_productattribute = Hasher.generateCode();
                   while (ProductAttribute.findByCode(productAttribute.code_productattribute, (err, data2) => {}) == -1);
 
@@ -63,25 +73,49 @@ exports.create = (req, res) => {
                   ProductAttribute.create(productAttribute, (err, data3) => {
                     if (err) {
                       erro = err;
-                    }
-                    if (!passou) {
-                      passou = true;
-                      if (erro != null) {
-                        if (erro == '400') {
-                          res.status(400).send({
-                            message: "Parts of the data weren't given correctly.",
-                          });
-                        } else if (erro.kind === "not_found") {
-                          res.status(404).send({
-                            message: `Attribute with the code ${req.params.code_rating} wasn't found.`
-                          });
+                    } else {
+
+                      do image.code_image = Hasher.generateCode();
+                      while (Image.findByCode(image.code_image, (err, data4) => {}) == -1);
+
+                      Image.create(image, (err, data5) => {
+                        if (err) {
+                          erro = err;
                         } else {
-                          res.status(500).send({
-                            message: err.message || "Error while trying to create product."
-                          });
+                          
+                          let imageProduct = new ImagesProduct({
+                            id_image_imagesproduct: data5.recordset[0].id_image,
+                            id_product_imagesproduct: data0.recordset[0].id_product
+                          });                      
+                          do imageProduct.code_imagesproduct = Hasher.generateCode();
+                          while (ImagesProduct.findByCode(imageProduct.code_imagesproduct, (err, data6) => {}) == -1);
+                          
+                          ImagesProduct.create(imageProduct, (err, data7) => {
+                            if (err) {
+                              erro = err;
+                            }
+                            if (!passou) {
+                              passou = true;
+                              if (erro != null) {
+                                if (erro == '400') {
+                                  res.status(400).send({
+                                    message: "Parts of the data weren't given correctly.",
+                                  });
+                                } else if (erro.kind === "not_found") {
+                                  res.status(404).send({
+                                    message: `Attribute with the name ${req.body.attributes.name_attribute[i]} wasn't found.`
+                                  });
+                                } else {
+                                  res.status(500).send({
+                                    message: err.message || "Error while trying to create product."
+                                  });
+                                }
+                              } else
+                                res.status(201).send(data0.recordset);
+                            }
+                          })
                         }
-                      } else
-                        res.status(201).send(data0.recordset);
+                      })
                     }
                   });
                 }
@@ -93,7 +127,6 @@ exports.create = (req, res) => {
     }
   }
 }
-
 
 exports.findAll = (req, res) => {
   Product.getAll((err, data) => {
@@ -257,7 +290,7 @@ exports.update = (req, res) => {
                 req.params.code_product,
             });
           }
-        } else res.status(204).send(data.recordset);
+        } else res.status(200).send(data.recordset);
       }
     );
   }
@@ -277,7 +310,7 @@ exports.delete = (req, res) => {
         });
       }
     } else {
-      res.send({
+      res.status(200).send({
         message: `Product has been deleted succesfully!`,
       });
     }

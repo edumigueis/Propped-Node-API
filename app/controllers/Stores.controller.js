@@ -113,7 +113,7 @@ exports.update = (req, res) => {
           });
         }
       } else
-        res.status(204).send(data.recordset);
+        res.status(200).send(data.recordset);
     });
   }
 };
@@ -131,7 +131,7 @@ exports.delete = (req, res) => {
         });
       }
     } else {
-      res.send({
+      res.status(200).send({
         message: `Store has been deleted succesfully!`,
       });
     }

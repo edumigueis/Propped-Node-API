@@ -1,21 +1,19 @@
 const sql = require("./db.js");
 
 const Image = function (image) {
-  this.code_category = image.code_category;
+  this.code_image = image.code_image;
   this.photo_image = image.photo_image;
 };
 
 Image.create = (newImage, result) => {
   sql.query(
-    `INSERT INTO Image_Propped VALUES('${newImage.code_image}', '${newImage.name_image}')`,
+    `INSERT INTO Image_Propped OUTPUT INSERTED.* VALUES('${newImage.photo_image}', '${newImage.code_image}')`,
     (err, res) => {
       if (err) {
         result(err, null);
         return;
       }
-      result(null, {
-        ...newImage,
-      });
+      result(null, res);
     }
   );
 };
@@ -86,7 +84,7 @@ Image.findById = (id, result) => {
 Image.updateByCode = (code, image, result) => {
   image.code_image = code;
   sql.query(
-    `UPDATE Image_Propped SET photo_image = '${newImage.name_image}' WHERE code_category = '${code}'`,
+    `UPDATE Image_Propped SET photo_image = '${image.photo_image}' WHERE code_category = '${code}'`,
     (err, res) => {
       if (err) {
         result(null, err);
