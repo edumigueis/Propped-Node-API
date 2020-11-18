@@ -64,7 +64,15 @@ Product.getAll = (result) => {
 
 Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
   sql.query(
-    `SELECT * FROM Product_Propped WHERE id_store_product = ${id_store_product}`,
+    `SELECT DISTINCT p.*
+    FROM 
+    Product_Propped p, Attribute_Propped a, ProductAttribute_Propped pa 
+    WHERE 
+    (a.name_attribute like 'Color' or a.name_attribute like 'Size' or a.name_attribute like 'Occasion') and 
+    (pa.value_productattribute like 'Yellow' or pa.value_productattribute like 'm' or pa.value_productattribute like 'Travel') and
+    a.id_attribute = pa.id_attribute_productattribute and 
+    pa.id_product_productattribute = p.id_product and 
+    (p.price_product >= 0 and p.price_product <= 100000)`,
     (err, res) => {
       if (err) {
         result(err, null);

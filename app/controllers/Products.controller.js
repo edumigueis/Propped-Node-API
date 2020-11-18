@@ -43,16 +43,24 @@ exports.create = (req, res) => {
             message: err.message || "Error while trying to create product."
           });
         } else {
-          for (var i = 0, i2 = 0; i < req.body.attributes.name_attribute.length, i2 < req.body.images.length; i++, i2++) {
 
+          var i2 = -1;
+          for (var i = 0; i < req.body.attributes.name_attribute.length; i++) {
+            if (i2 < req.body.images.length - 1)
+              i2++;
+
+              console.log(i2);
             let productAttribute = new ProductAttribute({
               value_productattribute: req.body.attributes.attribute[i].value_productattribute,
               available_productattribute: req.body.attributes.attribute[i].available_productattribute
             });
 
-            let image = new Image({
-              photo_image: req.body.images[i2]
-            });
+            let image;
+            if (i2 <= req.body.images.length) {
+              image = new Image({
+                photo_image: req.body.images[i2]
+              });
+            }
 
             if (typeof productAttribute.value_productattribute === "undefined" || typeof productAttribute.available_productattribute === "undefined" || typeof req.body.attributes.name_attribute[i] === "undefined" || typeof req.body.images[i2] === "undefined") {
               erro = '400';
@@ -74,50 +82,51 @@ exports.create = (req, res) => {
                     if (err) {
                       erro = err;
                     } else {
+                      if (i2 <= req.body.images.length) {
+                        do image.code_image = Hasher.generateCode();
+                        while (Image.findByCode(image.code_image, (err, data4) => {}) == -1);
 
-                      do image.code_image = Hasher.generateCode();
-                      while (Image.findByCode(image.code_image, (err, data4) => {}) == -1);
+                        Image.create(image, (err, data5) => {
+                          if (err) {
+                            erro = err;
+                          } else {
 
-                      Image.create(image, (err, data5) => {
-                        if (err) {
-                          erro = err;
-                        } else {
+                            let imageProduct = new ImagesProduct({
+                              id_image_imagesproduct: data5.recordset[0].id_image,
+                              id_product_imagesproduct: data0.recordset[0].id_product
+                            });
+                            do imageProduct.code_imagesproduct = Hasher.generateCode();
+                            while (ImagesProduct.findByCode(imageProduct.code_imagesproduct, (err, data6) => {}) == -1);
 
-                          let imageProduct = new ImagesProduct({
-                            id_image_imagesproduct: data5.recordset[0].id_image,
-                            id_product_imagesproduct: data0.recordset[0].id_product
-                          });
-                          do imageProduct.code_imagesproduct = Hasher.generateCode();
-                          while (ImagesProduct.findByCode(imageProduct.code_imagesproduct, (err, data6) => {}) == -1);
-
-                          ImagesProduct.create(imageProduct, (err, data7) => {
-                            if (err) {
-                              erro = err;
-                            }
-                            if (!passou) {
-                              passou = true;
-                              if (erro != null) {
-                                if (erro == '400') {
-                                  res.status(400).send({
-                                    message: "Parts of the data weren't given correctly.",
-                                  });
-                                } else if (erro.kind === "not_found") {
-                                  res.status(404).send({
-                                    message: `Attribute with the name ${req.body.attributes.name_attribute[i]} wasn't found.`
-                                  });
-                                } else {
-                                  res.status(500).send({
-                                    message: err.message || "Error while trying to create product."
-                                  });
-                                }
-                              } else
-                                res.status(201).send(data0.recordset);
-                            }
-                          })
-                        }
-                      })
+                            ImagesProduct.create(imageProduct, (err, data7) => {
+                              if (err) {
+                                erro = err;
+                              }
+                              if (!passou) {
+                                passou = true;
+                                if (erro != null) {
+                                  if (erro == '400') {
+                                    res.status(400).send({
+                                      message: "Parts of the data weren't given correctly.",
+                                    });
+                                  } else if (erro.kind === "not_found") {
+                                    res.status(404).send({
+                                      message: `Attribute with the name ${req.body.attributes.name_attribute[i]} wasn't found.`
+                                    });
+                                  } else {
+                                    res.status(500).send({
+                                      message: err.message || "Error while trying to create product."
+                                    });
+                                  }
+                                } else
+                                  res.status(201).send(data0.recordset);
+                              }
+                            })
+                          }
+                        })
+                      }
                     }
-                  });
+                  })
                 }
               })
             }
