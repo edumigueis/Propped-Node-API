@@ -7,7 +7,7 @@ const Image = require("../models/Image.model.js");
 const Attribute = require("../models/Attribute.model.js");
 
 exports.create = (req, res) => {
-  
+
   var erro = null;
   var passou = false;
 
@@ -42,7 +42,7 @@ exports.create = (req, res) => {
           res.status(500).send({
             message: err.message || "Error while trying to create product."
           });
-        } else {         
+        } else {
           for (var i = 0, i2 = 0; i < req.body.attributes.name_attribute.length, i2 < req.body.images.length; i++, i2++) {
 
             let productAttribute = new ProductAttribute({
@@ -52,14 +52,14 @@ exports.create = (req, res) => {
 
             let image = new Image({
               photo_image: req.body.images[i2]
-            });                  
+            });
 
             if (typeof productAttribute.value_productattribute === "undefined" || typeof productAttribute.available_productattribute === "undefined" || typeof req.body.attributes.name_attribute[i] === "undefined" || typeof req.body.images[i2] === "undefined") {
               erro = '400';
             } else {
-              
+
               Attribute.findByName(req.body.attributes.name_attribute[i], (err, data1) => {
-              
+
                 if (err)
                   erro = err;
                 else {
@@ -82,14 +82,14 @@ exports.create = (req, res) => {
                         if (err) {
                           erro = err;
                         } else {
-                          
+
                           let imageProduct = new ImagesProduct({
                             id_image_imagesproduct: data5.recordset[0].id_image,
                             id_product_imagesproduct: data0.recordset[0].id_product
-                          });                      
+                          });
                           do imageProduct.code_imagesproduct = Hasher.generateCode();
                           while (ImagesProduct.findByCode(imageProduct.code_imagesproduct, (err, data6) => {}) == -1);
-                          
+
                           ImagesProduct.create(imageProduct, (err, data7) => {
                             if (err) {
                               erro = err;
@@ -207,24 +207,30 @@ exports.findByStore = (req, res) => {
 };
 
 exports.findByParams = (req, res) => {
-  Product.findByParams(req.body.name_product, req.body.id_category_product, req.body.id_subcategory_product,
-    req.body.filters_product, (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Product with these attributes wasn't found.`,
-          });
-        } else if (err.kind === "bad_request") {
-          res.status(400).send({
-            message: `Invalid parameters were entered to search a product.`,
-          });
-        } else {
-          res.status(500).send({
-            message: "Error while searching for product with these attributes",
-          });
-        }
-      } else res.send(data);
+  if (typeof req.body.name_product === "undefined" || typeof req.body.id_category_product === "undefined" || typeof req.body.id_subcategory_product === "undefined" || typeof req.body.filters_product === "undefined") {
+    res.status(400).send({
+      message: "Parts of the data weren't given correctly.",
     });
+  } else {
+    Product.findByParams(req.body.name_product, req.body.id_category_product, req.body.id_subcategory_product,
+      req.body.filters_product, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Product with these attributes wasn't found.`,
+            });
+          } else if (err.kind === "bad_request") {
+            res.status(400).send({
+              message: `Invalid parameters were entered to search a product.`,
+            });
+          } else {
+            res.status(500).send({
+              message: "Error while searching for product with these attributes",
+            });
+          }
+        } else res.send(data);
+      });
+  }
 };
 
 exports.findAllImages = (req, res) => {
@@ -237,7 +243,7 @@ exports.findAllImages = (req, res) => {
       } else {
         res.status(500).send({
           message: "Error while searching for images of product with the id " +
-          req.params.id_product,
+            req.params.id_product,
         });
       }
     } else res.status(200).send(data.recordset);
@@ -254,7 +260,7 @@ exports.findFirstImage = (req, res) => {
       } else {
         res.status(500).send({
           message: "Error while searching for image of product with the id " +
-          req.params.id_product,
+            req.params.id_product,
         });
       }
     } else res.status(200).send(data.recordset);

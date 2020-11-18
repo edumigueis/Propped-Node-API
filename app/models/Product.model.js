@@ -40,8 +40,8 @@ Product.findByCode = (code, result) => {
       }
 
       result({
-        kind: "not_found",
-      },
+          kind: "not_found",
+        },
         null
       );
 
@@ -63,29 +63,28 @@ Product.getAll = (result) => {
 
 
 Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
+  sql.query(
+    `SELECT * FROM Product_Propped WHERE id_store_product = ${id_store_product}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
 
-  let query = "SELECT * FROM Product_Propped WHERE";
-  {
-    if (name != "") {
-      query += " name_product = '" + name + "'";
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
 
-      if (idCategory != -1)
-        query += " and id_category_product = " + idCategory;
+      result({
+          kind: "not_found",
+        },
+        null
+      );
 
-      if (idSubcategory != -1)
-        query += " and id_subcategory_product = " + idSubcategory;
+      return -1;
     }
-    else if (idCategory != -1) {
-      query += " id_category_product = " + idCategory;
-
-      if (idSubcategory != -1)
-        query += " and id_subcategory_product = " + idSubcategory;
-    }
-    else
-      result({ kind: "bad_request", }, null);
-  }
-  console.log(query);
-
+  );
 }
 
 Product.findByStore = (id_store_product, result) => {
@@ -103,8 +102,8 @@ Product.findByStore = (id_store_product, result) => {
       }
 
       result({
-        kind: "not_found",
-      },
+          kind: "not_found",
+        },
         null
       );
 
@@ -127,8 +126,7 @@ Product.findById = (id, result) => {
         return;
       }
 
-      result(
-        {
+      result({
           kind: "not_found",
         },
         null
@@ -152,8 +150,8 @@ Product.updateByCode = (code, product, result) => {
 
       if (res.affectedRows == 0) {
         result({
-          kind: "not_found",
-        },
+            kind: "not_found",
+          },
           null
         );
         return;
@@ -178,8 +176,8 @@ Product.remove = (code, result) => {
 
       if (res.affectedRows == 0) {
         result({
-          kind: "not_found",
-        },
+            kind: "not_found",
+          },
           null
         );
         return;
