@@ -1,4 +1,4 @@
-/*{
+{
     "id_store_product": 1,
     "id_category_product": 8,
     "id_subcategory_product": 4,
@@ -23,4 +23,4 @@
         }]
     },
     "images": ["img1", "img2", "img3"]
-}*/
+}

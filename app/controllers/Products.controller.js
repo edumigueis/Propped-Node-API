@@ -7,7 +7,7 @@ const Image = require("../models/Image.model.js");
 const Attribute = require("../models/Attribute.model.js");
 
 exports.create = (req, res) => {
-
+  
   var erro = null;
   var passou = false;
 
@@ -34,15 +34,15 @@ exports.create = (req, res) => {
     if (typeof product.id_store_product === "undefined" || typeof product.id_category_product === "undefined" || typeof product.id_subcategory_product === "undefined" || typeof product.name_product === "undefined" || typeof product.description_product === "undefined" || typeof product.weight_product === "undefined" || typeof product.price_product === "undefined" || typeof product.stock_product === "undefined") {
       erro = '400';
     } else {
-
       do product.code_product = Hasher.generateCode();
       while (Product.findByCode(product.code_product, (err, data) => {}) == -1);
 
       Product.create(product, (err, data0) => {
         if (err) {
-          erro = err;
-        } else {
-          
+          res.status(500).send({
+            message: err.message || "Error while trying to create product."
+          });
+        } else {         
           for (var i = 0, i2 = 0; i < req.body.attributes.name_attribute.length, i2 < req.body.images.length; i++, i2++) {
 
             let productAttribute = new ProductAttribute({
@@ -52,7 +52,7 @@ exports.create = (req, res) => {
 
             let image = new Image({
               photo_image: req.body.images[i2]
-            });
+            });                  
 
             if (typeof productAttribute.value_productattribute === "undefined" || typeof productAttribute.available_productattribute === "undefined" || typeof req.body.attributes.name_attribute[i] === "undefined" || typeof req.body.images[i2] === "undefined") {
               erro = '400';
