@@ -94,6 +94,22 @@ exports.findByUser = (req, res) => {
   });
 };
 
+exports.findByUserAndProduct = (req, res) => {
+  Favorite.findByUserAndProduct(req.params.id_user_favorite, req.params.id_product_favorite, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Product with the id ${req.params.id_product_favorite} wasn't favored by user with the id ${req.params.req.params.id_user_favorite}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: `Error while searching for favorite with the product with id ${req.params.id_product_favorite} and user with the id ` + req.params.id_user_favorite,
+        });
+      }
+    } else res.status(200).send(data.recordset);
+  });
+};
+
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({

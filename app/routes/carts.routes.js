@@ -18,4 +18,6 @@ module.exports = app => {
   app.put("/carts/:code_shoppingcart", carts.update);
 
   app.delete("/carts/:code_shoppingcart", carts.delete);
+
+  app.delete("/carts/product/:id_shoppingcart/:id_product_shoppingcart", carts.deleteProduct);
 };

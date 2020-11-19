@@ -187,13 +187,34 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message: "Error when trying to update cart with the following code: " +
+          message: "Error when trying to delete cart with the following code: " +
             req.params.code_shoppingcart,
         });
       }
     } else {
       res.status(200).send({
         message: `ShoppingCart has been deleted succesfully!`,
+      });
+    }
+  });
+};
+
+exports.deleteProduct = (req, res) => {
+  ProductsShoppingCart.removeFromCart(req.params.id_shoppingcart, req.params.id_product_shoppingcart, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Cart with the id ${req.params.id_shoppingcart} does not have product with the id ${req.params.id_product_shoppingcart}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: `Error when trying to delete product thith the id ${req.params.id_product_shoppingcart} from cart with the following id: ` +
+            req.params.id_shoppingcart,
+        });
+      }
+    } else {
+      res.status(200).send({
+        message: `Product has been deleted succesfully!`,
       });
     }
   });

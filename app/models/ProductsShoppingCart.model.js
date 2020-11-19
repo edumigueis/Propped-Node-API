@@ -135,4 +135,28 @@ ProductsShoppingCart.remove = (code, result) => {
   );
 };
 
+ProductsShoppingCart.removeFromCart = (idCart, idProduct, result) => {
+  sql.query(
+    "DELETE FROM ProductsShoppingCart_Propped WHERE id_shoppingcart_productsshoppingcart = " + idCart + " and id_product_productsshoppingcart = " + idProduct,
+    (err, res) => {
+      if (err) {
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        result(
+          {
+            kind: "not_found",
+          },
+          null
+        );
+        return;
+      }
+
+      result(null, res);
+    }
+  );
+};
+
 module.exports = ProductsShoppingCart;

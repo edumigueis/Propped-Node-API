@@ -47,6 +47,31 @@ Favorite.findByCode = (code, result) => {
   );
 };
 
+Favorite.findByUserAndProduct = (idUser, idProduct, result) => {
+  sql.query(
+    `SELECT * FROM Favorite_Propped WHERE id_user_favorite = ${idUser} and id_product_favorite = ${idProduct}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 Favorite.getAll = (result) => {
   sql.query("SELECT * FROM Favorite_Propped", (err, res) => {
     if (err) {
