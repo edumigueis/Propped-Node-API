@@ -15,6 +15,8 @@ module.exports = app => {
 
   app.get("/carts/products/:id_shoppingcart", carts.findAllProducts);
 
+  app.get("/carts/products/count/:id_user_shoppingcart", carts.countByUser);
+
   app.put("/carts/:code_shoppingcart", carts.update);
 
   app.delete("/carts/:code_shoppingcart", carts.delete);

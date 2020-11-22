@@ -72,6 +72,32 @@ ProductsShoppingCart.findAllProductsByCart = (id, result) => {
   );
 };
 
+ProductsShoppingCart.countByUser = (id, result) => {
+  sql.query(
+    `SELECT COUNT(*) FROM ProductsShoppingCart_Propped WHERE id_shoppingcart_productsshoppingcart = ${id}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+      
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 ProductsShoppingCart.getAll = (result) => {
   sql.query("SELECT * FROM ProductsShoppingCart_Propped", (err, res) => {
     if (err) {

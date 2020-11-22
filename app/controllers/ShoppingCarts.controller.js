@@ -143,6 +143,23 @@ exports.findAllProducts = (req, res) => {
   });
 };
 
+exports.countByUser = (req, res) => {
+  ProductsShoppingCart.countByUser(req.params.id_user_shoppingcart, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `ShoppingCart with the user with the id ${req.params.id_user_shoppingcart} is empty.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while counting content of cart with the user with the id " +
+          req.params.id_user_shoppingcart,
+        });
+      }
+    } else res.status(200).send(data.recordset);
+  });
+};
+
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({
