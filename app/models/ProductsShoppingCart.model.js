@@ -81,19 +81,8 @@ ProductsShoppingCart.countByUser = (id, result) => {
         return;
       }
 
-      if (res.recordset.length > 0) {
         result(null, res);
         return;
-      }
-      
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
-
-      return -1;
     }
   );
 };

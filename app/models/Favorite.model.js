@@ -80,6 +80,7 @@ Favorite.getAll = (result) => {
     }
 
     result(null, res);
+    return;
   });
 };
 
@@ -132,6 +133,18 @@ Favorite.findById = (id, result) => {
       return -1;
     }
   );
+};
+
+Favorite.countByUser = (id,result) => {
+  sql.query(`SELECT * FROM Favorite_Propped WHERE id_user_favorite = ${id}`, (err, res) => {
+    if (err) {
+      result(null, err);
+      return;
+    }
+
+    result(null, res);
+    return;
+  });
 };
 
 Favorite.updateByCode = (code, favorite, result) => {

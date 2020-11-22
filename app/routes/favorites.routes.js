@@ -12,6 +12,8 @@ module.exports = app => {
     app.get("/favorites/product/:id_user_favorite/:id_product_favorite", favorites.findByUserAndProduct);
   
     app.get("/favorites/:code_favorite", favorites.findOne);
+
+    app.get("/favorites/count/:id_user_favorite", favorites.countByUser);
   
     app.put("/favorites/:code_favorite", favorites.update);
   

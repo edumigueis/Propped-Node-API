@@ -110,6 +110,17 @@ exports.findByUserAndProduct = (req, res) => {
   });
 };
 
+exports.countByUser = (req, res) => {
+  Favorite.countByUser(req.params.id_user_favorite, (err, data) => {
+    if (err) {
+      res.status(500).send({
+        message: "Error while counting favorites of the user " +
+          req.params.id_user_favorite,
+      });      
+    } else res.status(200).status(200).send(data.recordset);
+  });
+};
+
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({
