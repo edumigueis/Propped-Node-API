@@ -237,7 +237,7 @@ exports.findByParams = (req, res) => {
               message: "Error while searching for product with these attributes",
             });
           }
-        } else res.send(data);
+        } else res.send(data.recordset);
       });
   }
 };

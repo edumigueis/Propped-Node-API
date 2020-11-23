@@ -72,7 +72,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
     idCategory = "(p.id_category_product >= 0 and p.id_category_product <= 2147483647)";
 
   if (idSubcategory != -1)
-    idCategory = `p.id_subcategory_product = ${idSubcategory}`;
+    idSubcategory = `p.id_subcategory_product = ${idSubcategory}`;
   else
     idSubcategory = "(p.id_subcategory_product >= 0 and p.id_subcategory_product <= 2147483647)";
 
@@ -82,7 +82,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
   if (filters[1] == -1)
     filters[1] = "(p.price_product >= 0 and p.price_product <= 2147483647)";
   else if (filters[1].toString().includes(' '))
-    filters[1] = `(p.price_product >= ${filters[1].toString().split()[0]} and p.price_product <= ${filters[1].toString().split()[1]})`;
+    filters[1] = `(p.price_product >= ${filters[1].toString().split(' ')[0]} and p.price_product <= ${filters[1].toString().split(' ')[1]})`;
   else
     filters[1] = `(p.price_product >= ${filters[1]} and p.price_product <= ${filters[1]})`;
 
@@ -92,10 +92,12 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
   if (filters[3] == "")
     filters[3] = "%";
 
+  let query = `SELECT DISTINCT p.* FROM Product_Propped p, Attribute_Propped a, ProductAttribute_Propped pa WHERE 
+    (a.name_attribute like 'Color' and pa.value_productattribute like '${filters[0]}') and (a.name_attribute like 'Size' and pa.value_productattribute like '${filters[3]}') and (a.name_attribute like 'Occasion' and pa.value_productattribute like '${filters[2]}') and a.id_attribute = pa.id_attribute_productattribute and pa.id_product_productattribute = p.id_product and ${filters[1]} and p.name_product like '${name}' and ${idCategory} and ${idSubcategory}`;
+
+    console.log(query);
   sql.query(
-    `SELECT DISTINCT p.* FROM Product_Propped p, Attribute_Propped a, ProductAttribute_Propped pa WHERE 
-    (a.name_attribute like 'Color' or a.name_attribute like 'Size' or a.name_attribute like 'Occasion') and 
-    (pa.value_productattribute like '${filters[0]}' or pa.value_productattribute like '${filters[2]}' or pa.value_productattribute like '${filters[3]}') and a.id_attribute = pa.id_attribute_productattribute and pa.id_product_productattribute = p.id_product and ${filters[1]} and p.name_product like '${name}' and ${idCategory} and '${idSubcategory}'`,
+    query,
     (err, res) => {
       if (err) {
         result(err, null);
