@@ -157,16 +157,15 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  Favorite.remove(req.params.code_favorite, (err, data) => {
+  Favorite.remove(req.params.id_user, req.params.id_product, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Favorite with the code ${req.params.code_favorite} wasn't found.`,
+          message: `Favorite from the user with the id ${req.params.id_user} wasn't found.`,
         });
       } else {
         res.status(500).send({
-          message: "Error when trying to update favorite with the following code: " +
-            req.params.code_favorite,
+          message: "Error when trying to delete favorite."
         });
       }
     } else {

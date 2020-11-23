@@ -41,7 +41,7 @@ exports.addProduct = (req, res) => {
   }
 
   const productsshoppingcart = new ProductsShoppingCart({
-    id_product_productsshoppingcart: req.body.id_user_shoppingcart,
+    id_product_productsshoppingcart: req.body.id_product_productsshoppingcart,
     id_shoppingcart_productsshoppingcart: req.body.id_shoppingcart_productsshoppingcart,
     amount_productsshoppingcart: req.body.amount_productsshoppingcart
   });
@@ -55,6 +55,7 @@ exports.addProduct = (req, res) => {
     while (
       ProductsShoppingCart.findByCode(productsshoppingcart.code_productsshoppingcart, (err, data) => {}) == -1
     );
+    console.log(productsshoppingcart);
     ProductsShoppingCart.create(productsshoppingcart, (err, data) => {
       if (err)
         res.status(500).send({
