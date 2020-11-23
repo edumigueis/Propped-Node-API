@@ -19,16 +19,21 @@ exports.create = (req, res) => {
       message: err.message || "Parts of the data weren't given correctly.",
     });
   } else {
-    do favorite.code_favorite = Hasher.generateCode();
-    while (
-      Favorite.findByCode(favorite.code_favorite, (err, data) => {}) == -1
-    );
-    Favorite.create(favorite, (err, data) => {
-      if (err)
-        res.status(500).send({
-          message: err.message || "Error while trying to create favorite.",
-        });
-      else res.status(201).send(data.recordset);
+    if (Favorite.findByUserAndProduct(favorite.id_user_favorite, favorite.id_product_favorite, (err, data) => {}) == -1) {
+      do favorite.code_favorite = Hasher.generateCode();
+      while (
+        Favorite.findByCode(favorite.code_favorite, (err, data) => {}) == -1
+      );
+      Favorite.create(favorite, (err, data) => {
+        if (err)
+          res.status(500).send({
+            message: err.message || "Error while trying to create favorite.",
+          });
+        else res.status(201).send(data.recordset);
+      });
+    }
+    else res.status(409).send({
+      message: err.message || "This favorite already exists.",
     });
   }
 };
@@ -116,7 +121,7 @@ exports.countByUser = (req, res) => {
       res.status(500).send({
         message: "Error while counting favorites of the user " +
           req.params.id_user_favorite,
-      });      
+      });
     } else res.status(200).status(200).send(data.recordset);
   });
 };
