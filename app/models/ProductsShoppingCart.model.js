@@ -9,7 +9,7 @@ const ProductsShoppingCart = function (productsshoppingcart) {
 
 ProductsShoppingCart.create = (newProductsShoppingCart, result) => {
   sql.query(
-    `INSERT INTO ProductsShoppingCart_Propped VALUES('${newProductsShoppingCart.code_productsshoppingcart}',${newProductsShoppingCart.id_product_productsshoppingcart},${newProductsShoppingCart.id_shoppingcart_productsshoppingcart},${newProductsShoppingCart.amount_productsshoppingcart})`,
+    `INSERT INTO ProductsShoppingCart_Propped VALUES(${newProductsShoppingCart.id_product_productsshoppingcart},${newProductsShoppingCart.id_shoppingcart_productsshoppingcart},${newProductsShoppingCart.amount_productsshoppingcart},'${newProductsShoppingCart.code_productsshoppingcart}')`,
     (err, res) => {
       if (err) {
         result(err, null);
