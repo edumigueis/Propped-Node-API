@@ -175,9 +175,9 @@ Favorite.updateByCode = (code, favorite, result) => {
   );
 };
 
-Favorite.remove = (code, result) => {
+Favorite.remove = (id_user, id_product, result) => {
   sql.query(
-    "DELETE FROM Favorite_Propped WHERE code_favorite = '" + code + "'",
+    "DELETE FROM Favorite_Propped WHERE id_user_favorite = " + id_user + " and id_product_favorite = " + id_product,
     (err, res) => {
       if (err) {
         result(null, err);
