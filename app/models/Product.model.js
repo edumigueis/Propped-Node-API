@@ -63,6 +63,18 @@ Product.getAll = (result) => {
 
 
 Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
+
+  let query;
+
+  if (name == "")
+    name = "%";
+
+  if (idCategory == -1)
+    name = "%";
+
+  if (idSubcategory == -1)
+    name = "%";
+
   sql.query(
     `SELECT DISTINCT p.*
     FROM 
