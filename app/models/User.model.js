@@ -130,6 +130,32 @@ User.findById = (id, result) => {
   );
 };
 
+User.findByEmail = (email, result) => {
+  sql.query(
+    `SELECT * FROM User_Propped WHERE email_user = ${email}`,
+    (err, res) => {
+      if (err) {
+        result(err, null);
+        return;
+      }
+
+      if (res.recordset.length > 0) {
+        result(null, res);
+        return;
+      }
+
+      result(
+        {
+          kind: "not_found",
+        },
+        null
+      );
+
+      return -1;
+    }
+  );
+};
+
 User.updateByCode = (code, user, result) => {
   user.code_user = code;
   sql.query(

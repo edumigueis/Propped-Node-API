@@ -84,6 +84,23 @@ exports.findById = (req, res) => {
   });
 };
 
+exports.findOne = (req, res) => {
+  User.findByEmail(req.params.email_user, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `User with the email ${req.params.email_user} wasn't found.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error while searching for user with the email " +
+            req.params.email_user,
+        });
+      }
+    } else res.status(200).send(data.recordset);
+  });
+};
+
 exports.login = (req, res) => {
   User.findByLoginData(req.params.email_user, req.params.pass_user, (err, data) => {
     if (err) {

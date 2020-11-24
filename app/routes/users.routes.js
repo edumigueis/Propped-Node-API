@@ -10,6 +10,8 @@ module.exports = app => {
     app.get("/users/id/:id_user", users.findById);
   
     app.get("/users/:code_user", users.findOne);
+
+    app.get("/users/email/:email_user", users.findOne);
   
     app.put("/users/:code_user", users.update);
   
