@@ -49,7 +49,7 @@ ProductsShoppingCart.findByCode = (code, result) => {
 
 ProductsShoppingCart.findAllProductsByCart = (id, result) => {
   sql.query(
-    `SELECT pc.amount_productsshoppingcart, p.* FROM ProductsShoppingCart_Propped pc, Product_Propped p WHERE pc.id_shoppingcart_productsshoppingcart = ${id} and p.id_product = pc.id_shoppingcart_productsshoppingcart`,
+    `SELECT pc.amount_productsshoppingcart, p.* FROM ProductsShoppingCart_Propped pc, Product_Propped p WHERE pc.id_shoppingcart_productsshoppingcart = ${id} and p.id_product = pc.id_product_productsshoppingcart`,
     (err, res) => {
       if (err) {
         result(err, null);
