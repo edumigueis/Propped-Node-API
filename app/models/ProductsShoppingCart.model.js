@@ -74,7 +74,7 @@ ProductsShoppingCart.findAllProductsByCart = (id, result) => {
 
 ProductsShoppingCart.countByUser = (id, result) => {
   sql.query(
-    `SELECT COUNT(*) FROM ProductsShoppingCart_Propped ps, ShoppingCart_Propped s WHERE ps.id_shoppingcart_productsshoppingcart = s.id_shoppingcart and s.id_user_shoppingcart = ${id}`,
+    `SELECT COUNT(*) AS 'count' FROM ProductsShoppingCart_Propped ps, ShoppingCart_Propped s WHERE ps.id_shoppingcart_productsshoppingcart = s.id_shoppingcart and s.id_user_shoppingcart = ${id}`,
     (err, res) => {
       if (err) {
         result(err, null);

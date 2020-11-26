@@ -44,8 +44,7 @@ User.findByCode = (code, result) => {
         return;
       }
 
-      result(
-        {
+      result({
           kind: "not_found",
         },
         null
@@ -70,21 +69,20 @@ User.getAll = (result) => {
 User.findByLoginData = (email, senha, result) => {
   sql.query(
     `SELECT * FROM User_Propped WHERE email_user = '${email}'`,
-    (err, res) => {
+    (err, resUser) => {
       if (err) {
         result(err, null);
         return;
       }
 
-      if (res.recordset.length > 0) {
-        Hasher.comparePassword(senha, res.pass_user, function (res) {
+      if (resUser.recordset.length > 0) {
+        Hasher.comparePassword(senha, resUser.recordset[0].pass_user, function (res) {
           if (res) {
-            result(null, res);
+            result(null, resUser);
             return;
-          }
+          } 
           else {
-            result(
-              {
+            result({
                 kind: "wrong_password",
               },
               null
@@ -92,14 +90,14 @@ User.findByLoginData = (email, senha, result) => {
             return;
           }
         });
+      } 
+      else {
+        result({
+            kind: "not_found",
+          },
+          null
+        );
       }
-
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
     }
   );
 };
@@ -118,8 +116,7 @@ User.findById = (id, result) => {
         return;
       }
 
-      result(
-        {
+      result({
           kind: "not_found",
         },
         null
@@ -144,8 +141,7 @@ User.findByEmail = (email, result) => {
         return;
       }
 
-      result(
-        {
+      result({
           kind: "not_found",
         },
         null
@@ -168,8 +164,7 @@ User.updateByCode = (code, user, result) => {
       }
 
       if (res.affectedRows == 0) {
-        result(
-          {
+        result({
             kind: "not_found",
           },
           null
@@ -195,8 +190,7 @@ User.remove = (code, result) => {
       }
 
       if (res.affectedRows == 0) {
-        result(
-          {
+        result({
             kind: "not_found",
           },
           null

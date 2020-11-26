@@ -28,15 +28,18 @@ exports.create = (req, res) => {
   } else {
     do user.code_user = Hasher.generateCode();
     while (User.findByCode(user.code_user, (err, data) => {}) == -1);
-    User.create(user, (err, data) => {
-      if (err)
-        res.status(500).send({
-          message: err.message || "Error while trying to create user.",
-        });
-      else {
-        res.status(201).send(data.recordset);
-      }
-    });
+    Hasher.hashPassword(user.pass_user, (hashed) => {
+      user.pass_user = hashed;  
+      User.create(user, (err, data) => {
+        if (err)
+          res.status(500).send({
+            message: err.message || "Error while trying to create user.",
+          });
+        else {
+          res.status(201).send(data.recordset);
+        }
+      });   
+    });   
   }
 };
 
@@ -118,9 +121,7 @@ exports.login = (req, res) => {
         });
       }
     } else {
-      res.status(200).send({
-        message: `All data is correct! User will be logged in.`,
-      });
+      res.status(200).send(data.recordset[0].id_user.toString());
     }
   })
 };
