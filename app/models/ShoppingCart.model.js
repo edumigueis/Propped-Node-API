@@ -89,7 +89,7 @@ ShoppingCart.findByUser = (id, result) => {
 
 ShoppingCart.findById = (id, result) => {
   sql.query(
-    `SELECT * FROM Cart_Propped WHERE id_cart = ${id}`,
+    `SELECT * FROM ShoppingCart_Propped WHERE id_cart = ${id}`,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -115,7 +115,7 @@ ShoppingCart.findById = (id, result) => {
 
 ShoppingCart.findByUser = (id, result) => {
   sql.query(
-    `SELECT * FROM Cart_Propped WHERE id_user_shoppingcart = ${id}`,
+    `SELECT * FROM ShoppingCart_Propped WHERE id_user_shoppingcart = ${id}`,
     (err, res) => {
       if (err) {
         result(err, null);
