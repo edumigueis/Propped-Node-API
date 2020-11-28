@@ -28,10 +28,13 @@ exports.create = (req, res) => {
       description_product: req.body.description_product,
       weight_product: req.body.weight_product,
       price_product: req.body.price_product,
-      stock_product: req.body.stock_product
+      stock_product: req.body.stock_product,
+      color_product: req.body.color_product,
+      size_product: req.body.size_product,
+      occasion_product: req.body.occasion_product
     });
 
-    if (typeof product.id_store_product === "undefined" || typeof product.id_category_product === "undefined" || typeof product.id_subcategory_product === "undefined" || typeof product.name_product === "undefined" || typeof product.description_product === "undefined" || typeof product.weight_product === "undefined" || typeof product.price_product === "undefined" || typeof product.stock_product === "undefined") {
+    if (typeof product.id_store_product === "undefined" || typeof product.id_category_product === "undefined" || typeof product.id_subcategory_product === "undefined" || typeof product.name_product === "undefined" || typeof product.description_product === "undefined" || typeof product.weight_product === "undefined" || typeof product.price_product === "undefined" || typeof product.stock_product === "undefined" || typeof product.size_product === "undefined" || typeof product.color_product === "undefined" || typeof product.occasion_product === "undefined" ) {
       erro = '400';
     } else {
       do product.code_product = Hasher.generateCode();

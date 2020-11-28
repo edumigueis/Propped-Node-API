@@ -10,11 +10,14 @@ const Product = function (product) {
   this.weight_product = product.weight_product;
   this.price_product = product.price_product;
   this.stock_product = product.stock_product;
+  this.color_product = product.color_product;
+  this.size_product = product.size_product;
+  this.occasion_product = product.occasion_product;
 };
 
 Product.create = (newProduct, result) => {
   sql.query(
-    `INSERT INTO Product_Propped OUTPUT INSERTED.* VALUES(${newProduct.id_store_product},${newProduct.id_category_product},${newProduct.id_subcategory_product},'${newProduct.name_product}','${newProduct.description_product}',${newProduct.weight_product},${newProduct.price_product}, ${newProduct.stock_product},'${newProduct.code_product}')`,
+    `INSERT INTO Product_Propped OUTPUT INSERTED.* VALUES(${newProduct.id_store_product},${newProduct.id_category_product},${newProduct.id_subcategory_product},'${newProduct.name_product}','${newProduct.description_product}',${newProduct.weight_product},${newProduct.price_product}, ${newProduct.stock_product},'${newProduct.code_product}','${color_product}','${size_product}','${occasion_product}')`,
     (err, res) => {
       if (err) {
         result(err, null);
@@ -93,9 +96,8 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
     filters[3] = "%";
 
   let query = `SELECT DISTINCT p.* FROM Product_Propped p, Attribute_Propped a, ProductAttribute_Propped pa WHERE 
-    (a.name_attribute like 'Color' and pa.value_productattribute like '${filters[0]}') and (a.name_attribute like 'Size' and pa.value_productattribute like '${filters[3]}') and (a.name_attribute like 'Occasion' and pa.value_productattribute like '${filters[2]}') and a.id_attribute = pa.id_attribute_productattribute and pa.id_product_productattribute = p.id_product and ${filters[1]} and p.name_product like '${name}' and ${idCategory} and ${idSubcategory}`;
+    (p.color_product like '${filters[0]}') and (p.size_product like '${filters[3]}') and (p.occasion_product like '${filters[2]}') and a.id_attribute = pa.id_attribute_productattribute and pa.id_product_productattribute = p.id_product and ${filters[1]} and p.name_product like '${name}' and ${idCategory} and ${idSubcategory}`;
 
-    console.log(query);
   sql.query(
     query,
     (err, res) => {
@@ -173,7 +175,7 @@ Product.findById = (id, result) => {
 Product.updateByCode = (code, product, result) => {
   product.code_product = code;
   sql.query(
-    `UPDATE Product_Propped SET id_store_product = ${product.id_store_product}, id_category_product = ${product.id_category_product}, id_subcategory_product = ${product.id_subcategory_product}, name_product= '${product.name_product}', description_product= '${product.description_product}', weight_product= ${product.weight_product}, price_product= ${product.price_product}, stock_product = '${product.stock_product}'  WHERE code_product = '${code}'`,
+    `UPDATE Product_Propped SET id_store_product = ${product.id_store_product}, id_category_product = ${product.id_category_product}, id_subcategory_product = ${product.id_subcategory_product}, name_product= '${product.name_product}', description_product= '${product.description_product}', weight_product= ${product.weight_product}, price_product= ${product.price_product}, stock_product = '${product.stock_product}', color_product = '${product.color_product}', size_product = '${product.size_product}', occasion_product = '${product.occasion_product}'  WHERE code_product = '${code}'`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);

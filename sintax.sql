@@ -131,6 +131,9 @@ create table Product_Propped(
 	weight_product money not null,
 	price_product money not null,
 	stock_product int not null,
+	color_product varchar(20) null,
+	size_product varchar(20) null,
+	occasion_product varchar(20) null
 	constraint fkStore_Product_Propped foreign key (id_store_product) references Store_Propped(id_store),
 	constraint fkCategory_Product_Propped foreign key (id_category_product) references Category_Propped(id_category),
 	constraint fkSubcategory_Product_Propped foreign key (id_subcategory_product) references Subcategory_Propped(id_subcategory)

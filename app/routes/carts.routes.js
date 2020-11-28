@@ -11,7 +11,7 @@ module.exports = app => {
 
   app.get("/carts/id/:id_shoppingcart", carts.findById);
 
-  app.get("/carts/user/:id_user_shoppingcart", carts.findById);
+  app.get("/carts/user/:id_user_shoppingcart", carts.findByUser);
 
   app.get("/carts/products/:id_shoppingcart", carts.findAllProducts);
 
