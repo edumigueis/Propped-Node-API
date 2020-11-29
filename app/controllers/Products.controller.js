@@ -219,6 +219,7 @@ exports.findByStore = (req, res) => {
 };
 
 exports.findByParams = (req, res) => {
+
   if (typeof req.body.name_product === "undefined" || typeof req.body.id_category_product === "undefined" || typeof req.body.id_subcategory_product === "undefined" || typeof req.body.filters_product === "undefined") {
     res.status(400).send({
       message: "Parts of the data weren't given correctly.",
@@ -240,7 +241,7 @@ exports.findByParams = (req, res) => {
               message: "Error while searching for product with these attributes",
             });
           }
-        } else res.send(data.recordset);
+        } else res.status(200).send(data.recordset);
       });
   }
 };
