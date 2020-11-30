@@ -96,7 +96,7 @@ Product.findByParams = (name, idCategory, idSubcategory, filters, result) => {
     filters[3] = "%";
 
   let query = `SELECT DISTINCT p.* FROM Product_Propped p, Attribute_Propped a, ProductAttribute_Propped pa WHERE 
-    (p.color_product like '${filters[0]}') and (p.size_product like '${filters[3]}') and (p.occasion_product like '${filters[2]}') and a.id_attribute = pa.id_attribute_productattribute and pa.id_product_productattribute = p.id_product and ${filters[1]} and p.name_product like '%${name}%' and ${idCategory} and ${idSubcategory}`;
+    (p.color_product like '%${filters[0]}%') and (p.size_product like '%${filters[3]}%') and (p.occasion_product like '${filters[2]}') and a.id_attribute = pa.id_attribute_productattribute and pa.id_product_productattribute = p.id_product and ${filters[1]} and p.name_product like '%${name}%' and ${idCategory} and ${idSubcategory}`;
 
   sql.query(
     query,
