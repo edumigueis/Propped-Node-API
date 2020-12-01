@@ -60,14 +60,9 @@ Favorite.findByUserAndProduct = (idUser, idProduct, result) => {
         result(null, res);
         return;
       }
-      result(
-        {
-          kind: "not_found",
-        },
-        null
-      );
-
-      return -1;
+      else{
+        result(null, -1);
+      }
     }
   );
 };
