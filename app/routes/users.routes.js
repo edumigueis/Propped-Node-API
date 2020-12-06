@@ -11,7 +11,7 @@ module.exports = app => {
   
     app.get("/users/:code_user", users.findOne);
 
-    app.get("/users/email/:email_user", users.findOne);
+    app.get("/users/email/:email_user", users.findByEmail);
   
     app.put("/users/:code_user", users.update);
   

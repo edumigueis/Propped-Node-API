@@ -87,7 +87,7 @@ exports.findById = (req, res) => {
   });
 };
 
-exports.findOne = (req, res) => {
+exports.findByEmail = (req, res) => {
   User.findByEmail(req.params.email_user, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
