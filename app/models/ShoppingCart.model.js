@@ -7,15 +7,13 @@ const ShoppingCart = function (cart) {
 
 ShoppingCart.create = (newCart, result) => {
   sql.query(
-    `INSERT INTO ShoppingCart_Propped VALUES(${newCart.id_user_shoppingcart},'${newCart.code_shoppingcart}')`,
+    `INSERT INTO ShoppingCart_Propped OUTPUT INSERTED.* VALUES(${newCart.id_user_shoppingcart},'${newCart.code_shoppingcart}')`,
     (err, res) => {
       if (err) {
         result(err, null);
         return;
       }
-      result(null, {
-        ...newCart,
-      });
+      result(null, res);
     }
   );
 };

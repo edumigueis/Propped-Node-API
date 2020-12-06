@@ -71,7 +71,7 @@ exports.addProduct = (req, res) => {
             message: err.message || "Error while trying to add product into cart.",
           });
         else{
-          productsshoppingcart.id_shoppingcart_productsshoppingcart = data.recordset[0].id_cart;
+          productsshoppingcart.id_shoppingcart_productsshoppingcart = data.recordset[0].id_shoppingcart;
           ProductsShoppingCart.create(productsshoppingcart, (err, data) => {
             if (err)
               res.status(500).send({
