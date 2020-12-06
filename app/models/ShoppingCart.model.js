@@ -6,11 +6,9 @@ const ShoppingCart = function (cart) {
 };
 
 ShoppingCart.create = (newCart, result) => {
-  console.log(`INSERT INTO ShoppingCart_Propped VALUES(${newCart.id_user_shoppingcart}, '${newCart.code_shoppingcart}')`);
   sql.query(
-    `INSERT INTO ShoppingCart_Propped VALUES('${newCart.code_shoppingcart}', ${newCart.id_user_shoppingcart})`,
+    `INSERT INTO ShoppingCart_Propped VALUES(${newCart.id_user_shoppingcart},'${newCart.code_shoppingcart}')`,
     (err, res) => {
-      console.log(err);
       if (err) {
         result(err, null);
         return;
@@ -98,7 +96,7 @@ ShoppingCart.findById = (id, result) => {
 
       if (res.recordset.length > 0) {
         result(null, res);
-        return;
+        return;    
       }
 
       result(

@@ -43,7 +43,8 @@ exports.addProduct = (req, res) => {
   const productsshoppingcart = new ProductsShoppingCart({
     id_product_productsshoppingcart: req.body.id_product_productsshoppingcart,
     id_shoppingcart_productsshoppingcart: req.body.id_shoppingcart_productsshoppingcart,
-    amount_productsshoppingcart: req.body.amount_productsshoppingcart
+    amount_productsshoppingcart: req.body.amount_productsshoppingcart,
+    id_user_shoppingcart: req.body.id_user_shoppingcart
   });
 
   if (typeof productsshoppingcart.id_product_productsshoppingcart === "undefined" || typeof productsshoppingcart.id_shoppingcart_productsshoppingcart === "undefined" || typeof productsshoppingcart.amount_productsshoppingcart === "undefined") {
@@ -55,14 +56,40 @@ exports.addProduct = (req, res) => {
     while (
       ProductsShoppingCart.findByCode(productsshoppingcart.code_productsshoppingcart, (err, data) => {}) == -1
     );
-    console.log(productsshoppingcart);
-    ProductsShoppingCart.create(productsshoppingcart, (err, data) => {
-      if (err)
-        res.status(500).send({
-          message: err.message || "Error while trying to add product into cart.",
-        });
-      else res.status(201).send(data.recordset);
-    });
+
+    if (productsshoppingcart.id_shoppingcart_productsshoppingcart == "null") {
+      let cart = new ShoppingCart({
+        id_user_shoppingcart: productsshoppingcart.id_user_shoppingcart
+      });
+      do cart.code_shoppingcart = Hasher.generateCode();
+      while (
+        ShoppingCart.findByCode(cart.code_shoppingcart, (err, data) => {}) == -1
+      );
+      ShoppingCart.create(cart, (err, data) => {
+        if (err)
+          res.status(500).send({
+            message: err.message || "Error while trying to add product into cart.",
+          });
+        else{
+          productsshoppingcart.id_shoppingcart_productsshoppingcart = data.recordset[0].id_cart;
+          ProductsShoppingCart.create(productsshoppingcart, (err, data) => {
+            if (err)
+              res.status(500).send({
+                message: err.message || "Error while trying to add product into cart.",
+              });
+            else {res.status(201).send(data.recordset);}
+          });
+        }
+      });
+    } else {
+      ProductsShoppingCart.create(productsshoppingcart, (err, data) => {
+        if (err)
+          res.status(500).send({
+            message: err.message || "Error while trying to add product into cart.",
+          });
+        else res.status(201).send(data.recordset);
+      });
+    }
   }
 };
 
@@ -120,7 +147,7 @@ exports.findByUser = (req, res) => {
       } else {
         res.status(500).send({
           message: "Error while searching for cart with the user with the id " +
-          req.params.id_user_shoppingcart,
+            req.params.id_user_shoppingcart,
         });
       }
     } else res.status(200).send(data.recordset);
@@ -137,7 +164,7 @@ exports.findAllProducts = (req, res) => {
       } else {
         res.status(500).send({
           message: "Error while searching for content of cart with the id " +
-          req.params.id_shoppingcart,
+            req.params.id_shoppingcart,
         });
       }
     } else res.status(200).send(data.recordset);
@@ -146,10 +173,10 @@ exports.findAllProducts = (req, res) => {
 
 exports.countByUser = (req, res) => {
   ProductsShoppingCart.countByUser(req.params.id_user_shoppingcart, (err, data) => {
-    if (err)  {
+    if (err) {
       res.status(500).send({
         message: "Error while counting content of cart with the user with the id " +
-        req.params.id_user_shoppingcart,
+          req.params.id_user_shoppingcart,
       });
     } else res.status(200).send(data.recordset);
   });

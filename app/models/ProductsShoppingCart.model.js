@@ -5,6 +5,7 @@ const ProductsShoppingCart = function (productsshoppingcart) {
   this.id_product_productsshoppingcart = productsshoppingcart.id_product_productsshoppingcart;
   this.id_shoppingcart_productsshoppingcart = productsshoppingcart.id_shoppingcart_productsshoppingcart;
   this.amount_productsshoppingcart = productsshoppingcart.amount_productsshoppingcart;
+  this.id_user_shoppingcart = productsshoppingcart.id_user_shoppingcart;
 };
 
 ProductsShoppingCart.create = (newProductsShoppingCart, result) => {
